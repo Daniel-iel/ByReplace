@@ -1,7 +1,4 @@
-﻿
-using ByReplace.Mappers;
-
-public class DirectoryThree
+﻿public class DirectoryThree
 {
     private readonly string _path;
 

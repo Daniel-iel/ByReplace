@@ -4,16 +4,21 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>ByReplace</Title>
     <PackageProjectUrl>https://github.com/Daniel-iel/ByReplace</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Daniel-iel/ByReplace</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>replace;automate;replace-ci;replace-cli;replace-tool</PackageTags>
+    <PackageTags>replace;automate;replace ci;replace cli;replace tool;bulk replace</PackageTags>
     <PackAsTool>True</PackAsTool>
     <SignAssembly>False</SignAssembly>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <Description>CLI to help developer to do bulk replace using shared configuration.</Description>
+    <Authors>Daniel-iel</Authors>
+    <Company>Daniel-iel</Company>
+    <ToolCommandName>br</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,15 +34,20 @@
     <PackageReference Include="Cocona" Version="2.2.0" />
     <PackageReference Include="Cocona.Core" Version="2.2.0" />
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.1.0" />
+    <PackageReference Include="Mediator.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Mediator.SourceGenerator" Version="2.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="morelinq" Version="3.4.2" />
     <PackageReference Include="NoAlloq" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Guards\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

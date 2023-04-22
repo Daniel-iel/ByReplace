@@ -1,60 +1,78 @@
 ﻿using ByReplace.Builders;
+using ByReplace.Commands.Apply.Parameters;
+using ByReplace.Commands.Apply.Rule;
+using ByReplace.Commands.Handlers;
+using ByReplace.Commands.Logo;
 using Cocona;
+//var app = CoconaApp.Create(
+//    new[]
+//    {
+//        "apply",
+//        "rule",
+//        "-r RemoveServiceBus",
+//        @"-p C:\Users\iel_1\Documents\TestLieu",
+//        @"-f C:\Users\iel_1\Documents\Projetos\ByReplace\src\ByReplace"
+//    });
 
-var app = CoconaApp.Create(new[] { "apply", "rule", "-r RemoveServiceBus", @"-p C:\Users\iel_1\Documents\TestLieu", @"-f C:\Users\iel_1\Documents\Projetos\ByReplace\ByReplace" });
+var builder = CoconaApp.CreateBuilder();
+var app = builder.Build();
 
-const string RULE_DESCRIPTION = "Rule name to be applied.";
-const string PATH_DESCRIPTION = "Path of the files to be applied to the rule.";
-const string FILE_DESCRIPTION = "Path of the brconfig file.";
-
-app
-    .AddSubCommand("apply", apply =>
+app.AddSubCommand("apply", apply =>
     {
-        apply.AddCommand("rule", (
-            [Option(shortName: 'r', Description = RULE_DESCRIPTION)] string rule,
-            [Option(shortName: 'p', Description = PATH_DESCRIPTION)] string path,
-            [Option(shortName: 'f', Description = FILE_DESCRIPTION)] string configFile) =>
+        apply.AddCommand("rule", async (ApplyRuleParameters applyRuleParameters) =>
         {
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken token = source.Token;
+
             var configuration = BrConfigurationBuilder
                 .Instantiate()
-                .SetRule(rule)
-                .SetPath(path)
-                .SetConfigPath(configFile)
+                .SetRule(applyRuleParameters.Rule)
+                .SetPath(applyRuleParameters.Path)
+                .SetConfigPath(applyRuleParameters.ConfigFile)
                 .Build();
 
-            Analyzer analyser = new Analyzer(configuration);
-            var three = analyser.LoadThreeFiles();
+            CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
+            {
+                new PrintLogoCommand(),
+                new ApplyRuleCommand(configuration, applyRuleParameters)
+            });
 
-            AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration, three);
-            var fixers = analyzerRunner.RunAnalysis(Analyses.Fix);
-
-            DocumentFix analyzerFix = new DocumentFix(fixers);
-            analyzerFix.Apply();
+            await compositeCommand.ExecuteAsync(token);
         });
 
-        apply.AddCommand("rules", (
-            [Option(shortName: 'p', Description = PATH_DESCRIPTION)] string path,
-            [Option(shortName: 'f', Description = FILE_DESCRIPTION)] string configFile) =>
+        apply.AddCommand("rules", async (ApplyParameters applyParameters) =>
         {
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken token = source.Token;
+
             var configuration = BrConfigurationBuilder
                .Instantiate()
-               .SetPath(path)
-               .SetConfigPath(configFile)
+               .SetPath(applyParameters.Path)
+               .SetConfigPath(applyParameters.ConfigFile)
                .Build();
 
-            Analyzer analyser = new Analyzer(configuration);
-            var three = analyser.LoadThreeFiles();
+            CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
+            {
+                new PrintLogoCommand(),
+                new ApplyRulesCommand(configuration, applyParameters)
+            });
 
-            AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration, three);
-            var fixers = analyzerRunner.RunAnalysis(Analyses.Fix);
+            await compositeCommand.ExecuteAsync(token);
+        });
 
-            DocumentFix analyzerFix = new DocumentFix(fixers);
-            analyzerFix.Apply();
+        apply.AddCommand("list-rules", () =>
+        {
+            //Print all rule's names from config file
+        });
+
+        apply.AddCommand("open-rule", () =>
+        {
+            //Print rule in config file
         });
     })
     .WithDescription("apply commands");
 
-app.AddCommand("verify", () => { throw new NotImplementedException("verify command not implemented."); });
-app.AddCommand("take", () => { throw new NotImplementedException("take command not implemented."); });
+app.AddCommand("verify", () => { });
+app.AddCommand("take", () => { });
 
-@app.Run();
+app.Run();

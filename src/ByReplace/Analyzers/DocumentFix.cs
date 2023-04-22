@@ -9,7 +9,7 @@
             this.codeFixes = codeFixes;
         }
 
-        public void Apply()
+        public async ValueTask ApplyAsync(CancellationToken cancellationToken)
         {
             foreach (var codeFixe in this.codeFixes)
             {
@@ -18,9 +18,9 @@
                 {
                     foreach (var removeTerm in role.Replacement.Old)
                     {
-                        string fileContents = File.ReadAllText(file.FullName);
+                        string fileContents = await File.ReadAllTextAsync(file.FullName, cancellationToken);
                         fileContents = fileContents.Replace(removeTerm, role.Replacement.New);
-                        File.WriteAllText(file.FullName, fileContents);
+                        await File.WriteAllTextAsync(file.FullName, fileContents, cancellationToken);
                     }
                 }
             }
