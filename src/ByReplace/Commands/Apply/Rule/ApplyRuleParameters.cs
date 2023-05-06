@@ -1,11 +1,7 @@
-﻿using ByReplace.Commands.Apply.Parameters;
-using Cocona;
+﻿namespace ByReplace.Commands.Apply.Rule;
 
-namespace ByReplace.Commands.Apply.Rule
+internal record ApplyRuleParameters : ApplyParameters
 {
-    internal record ApplyRuleParameters : ApplyParameters
-    {
-        [Option(shortName: 'r', Description = "Rule name to be applied.")]
-        public string Rule { get; set; }
-    }
+    [Option(shortName: 'r', Description = "Rule name to be applied.")]
+    public string Rule { get; set; }
 }

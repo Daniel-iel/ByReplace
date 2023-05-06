@@ -1,20 +1,19 @@
-﻿namespace ByReplace.Commands.Handlers
+﻿namespace ByReplace.Commands.Command;
+
+internal class CompositeCommand : ICommand
 {
-    internal class CompositeCommand : ICommand
+    private readonly ICommand[] commands;
+
+    public CompositeCommand(params ICommand[] commands)
     {
-        private readonly ICommand[] commands;
+        this.commands = commands;
+    }
 
-        public CompositeCommand(params ICommand[] commands)
+    public async ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var command in commands)
         {
-            this.commands = commands;
-        }
-
-        public async ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
-        {
-            foreach (var command in commands)
-            {
-                await command.ExecuteAsync(cancellationToken);
-            }
+            await command.ExecuteAsync(cancellationToken);
         }
     }
 }

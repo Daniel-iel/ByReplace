@@ -1,4 +1,3 @@
-﻿namespace ByReplace.Models
-{
-    internal record Replacement(string[] Old, string New);
-}
+﻿namespace ByReplace.Models;
+
+internal record Replacement(string[] Old, string New);

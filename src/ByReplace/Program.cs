@@ -1,23 +1,21 @@
 ﻿using ByReplace.Builders;
-using ByReplace.Commands.Apply.Parameters;
-using ByReplace.Commands.Apply.Rule;
-using ByReplace.Commands.Handlers;
-using ByReplace.Commands.Logo;
-using Cocona;
-//var app = CoconaApp.Create(
-//    new[]
-//    {
-//        "apply",
-//        "rule",
-//        "-r RemoveServiceBus",
-//        @"-p C:\Users\iel_1\Documents\TestLieu",
-//        @"-f C:\Users\iel_1\Documents\Projetos\ByReplace\src\ByReplace"
-//    });
+using ByReplace.Commands.Apply.Rules;
+using ByReplace.Commands.Command;
+using ByReplace.Printers;
 
-var builder = CoconaApp.CreateBuilder();
+var builder = CoconaApp.CreateBuilder(
+    new[]
+    {
+        "apply",
+        "rules",
+        @"-p C:\Users\iel_1\Documents\TestLieu",
+        @"-f C:\Users\iel_1\Documents\Projetos\ByReplace\src\ByReplace"
+    });
+builder.Services.AddScoped<IPrint, PrintConsole>();
 var app = builder.Build();
 
-app.AddSubCommand("apply", apply =>
+app
+    .AddSubCommand("apply", apply =>
     {
         apply.AddCommand("rule", async (ApplyRuleParameters applyRuleParameters) =>
         {
@@ -34,6 +32,7 @@ app.AddSubCommand("apply", apply =>
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(),
+                new PrintBRVersionCommand(),
                 new ApplyRuleCommand(configuration, applyRuleParameters)
             });
 
@@ -54,6 +53,7 @@ app.AddSubCommand("apply", apply =>
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(),
+                new PrintBRVersionCommand(),
                 new ApplyRulesCommand(configuration, applyParameters)
             });
 

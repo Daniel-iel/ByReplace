@@ -1,13 +1,11 @@
-﻿using Cocona;
+﻿
+namespace ByReplace.Commands.Apply.Parameters;
 
-namespace ByReplace.Commands.Apply.Parameters
+internal record ApplyParameters : ICommandParameterSet
 {
-    internal record ApplyParameters : ICommandParameterSet
-    {
-        [Option(shortName: 'p', Description = "Path of the files to be applied to the rule.")]
-        public string Path { get; set; }
+    [Option(shortName: 'p', Description = "Path of the files to be applied to the rule.")]
+    public string Path { get; set; }
 
-        [Option(shortName: 'f', Description = "Path of the brconfig file.")]
-        public string ConfigFile { get; set; }
-    }
+    [Option(shortName: 'f', Description = "Path of the brconfig file.")]
+    public string ConfigFile { get; set; }
 }

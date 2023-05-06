@@ -1,6 +1,4 @@
-﻿using ByReplace.Exceptions;
-
-namespace ByReplace.Builders;
+﻿namespace ByReplace.Builders;
 
 internal class BrConfigurationBuilder
 {

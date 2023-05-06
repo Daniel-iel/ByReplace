@@ -1,34 +1,33 @@
-﻿namespace ByReplace.Matches
+﻿namespace ByReplace.Matches;
+
+internal sealed class SkipMatch : Match
 {
-    internal sealed class SkipMatch : Match
+    private readonly string dir;
+    private readonly FileMapper file;
+    private readonly string[] param;
+
+    public SkipMatch(string dir, FileMapper file, string[] param)
     {
-        private readonly string dir;
-        private readonly FileMapper file;
-        private readonly string[] param;
+        this.dir = dir;
+        this.file = file;
+        this.param = param;
+    }
 
-        public SkipMatch(string dir, FileMapper file, string[] param)
+    public override bool HasMatch
+    {
+        get
         {
-            this.dir = dir;
-            this.file = file;
-            this.param = param;
+            return SkipFile() && SkipDir();
         }
+    }
 
-        public override bool HasMatch
-        {
-            get
-            {
-                return SkipFile() && SkipDir();
-            }
-        }
+    private bool SkipFile()
+    {
+        return param.Contains(file.Name);
+    }
 
-        private bool SkipFile()
-        {
-            return param.Contains(file.Name);
-        }
-
-        private bool SkipDir()
-        {
-            return param.Any(c => c.StartsWith("**") && c.EndsWith("*") && dir.Contains(c));
-        }
+    private bool SkipDir()
+    {
+        return param.Any(c => c.StartsWith("**") && c.EndsWith("*") && dir.Contains(c));
     }
 }

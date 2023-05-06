@@ -1,4 +1,6 @@
-﻿public class DirectoryThree
+﻿namespace ByReplace.Mappers;
+
+public class DirectoryThree
 {
     private readonly string _path;
 

@@ -1,4 +1,6 @@
-﻿internal enum Analyses
+﻿namespace ByReplace.Analyzers;
+
+internal enum Analyses
 {
     Diagnostic,
     Fix

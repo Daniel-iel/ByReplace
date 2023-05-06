@@ -1,29 +1,27 @@
-﻿using ByReplace.Commands.Apply.Parameters;
-using ByReplace.Commands.Handlers;
+﻿using ByReplace.Commands.Command;
 
-namespace ByReplace.Commands.Apply.Rule
+namespace ByReplace.Commands.Apply.Rules;
+
+internal class ApplyRulesCommand : ICommand
 {
-    internal class ApplyRulesCommand : ICommand
+    private readonly BrConfiguration configuration;
+    private readonly ApplyParameters applyParameters;
+
+    public ApplyRulesCommand(BrConfiguration configuration, ApplyParameters applyParameters)
     {
-        private readonly BrConfiguration configuration;
-        private readonly ApplyParameters applyParameters;
+        this.configuration = configuration;
+        this.applyParameters = applyParameters;
+    }
 
-        public ApplyRulesCommand(BrConfiguration configuration, ApplyParameters applyParameters)
-        {
-            this.configuration = configuration;
-            this.applyParameters = applyParameters;
-        }
+    public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
+    {
+        Analyzer analyser = new Analyzer(configuration);
+        var three = analyser.LoadThreeFiles();
 
-        public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
-        {
-            Analyzer analyser = new Analyzer(configuration);
-            var three = analyser.LoadThreeFiles();
+        AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration);
+        var fixers = analyzerRunner.RunAnalysis(three, Analyses.Fix);
 
-            AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration, three);
-            var fixers = analyzerRunner.RunAnalysis(Analyses.Fix);
-
-            DocumentFix analyzerFix = new DocumentFix(fixers);
-            return analyzerFix.ApplyAsync(cancellationToken);
-        }
+        DocumentFix analyzerFix = new DocumentFix(fixers);
+        return analyzerFix.ApplyAsync(cancellationToken);
     }
 }

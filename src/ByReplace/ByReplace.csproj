@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Title>ByReplace</Title>
     <PackageProjectUrl>https://github.com/Daniel-iel/ByReplace</PackageProjectUrl>
@@ -33,7 +34,9 @@
     <PackageReference Include="ClrHeapAllocationAnalyzer" Version="3.0.0" />
     <PackageReference Include="Cocona" Version="2.2.0" />
     <PackageReference Include="Cocona.Core" Version="2.2.0" />
-    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.1.0" />
+    <PackageReference Include="CommunityToolkit.Common" Version="8.2.0" />
+    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.0" />
+    <PackageReference Include="Goblinfactory.Konsole" Version="6.2.2" />
     <PackageReference Include="Mediator.Abstractions" Version="2.1.1" />
     <PackageReference Include="Mediator.SourceGenerator" Version="2.1.1">
       <PrivateAssets>all</PrivateAssets>
@@ -41,6 +44,8 @@
     </PackageReference>
     <PackageReference Include="morelinq" Version="3.4.2" />
     <PackageReference Include="NoAlloq" Version="0.1.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.5.0" />
+    <PackageReference Include="NuGet.Versioning" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +57,21 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Events.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Events.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Events.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Events.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

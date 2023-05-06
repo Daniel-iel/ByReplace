@@ -1,5 +1,4 @@
-﻿
-using ByReplace.Commands.Handlers;
+﻿using ByReplace.Commands.Command;
 
 namespace ByReplace.Commands.Logo
 {
@@ -7,8 +6,8 @@ namespace ByReplace.Commands.Logo
     {
         public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
         {
-            const string logoAscii = @"              
-     
+            const string logoAscii = @"
+
                 ,¿q▄▄▌██▓▓▓███████▌▄,              ,,,,,¿q▄▄▄▄▌▌▌▌▌▌▌▌▄▄µ
           ¿▄▌█▓▓▓▓▓▓████▒▀▀▀▀▀▀██▓▓▓█▌µ          ╒█▓▓▓▓▓▓▓▓▓▓▓▓█▒▒▒██▓▓▓▓▓█▄
        ¿▌▓▓▓▓▓▓▓▓▀▀╙             ²▓▓▓▓█           ▀▓▓▓▓▓╜             `▀▓▓▓▓▓µ
@@ -27,7 +26,9 @@ namespace ByReplace.Commands.Logo
        ]▌ÑÑÑ[                ,q▌▄▐▒▒╜         ]▌▀▀▀&                 `╝Ñå▀Ñ█▒▄µ
        Ñ▌▌▌▌[             ¿q▀▌▌▌▌▌┘           ]▀Ñ▀▀&                    ╙▀▀▀▀▌▌▌&µ
        Ñ░▀▀▀M   ╓▄▄#╗æ#▀▌▒▒▀Ñ▀▀╨               ▀ååå▀                       ╙▀▀▀▀▀▌
-        ╨▀▀╨   ▀É░▀▒@░░░░▀▌▀╙                  └▀▀╝`                          `╙`";
+        ╨▀▀╨   ▀É░▀▒@░░░░▀▌▀╙                  └▀▀╝`                          `╙`
+
+";
 
             Console.WriteLine(logoAscii);
 

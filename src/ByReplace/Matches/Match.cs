@@ -1,7 +1,6 @@
-﻿namespace ByReplace.Matches
+﻿namespace ByReplace.Matches;
+
+internal abstract class Match
 {
-    internal abstract class Match
-    {
-        public abstract bool HasMatch { get; }
-    }
+    public abstract bool HasMatch { get; }
 }

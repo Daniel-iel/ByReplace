@@ -1,7 +1,6 @@
-﻿namespace ByReplace.Commands.Handlers
+﻿namespace ByReplace.Commands.Command;
+
+internal interface ICommand
 {
-    internal interface ICommand
-    {
-        public ValueTask ExecuteAsync(CancellationToken cancellationToken = default);
-    }
+    public ValueTask ExecuteAsync(CancellationToken cancellationToken = default);
 }
