@@ -1,5 +1,4 @@
-﻿using ByReplace.Printers;
-using NuGet.Configuration;
+﻿using NuGet.Configuration;
 using System.Reflection;
 namespace ByReplace.Commands.Version;
 
@@ -23,19 +22,19 @@ internal class NugetVersion
 
         SemanticVersion.TryParse(version, out var currentVersion);
 
-        _printConsole.PrintInfo($"Version: [Green]{currentVersion}.");
+        _printConsole.Information($"Version: [Green]{currentVersion}.");
 
         var latestVersion = await GetVersionAsync(preRelease: false);
         if (latestVersion > currentVersion)
         {
-            _printConsole.PrintInfo($"A new version of ByReplace [Yellow]({latestVersion}) is available. Please consider upgrading using the command `dotnet tool update -g ByReplace`");
+            _printConsole.Information($"A new version of ByReplace [Yellow]({latestVersion}) is available. Please consider upgrading using the command `dotnet tool update -g ByReplace`");
         }
         else
         {
             var previewVersion = await GetVersionAsync(preRelease: true);
             if (previewVersion > currentVersion)
             {
-                _printConsole.PrintInfo($@"A preview version of ByReplace [Yellow]({previewVersion}) is available on nuget.
+                _printConsole.Information($@"A preview version of ByReplace [Yellow]({previewVersion}) is available on nuget.
 If you would like to try out this preview version you can install it with `dotnet tool update -g ByReplace --version {previewVersion}`
 Since this is a preview feature things might not work as expected! Please report any findings on GitHub![/]");
             }

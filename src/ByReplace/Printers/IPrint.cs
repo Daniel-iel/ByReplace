@@ -2,7 +2,8 @@
 
 public interface IPrint
 {
-    void PrintInfo(string text);
+    void Information(string text);
+    void InformationTimer();
     void PrintWarning(string text);
     void PrintError(string text);
 }

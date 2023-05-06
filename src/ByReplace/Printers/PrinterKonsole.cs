@@ -16,7 +16,7 @@ internal class PrinterKonsole
     {
         ReadOnlySpan<string> textParts = new ReadOnlySpan<string>(text.Split(" "));
 
-        var shouldPrintColourText = textParts.Any(ShouldColourPredicate); //.Any(ShouldColourPredicate);
+        var shouldPrintColourText = textParts.Any(ShouldColourPredicate);
         if (!shouldPrintColourText)
         {
             Print(text);
@@ -43,6 +43,12 @@ internal class PrinterKonsole
                 continue;
             }
 
+            if (textPart.StartsWith("[Cyan]"))
+            {
+                console.Write(ConsoleColor.Cyan, $" {textPart.Replace("[Cyan]", "")}");
+                continue;
+            }
+
             console.Write($" {textPart}");
         }
 
@@ -55,10 +61,11 @@ internal class PrinterKonsole
         console.WriteLine("");
     }
 
-    private bool ShouldColourPredicate(string text)
+    private static bool ShouldColourPredicate(string text)
     {
         return text.StartsWith("[Green]", StringComparison.InvariantCultureIgnoreCase) ||
                text.StartsWith("[Yellow]", StringComparison.InvariantCultureIgnoreCase) ||
-               text.StartsWith("[Red]", StringComparison.InvariantCultureIgnoreCase);
+               text.StartsWith("[Red]", StringComparison.InvariantCultureIgnoreCase) ||
+               text.StartsWith("[Cyan]", StringComparison.InvariantCultureIgnoreCase);
     }
 }

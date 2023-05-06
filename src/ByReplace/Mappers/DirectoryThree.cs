@@ -1,12 +1,16 @@
-﻿namespace ByReplace.Mappers;
+﻿using ByReplace.Printers;
+
+namespace ByReplace.Mappers;
 
 public class DirectoryThree
 {
     private readonly string _path;
+    private readonly PrintConsole _printer;
 
     public DirectoryThree(string path)
     {
         _path = path;
+        _printer = new PrintConsole();
     }
 
     public record struct DirectoryNode(
@@ -36,10 +40,12 @@ public class DirectoryThree
             Path: directoryInfo.Name,
             Parent: directoryInfo!.Parent!.Name,
             Files: directoryInfo
-                        .GetFiles()
-                        .Select(file => new FileMapper(Guid.NewGuid(), file.Name, file.FullName, file.Extension))
-                        .ToImmutableList()
+                  .GetFiles()
+                  .Select(file => new FileMapper(Guid.NewGuid(), file.Name, file.FullName, file.Extension))
+                  .ToImmutableList()
            );
+
+        _printer.Information($"Found [Cyan]{node.Files.Count} files on folder [Cyan]{node.Directory}.");
 
         nodes.Add(node);
 

@@ -1,28 +1,30 @@
-﻿using ByReplace.Commands.Command;
-
-namespace ByReplace.Commands.Apply.Rule;
+﻿namespace ByReplace.Commands.Apply.Rule;
 
 internal class ApplyRuleCommand : ICommand
 {
     private readonly BrConfiguration configuration;
     private readonly ApplyRuleParameters parameters;
+    private readonly IPrint print;
 
-    public ApplyRuleCommand(BrConfiguration configuration, ApplyRuleParameters parameters)
+    public ApplyRuleCommand(
+        BrConfiguration configuration,
+        ApplyRuleParameters parameters,
+        IPrint print)
     {
         this.configuration = configuration;
         this.parameters = parameters;
+        this.print = print;
     }
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        Analyzer analyser = new Analyzer(configuration);
-        //analyser.FilesFoundNotify += KConsoleNotify.FilesFound;
+        Analyzer analyser = new Analyzer(configuration, print);
         var three = analyser.LoadThreeFiles();
 
-        AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration);
+        AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration, print);
         var fixers = analyzerRunner.RunAnalysis(three, Analyses.Fix);
 
-        DocumentFix analyzerFix = new DocumentFix(fixers);
+        DocumentFix analyzerFix = new DocumentFix(fixers, print);
         return analyzerFix.ApplyAsync(parameters.Rule, cancellationToken);
     }
 }

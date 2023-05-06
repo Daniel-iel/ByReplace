@@ -19,9 +19,14 @@ internal class PrintConsole : IPrint
         Error
     };
 
-    public void PrintInfo(string text)
+    public void Information(string text)
     {
         printerKonsole.PrintColourText($"[{GetTimeElapsedText()} INF] {text}");
+    }
+
+    public void InformationTimer()
+    {
+        printerKonsole.PrintColourText($"[{GetTimeElapsedText()} INF] [Green]{timer.Elapsed.Duration().ToString()}");
     }
 
     public void PrintWarning(string text)

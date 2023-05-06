@@ -1,18 +1,20 @@
-﻿using static ByReplace.Mappers.DirectoryThree;
-
-namespace ByReplace.Analyzers;
+﻿namespace ByReplace.Analyzers;
 
 internal class Analyzer
 {
     private readonly BrConfiguration brConfiguration;
+    private readonly IPrint print;
 
-    public Analyzer(BrConfiguration brConfiguration)
+    public Analyzer(BrConfiguration brConfiguration, IPrint print)
     {
         this.brConfiguration = brConfiguration;
+        this.print = print;
     }
 
     internal ImmutableList<DirectoryNode> LoadThreeFiles()
     {
+        print.Information($"Identifying folder three files.");
+
         var directoryThree = new DirectoryThree(brConfiguration.Path);
         directoryThree.MapThreeSources();
 

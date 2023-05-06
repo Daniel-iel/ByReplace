@@ -1,15 +1,17 @@
-﻿using static ByReplace.Mappers.DirectoryThree;
-
-namespace ByReplace.Analyzers;
+﻿namespace ByReplace.Analyzers;
 
 internal class AnalyzersAndFixers : Dictionary<Rule, List<FileMapper>>
 {
-    public AnalyzersAndFixers() { }
+    private readonly IPrint print;
 
-    public AnalyzersAndFixers(IEnumerable<KeyValuePair<Rule, List<FileMapper>>> values)
-        : base(values) { }
+    public AnalyzersAndFixers(IPrint print) : this(Enumerable.Empty<KeyValuePair<Rule, List<FileMapper>>>(), print)
+    {
+    }
 
-    public event EventHandler RulesMatch;
+    public AnalyzersAndFixers(IEnumerable<KeyValuePair<Rule, List<FileMapper>>> values, IPrint print) : base(values)
+    {
+        this.print = print;
+    }
 
     public bool TryMatchRole(DirectoryNode directoryNode, ImmutableList<Rule> roles)
     {
@@ -34,11 +36,21 @@ internal class AnalyzersAndFixers : Dictionary<Rule, List<FileMapper>>
             }
         }
 
+        Print();
+
         return false;
+    }
+
+    private void Print()
+    {
+        foreach (var item in this)
+        {
+            print.Information($"Total of [Cyan]{item.Value.Count} files match to rule [Cyan]{item.Key.Name}.");
+        }
     }
 
     public AnalyzersAndFixers FindByKey(string rule)
     {
-        return new AnalyzersAndFixers(this.Where(c => c.Key.Name == rule));
+        return new AnalyzersAndFixers(this.Where(c => c.Key.Name == rule), this.print);
     }
 }

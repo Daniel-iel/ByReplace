@@ -1,7 +1,6 @@
 ﻿using ByReplace.Builders;
 using ByReplace.Commands.Apply.Rules;
-using ByReplace.Commands.Command;
-using ByReplace.Printers;
+using ByReplace.Commands.TimerFinish;
 
 var builder = CoconaApp.CreateBuilder(
     new[]
@@ -17,7 +16,7 @@ var app = builder.Build();
 app
     .AddSubCommand("apply", apply =>
     {
-        apply.AddCommand("rule", async (ApplyRuleParameters applyRuleParameters) =>
+        apply.AddCommand("rule", async (ApplyRuleParameters applyRuleParameters, IPrint print) =>
         {
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
@@ -33,13 +32,14 @@ app
             {
                 new PrintLogoCommand(),
                 new PrintBRVersionCommand(),
-                new ApplyRuleCommand(configuration, applyRuleParameters)
+                new ApplyRuleCommand(configuration, applyRuleParameters, print),
+                new TimerFinishCommand(print)
             });
 
             await compositeCommand.ExecuteAsync(token);
         });
 
-        apply.AddCommand("rules", async (ApplyParameters applyParameters) =>
+        apply.AddCommand("rules", async (ApplyParameters applyParameters, IPrint print) =>
         {
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
@@ -54,7 +54,8 @@ app
             {
                 new PrintLogoCommand(),
                 new PrintBRVersionCommand(),
-                new ApplyRulesCommand(configuration, applyParameters)
+                new ApplyRulesCommand(configuration, print),
+                new TimerFinishCommand(print)
             });
 
             await compositeCommand.ExecuteAsync(token);
