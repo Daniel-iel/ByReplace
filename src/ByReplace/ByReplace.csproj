@@ -79,4 +79,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Rule\Parameters\" />
+  </ItemGroup>
+
 </Project>

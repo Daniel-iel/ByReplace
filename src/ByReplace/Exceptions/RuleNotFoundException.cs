@@ -1,8 +1,8 @@
 ﻿namespace ByReplace.Exceptions;
 
-internal class RuleNotFoundException : Exception
+internal class RuleNotFoundException : NotfoundException
 {
-    public RuleNotFoundException() { }
+    public RuleNotFoundException() : base() { }
 
     public RuleNotFoundException(string? message) : base(message)
     {

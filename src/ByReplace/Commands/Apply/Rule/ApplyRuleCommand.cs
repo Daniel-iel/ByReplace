@@ -3,12 +3,12 @@
 internal class ApplyRuleCommand : ICommand
 {
     private readonly BrConfiguration configuration;
-    private readonly ApplyRuleParameters parameters;
+    private readonly ApplyRuleParameter parameters;
     private readonly IPrint print;
 
     public ApplyRuleCommand(
         BrConfiguration configuration,
-        ApplyRuleParameters parameters,
+        ApplyRuleParameter parameters,
         IPrint print)
     {
         this.configuration = configuration;

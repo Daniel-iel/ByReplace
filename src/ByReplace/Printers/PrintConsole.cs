@@ -21,22 +21,32 @@ internal class PrintConsole : IPrint
 
     public void Information(string text)
     {
-        printerKonsole.PrintColourText($"[{GetTimeElapsedText()} INF] {text}");
+        printerKonsole.PrintColorText($"[{GetTimeElapsedText()} INF] {text}");
     }
 
     public void InformationTimer()
     {
-        printerKonsole.PrintColourText($"[{GetTimeElapsedText()} INF] [Green]{timer.Elapsed.Duration().ToString()}");
+        printerKonsole.PrintColorText($"[{GetTimeElapsedText()} INF] [Green]{timer.Elapsed.Duration().ToString()}");
     }
 
     public void PrintWarning(string text)
     {
-        printerKonsole.PrintColourText($"[{GetTimeElapsedText()} [Yellow]WRN] {text}");
+        printerKonsole.PrintColorText($"[{GetTimeElapsedText()} [Yellow]WRN] {text}");
     }
 
     public void PrintError(string text)
     {
-        printerKonsole.PrintColourText($"[{GetTimeElapsedText()} [Red]ERR] {text}");
+        printerKonsole.PrintColorText($"[{GetTimeElapsedText()} [Red]ERR] {text}");
+    }
+
+    public void DrawBox(string boxName)
+    {
+        printerKonsole.DrawBox(boxName);
+    }
+
+    public void PrintToBox(string text)
+    {
+        printerKonsole.PrintToBox(text);
     }
 
     private string GetTimeElapsedText()

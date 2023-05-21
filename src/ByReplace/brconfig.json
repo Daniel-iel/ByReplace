@@ -4,7 +4,57 @@
   "Rules": [
     {
       "Name": "RemoveServiceBus",
-      "Description": "",
+      "Description": "Substitui a implementação da mensageria para AwsEventBroker",
+      "Skip": [ "Startup.cs", "Program.cs", "**/Controllers/*" ],
+      "Extensions": [ ".cs", ".json" ],
+      "Replacement": {
+        "Old": [ "this._eventBus", "this.eventBus" ],
+        "New": "this._awsEventBroker"
+      }
+    },
+    {
+      "Name": "RemoveServiceBus",
+      "Description": "Substitui a implementação da mensageria para AwsEventBroker",
+      "Skip": [ "Startup.cs", "Program.cs", "**/Controllers/*" ],
+      "Extensions": [ ".cs", ".json" ],
+      "Replacement": {
+        "Old": [ "this._eventBus", "this.eventBus" ],
+        "New": "this._awsEventBroker"
+      }
+    },
+    {
+      "Name": "RemoveServiceBus",
+      "Description": "Substitui a implementação da mensageria para AwsEventBroker",
+      "Skip": [ "Startup.cs", "Program.cs", "**/Controllers/*" ],
+      "Extensions": [ ".cs", ".json" ],
+      "Replacement": {
+        "Old": [ "this._eventBus", "this.eventBus" ],
+        "New": "this._awsEventBroker"
+      }
+    },
+    {
+      "Name": "RemoveServiceBus",
+      "Description": "Substitui a implementação da mensageria para AwsEventBroker",
+      "Skip": [ "Startup.cs", "Program.cs", "**/Controllers/*" ],
+      "Extensions": [ ".cs", ".json" ],
+      "Replacement": {
+        "Old": [ "this._eventBus", "this.eventBus" ],
+        "New": "this._awsEventBroker"
+      }
+    },
+    {
+      "Name": "RemoveServiceBus",
+      "Description": "Substitui a implementação da mensageria para AwsEventBroker",
+      "Skip": [ "Startup.cs", "Program.cs", "**/Controllers/*" ],
+      "Extensions": [ ".cs", ".json" ],
+      "Replacement": {
+        "Old": [ "this._eventBus", "this.eventBus" ],
+        "New": "this._awsEventBroker"
+      }
+    },
+    {
+      "Name": "RemoveServiceBus",
+      "Description": "Substitui a implementação da mensageria para AwsEventBroker",
       "Skip": [ "Startup.cs", "Program.cs", "**/Controllers/*" ],
       "Extensions": [ ".cs", ".json" ],
       "Replacement": {

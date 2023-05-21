@@ -1,18 +1,18 @@
-﻿using Konsole;
-using NoAlloq;
+﻿using NoAlloq;
 
 namespace ByReplace.Printers;
 
 internal class PrinterKonsole
 {
     readonly ConcurrentWriter console;
+    IConsole consoleBox;
 
     public PrinterKonsole()
     {
         console = new ConcurrentWriter();
     }
 
-    public void PrintColourText(string text)
+    public void PrintColorText(string text)
     {
         ReadOnlySpan<string> textParts = new ReadOnlySpan<string>(text.Split(" "));
 
@@ -59,6 +59,16 @@ internal class PrinterKonsole
     {
         console.Write($" {text}");
         console.WriteLine("");
+    }
+
+    public void DrawBox(string boxName)
+    {
+        consoleBox = console.SplitLeft(boxName);
+    }
+
+    public void PrintToBox(string text)
+    {
+        consoleBox.WriteLine(text);
     }
 
     private static bool ShouldColourPredicate(string text)

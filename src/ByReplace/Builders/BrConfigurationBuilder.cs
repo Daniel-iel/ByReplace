@@ -45,10 +45,10 @@ internal class BrConfigurationBuilder
         if (!string.IsNullOrEmpty(_rule))
         {
             var rule = configuration.Rules
-                .Where(r => r.Name == _rule)
+                .Where(r => r.Name.Equals(_rule, StringComparison.InvariantCultureIgnoreCase))
                 .FirstOrDefault();
 
-            RuleNotFoundException.ThrowIfNull(rule, $"Rule {_rule} was not found in brconfig file.");
+            //RuleNotFoundException.ThrowIfNull(rule, $"Rule {_rule} was not found in brconfig file.");
 
             // dado um arquivo com várias regras, esse código vai fazer o usuário escolher apenas uma
             // regra para ser aplicada individualmente.
