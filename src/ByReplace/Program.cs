@@ -17,7 +17,6 @@ builder.Services.AddScoped<IPrint, PrintConsole>();
 var app = builder.Build();
 
 app.UseFilter(new GlobalHandleExceptionAttribute());
-//AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(GlobalHandleException.Register);
 
 #region .: Apply :.
 app
@@ -121,8 +120,5 @@ app
     })
     .WithDescription("rule commands");
 #endregion
-
-app.AddCommand("verify", () => { });
-app.AddCommand("take", () => { });
 
 app.Run();

@@ -1,38 +1,37 @@
 ﻿using Cocona.Filters;
 
-namespace ByReplace.Exceptions
+namespace ByReplace.Exceptions;
+
+internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
 {
-    internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
+    IPrint print = new PrintConsole();
+
+    private readonly Dictionary<Type, Action<Exception>> handles;
+
+    public GlobalHandleExceptionAttribute()
     {
-        IPrint print = new PrintConsole();
-
-        private readonly Dictionary<Type, Action<Exception>> handles;
-
-        public GlobalHandleExceptionAttribute()
+        handles = new Dictionary<Type, Action<Exception>>
         {
-            handles = new Dictionary<Type, Action<Exception>>
-            {
-                { typeof(NotfoundException), NotFoundHandle }
-            };
+            { typeof(NotfoundException), NotFoundHandle }
+        };
+    }
+
+    private void NotFoundHandle(Exception ex)
+    {
+        print.PrintWarning(ex.Message);
+    }
+
+    public override async ValueTask<int> OnCommandExecutionAsync(CoconaCommandExecutingContext ctx, CommandExecutionDelegate next)
+    {
+        try
+        {
+            return await next(ctx);
         }
-
-        private void NotFoundHandle(Exception ex)
+        catch (Exception ex)
         {
-            print.PrintWarning(ex.Message);
-        }
+            handles[typeof(NotfoundException)].Invoke(ex);
 
-        public override async ValueTask<int> OnCommandExecutionAsync(CoconaCommandExecutingContext ctx, CommandExecutionDelegate next)
-        {
-            try
-            {
-                return await next(ctx);
-            }
-            catch (Exception ex)
-            {
-                handles[typeof(NotfoundException)].Invoke(ex);
-
-                return 1;
-            }
+            return 1;
         }
     }
 }

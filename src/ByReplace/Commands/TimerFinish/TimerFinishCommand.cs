@@ -1,19 +1,18 @@
-﻿namespace ByReplace.Commands.TimerFinish
+﻿namespace ByReplace.Commands.TimerFinish;
+
+internal class TimerFinishCommand : ICommand
 {
-    internal class TimerFinishCommand : ICommand
+    private readonly IPrint print;
+
+    public TimerFinishCommand(IPrint print)
     {
-        private readonly IPrint print;
+        this.print = print;
+    }
 
-        public TimerFinishCommand(IPrint print)
-        {
-            this.print = print;
-        }
+    public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
+    {
+        print.InformationTimer();
 
-        public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
-        {
-            print.InformationTimer();
-
-            return ValueTask.CompletedTask;
-        }
+        return ValueTask.CompletedTask;
     }
 }

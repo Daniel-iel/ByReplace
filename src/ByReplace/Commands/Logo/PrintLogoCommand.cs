@@ -1,12 +1,12 @@
 ﻿using ByReplace.Commands.Command;
 
-namespace ByReplace.Commands.Logo
+namespace ByReplace.Commands.Logo;
+
+internal class PrintLogoCommand : ICommand
 {
-    internal class PrintLogoCommand : ICommand
+    public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
-        {
-            const string logoAscii = @"
+        const string logoAscii = @"
 
                 ,¿q▄▄▌██▓▓▓███████▌▄,              ,,,,,¿q▄▄▄▄▌▌▌▌▌▌▌▌▄▄µ
           ¿▄▌█▓▓▓▓▓▓████▒▀▀▀▀▀▀██▓▓▓█▌µ          ╒█▓▓▓▓▓▓▓▓▓▓▓▓█▒▒▒██▓▓▓▓▓█▄
@@ -30,9 +30,8 @@ namespace ByReplace.Commands.Logo
 
 ";
 
-            Console.WriteLine(logoAscii);
+        Console.WriteLine(logoAscii);
 
-            return new ValueTask();
-        }
+        return new ValueTask();
     }
 }

@@ -23,4 +23,11 @@ internal class PrintBox
     {
         consoleBox.WriteLine(text);
     }
+
+    public void CreateBoxAndPrint(IPrintBox printBoxBuilder)
+    {
+        var printer = new PrintBox();
+        printer.CreateBox(printBoxBuilder.BoxName, printBoxBuilder.Width, printBoxBuilder.Height);
+        printer.Print(printBoxBuilder.GetValuesToPrint());
+    }
 }

@@ -27,19 +27,10 @@ internal class OpenRuleCommand : ICommand
             return ValueTask.CompletedTask;
         }
 
+        PrintRuleBuilder builder = new PrintRuleBuilder(rule);
+
         var printer = new PrintBox();
-        printer.CreateBox("Rule", 100, 5 * 2);
-
-        StringBuilder sb = new StringBuilder(5);
-
-        sb.AppendLine($"Name: {rule.Name}");
-        sb.AppendLine($"Description: {rule.Description}");
-        sb.AppendLine($"Skip: [ {rule.Skip.Aggregate((a, b) => $"{a}, {b}")} ]");
-        sb.AppendLine($"Extensions: [ {rule.Extensions.Aggregate((a, b) => $"{a}, {b}")} ]");
-        sb.AppendLine($"Replacement: FROM [ {rule.Replacement.Old.Aggregate((a, b) => $"{a}, {b}")} ] To [ {rule.Replacement.New} ]");
-
-        printer.Print(sb.ToString());
-
+        printer.CreateBoxAndPrint(builder);
 
         return ValueTask.CompletedTask;
     }
