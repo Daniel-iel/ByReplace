@@ -1,6 +1,4 @@
-﻿using ByReplace.Printers;
-
-namespace ByReplace.Mappers;
+﻿namespace ByReplace.Mappers;
 
 public class DirectoryThree
 {
@@ -24,7 +22,7 @@ public class DirectoryThree
 
     public void MapThreeSources()
     {
-        var nodes = new List<DirectoryNode>();
+        List<DirectoryNode> nodes = new List<DirectoryNode>();
 
         MapThreeSubSources(_path, ref nodes);
 
@@ -33,9 +31,9 @@ public class DirectoryThree
 
     private void MapThreeSubSources(string dir, ref List<DirectoryNode> nodes)
     {
-        var directoryInfo = new DirectoryInfo(dir);
+        DirectoryInfo directoryInfo = new DirectoryInfo(dir);
 
-        var node = new DirectoryNode(
+        DirectoryNode node = new DirectoryNode(
             Directory: directoryInfo.FullName,
             Path: directoryInfo.Name,
             Parent: directoryInfo!.Parent!.Name,
@@ -50,7 +48,7 @@ public class DirectoryThree
         nodes.Add(node);
 
         // SubFolders
-        foreach (var subDirectory in Directory.GetDirectories(dir))
+        foreach (string subDirectory in Directory.GetDirectories(dir))
         {
             MapThreeSubSources(subDirectory, ref nodes);
         }

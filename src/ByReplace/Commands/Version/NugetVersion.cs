@@ -17,21 +17,21 @@ internal class NugetVersion
 
     public async Task<string> GetByReplaceNugetVersionAsync()
     {
-        var assembly = Assembly.GetExecutingAssembly();
-        var version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        string version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
-        SemanticVersion.TryParse(version, out var currentVersion);
+        SemanticVersion.TryParse(version, out SemanticVersion currentVersion);
 
         _printConsole.Information($"Version: [Green]{currentVersion}.");
 
-        var latestVersion = await GetVersionAsync(preRelease: false);
+        SemanticVersion latestVersion = await GetVersionAsync(preRelease: false);
         if (latestVersion > currentVersion)
         {
             _printConsole.Information($"A new version of ByReplace [Yellow]({latestVersion}) is available. Please consider upgrading using the command `dotnet tool update -g ByReplace`");
         }
         else
         {
-            var previewVersion = await GetVersionAsync(preRelease: true);
+            SemanticVersion previewVersion = await GetVersionAsync(preRelease: true);
             if (previewVersion > currentVersion)
             {
                 _printConsole.Information($@"A preview version of ByReplace [Yellow]({previewVersion}) is available on nuget.
@@ -47,8 +47,8 @@ Since this is a preview feature things might not work as expected! Please report
     {
         try
         {
-            var metadataResource = await _sourceRepository.GetResourceAsync<MetadataResource>();
-            var versionsFound = await metadataResource
+            MetadataResource metadataResource = await _sourceRepository.GetResourceAsync<MetadataResource>();
+            IEnumerable<NuGetVersion> versionsFound = await metadataResource
                  .GetVersions("ByReplace", includePrerelease: true, includeUnlisted: false, _sourceCacheContext, null, CancellationToken.None);
 
             return versionsFound

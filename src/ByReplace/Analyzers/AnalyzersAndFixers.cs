@@ -15,9 +15,9 @@ internal class AnalyzersAndFixers : Dictionary<Rule, List<FileMapper>>
 
     public bool TryMatchRole(DirectoryNode directoryNode, ImmutableList<Rule> roles)
     {
-        foreach (var file in directoryNode.Files)
+        foreach (FileMapper file in directoryNode.Files)
         {
-            foreach (var role in roles)
+            foreach (Rule role in roles)
             {
                 Match skipDirMatch = new SkipMatch(directoryNode.Directory, file, role.Skip);
                 Match extensionMatch = new ExtensionMatch(file.Extension, role.Extensions);
@@ -43,7 +43,7 @@ internal class AnalyzersAndFixers : Dictionary<Rule, List<FileMapper>>
 
     private void Print()
     {
-        foreach (var item in this)
+        foreach (KeyValuePair<Rule, List<FileMapper>> item in this)
         {
             print.Information($"Total of [Cyan]{item.Value.Count} files match to rule [Cyan]{item.Key.Name}.");
         }

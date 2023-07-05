@@ -21,7 +21,7 @@ internal class PrintRulesBuilder : IPrintBox
     {
         StringBuilder rules = new StringBuilder();
 
-        foreach (var rule in _rules)
+        foreach (Models.Rule rule in _rules)
         {
             rules.AppendLine($"{rule.Name}: {rule.Description}");
         }

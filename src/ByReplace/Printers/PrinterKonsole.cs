@@ -16,14 +16,14 @@ internal class PrinterKonsole
     {
         ReadOnlySpan<string> textParts = new ReadOnlySpan<string>(text.Split(" "));
 
-        var shouldPrintColourText = textParts.Any(ShouldColourPredicate);
+        bool shouldPrintColourText = textParts.Any(ShouldColourPredicate);
         if (!shouldPrintColourText)
         {
             Print(text);
             return;
         }
 
-        foreach (var textPart in textParts)
+        foreach (string textPart in textParts)
         {
             if (textPart.StartsWith("[Green]"))
             {

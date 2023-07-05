@@ -40,11 +40,11 @@ internal class BrConfigurationBuilder
 
     public BrConfiguration Build()
     {
-        var configuration = BrConfiguration.GetConfiguration(_configFile);
+        BrConfiguration configuration = BrConfiguration.GetConfiguration(_configFile);
 
         if (!string.IsNullOrEmpty(_rule))
         {
-            var rule = configuration.Rules
+            Rule rule = configuration.Rules
                 .Where(r => r.Name.Equals(_rule, StringComparison.InvariantCultureIgnoreCase))
                 .FirstOrDefault();
 

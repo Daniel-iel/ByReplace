@@ -15,7 +15,7 @@ internal class OpenRuleCommand : ICommand
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        var rule = configuration
+        Models.Rule rule = configuration
             .Rules
             .Where(c => c.Name.Equals(ruleName.Trim(), StringComparison.InvariantCulture))
             .FirstOrDefault();
@@ -29,7 +29,7 @@ internal class OpenRuleCommand : ICommand
 
         PrintRuleBuilder builder = new PrintRuleBuilder(rule);
 
-        var printer = new PrintBox();
+        PrintBox printer = new PrintBox();
         printer.CreateBoxAndPrint(builder);
 
         return ValueTask.CompletedTask;

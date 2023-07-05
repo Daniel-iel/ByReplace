@@ -15,7 +15,7 @@ internal class Analyzer
     {
         print.Information($"Identifying folder three files.");
 
-        var directoryThree = new DirectoryThree(brConfiguration.Path);
+        DirectoryThree directoryThree = new DirectoryThree(brConfiguration.Path);
         directoryThree.MapThreeSources();
 
         return directoryThree.Nodes.ToImmutableList();

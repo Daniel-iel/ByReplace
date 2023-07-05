@@ -3,8 +3,9 @@ using ByReplace.Commands.Apply.Rules;
 using ByReplace.Commands.Rule.ListRules;
 using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Commands.TimerFinish;
+using Cocona.Builder;
 
-var builder = CoconaApp.CreateBuilder(
+CoconaAppBuilder builder = CoconaApp.CreateBuilder(
     new[]
     {
         "rule",
@@ -14,7 +15,7 @@ var builder = CoconaApp.CreateBuilder(
         @"-f C:\Users\iel_1\Documents\Projetos\ByReplace\src\ByReplace"
     });
 builder.Services.AddScoped<IPrint, PrintConsole>();
-var app = builder.Build();
+CoconaApp app = builder.Build();
 
 app.UseFilter(new GlobalHandleExceptionAttribute());
 
@@ -27,7 +28,7 @@ app
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
-            var configuration = BrConfigurationBuilder
+            BrConfiguration configuration = BrConfigurationBuilder
                 .Instantiate()
                 .SetRule(applyRuleParameters.Rule)
                 .SetPath(applyRuleParameters.Path)
@@ -50,7 +51,7 @@ app
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
-            var configuration = BrConfigurationBuilder
+            BrConfiguration configuration = BrConfigurationBuilder
                .Instantiate()
                .SetPath(applyParameters.Path)
                .SetConfigPath(applyParameters.ConfigFile)
@@ -80,7 +81,7 @@ app
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
-            var configuration = BrConfigurationBuilder
+            BrConfiguration configuration = BrConfigurationBuilder
              .Instantiate()
              .SetConfigPath(listRulesParameter.ConfigFile)
              .Build();
@@ -102,7 +103,7 @@ app
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
-            var configuration = BrConfigurationBuilder
+            BrConfiguration configuration = BrConfigurationBuilder
              .Instantiate()
              .SetConfigPath(openRuleParameter.ConfigFile)
              .Build();

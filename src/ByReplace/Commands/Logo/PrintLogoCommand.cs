@@ -1,6 +1,4 @@
-﻿using ByReplace.Commands.Command;
-
-namespace ByReplace.Commands.Logo;
+﻿namespace ByReplace.Commands.Logo;
 
 internal class PrintLogoCommand : ICommand
 {

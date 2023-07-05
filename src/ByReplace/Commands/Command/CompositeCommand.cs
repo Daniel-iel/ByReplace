@@ -11,7 +11,7 @@ internal class CompositeCommand : ICommand
 
     public async ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        foreach (var command in commands)
+        foreach (ICommand command in commands)
         {
             await command.ExecuteAsync(cancellationToken);
         }

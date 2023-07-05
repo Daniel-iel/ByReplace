@@ -26,7 +26,7 @@ internal class PrintBox
 
     public void CreateBoxAndPrint(IPrintBox printBoxBuilder)
     {
-        var printer = new PrintBox();
+        PrintBox printer = new PrintBox();
         printer.CreateBox(printBoxBuilder.BoxName, printBoxBuilder.Width, printBoxBuilder.Height);
         printer.Print(printBoxBuilder.GetValuesToPrint());
     }

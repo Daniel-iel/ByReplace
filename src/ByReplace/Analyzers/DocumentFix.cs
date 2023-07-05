@@ -22,27 +22,27 @@ internal class DocumentFix
     {
         print.Information($"Initializing fixing.");
 
-        var codeFixersFiltered = this.codeFixes.FindByKey(rule);
+        AnalyzersAndFixers codeFixersFiltered = this.codeFixes.FindByKey(rule);
 
         return FindAndReplace(codeFixersFiltered, cancellationToken);
     }
 
     private async ValueTask FindAndReplace(AnalyzersAndFixers codeFixes, CancellationToken cancellationToken)
     {
-        foreach (var codeFixe in codeFixes)
+        foreach (KeyValuePair<Rule, List<FileMapper>> codeFixe in codeFixes)
         {
             print.Information($"Processing Rule [Cyan]{codeFixe.Key.Name}");
 
-            var pb = new ProgressBar(PbStyle.DoubleLine, codeFixe.Value.Count);
+            ProgressBar pb = new ProgressBar(PbStyle.DoubleLine, codeFixe.Value.Count);
 
             int counter = 1;
 
             Rule role = codeFixe.Key;
-            foreach (var file in codeFixe.Value)
+            foreach (FileMapper file in codeFixe.Value)
             {
                 pb.Refresh(counter, file.Name);
 
-                foreach (var removeTerm in role.Replacement.Old)
+                foreach (string removeTerm in role.Replacement.Old)
                 {
                     string fileContents = await File.ReadAllTextAsync(file.FullName, cancellationToken);
                     fileContents = fileContents.Replace(removeTerm, role.Replacement.New);
