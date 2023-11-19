@@ -15,7 +15,7 @@ internal class DocumentFix
     {
         print.Information($"Initializing fixing.");
 
-        return FindAndReplace(this.codeFixes, cancellationToken);
+        return FindAndReplaceAsync(this.codeFixes, cancellationToken);
     }
 
     public ValueTask ApplyAsync(string rule, CancellationToken cancellationToken)
@@ -24,28 +24,28 @@ internal class DocumentFix
 
         AnalyzersAndFixers codeFixersFiltered = this.codeFixes.FindByKey(rule);
 
-        return FindAndReplace(codeFixersFiltered, cancellationToken);
+        return FindAndReplaceAsync(codeFixersFiltered, cancellationToken);
     }
 
-    private async ValueTask FindAndReplace(AnalyzersAndFixers codeFixes, CancellationToken cancellationToken)
+    private async ValueTask FindAndReplaceAsync(AnalyzersAndFixers codeFixes, CancellationToken cancellationToken)
     {
-        foreach (KeyValuePair<Rule, List<FileMapper>> codeFixe in codeFixes)
+        foreach (KeyValuePair<FileMapper, List<Rule>> codeFixe in codeFixes)
         {
-            print.Information($"Processing Rule [Cyan]{codeFixe.Key.Name}");
+            FileMapper file = codeFixe.Key;
+            IReadOnlyList<Rule> rules = codeFixe.Value;
 
-            ProgressBar pb = new ProgressBar(PbStyle.DoubleLine, codeFixe.Value.Count);
+            print.Information($"Processing file [Cyan]{file.Name}");
 
             int counter = 1;
 
-            Rule role = codeFixe.Key;
-            foreach (FileMapper file in codeFixe.Value)
+            foreach (var rule in rules)
             {
-                pb.Refresh(counter, file.Name);
+                print.Information($"Appling rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
 
-                foreach (string removeTerm in role.Replacement.Old)
+                foreach (string removeTerm in rule.Replacement.Old)
                 {
                     string fileContents = await File.ReadAllTextAsync(file.FullName, cancellationToken);
-                    fileContents = fileContents.Replace(removeTerm, role.Replacement.New);
+                    fileContents = fileContents.Replace(removeTerm, rule.Replacement.New);
                     await File.WriteAllTextAsync(file.FullName, fileContents, cancellationToken);
                 }
 

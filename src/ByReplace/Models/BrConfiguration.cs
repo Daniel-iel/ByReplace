@@ -34,12 +34,10 @@ internal class BrConfiguration
     {
         string configurationFilePath = Sanitizer(string.Join(@"\", pathConfig, "brconfig.json"));
 
-#pragma warning disable IDE0046 // Convert to conditional expression
         if (!File.Exists(configurationFilePath))
         {
             throw new FileNotFoundException($"BR Configuration not found on {pathConfig} path.");
         }
-#pragma warning restore IDE0046 // Convert to conditional expression
 
         return JsonSerializer.Deserialize<BrConfiguration>(File.ReadAllText(configurationFilePath, Encoding.UTF8));
     }

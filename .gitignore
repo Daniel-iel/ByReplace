@@ -8,6 +8,9 @@
 */.vscode/
 */.vscode/*
 
+codeium_api_key
+*/.easyTdd
+.config
 .idea
 
 bin

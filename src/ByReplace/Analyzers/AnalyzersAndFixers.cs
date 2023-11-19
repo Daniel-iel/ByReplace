@@ -1,38 +1,38 @@
 ﻿namespace ByReplace.Analyzers;
 
-internal class AnalyzersAndFixers : Dictionary<Rule, List<FileMapper>>
+internal class AnalyzersAndFixers : Dictionary<FileMapper, List<Rule>>
 {
     private readonly IPrint print;
 
-    public AnalyzersAndFixers(IPrint print) : this(Enumerable.Empty<KeyValuePair<Rule, List<FileMapper>>>(), print)
+    public AnalyzersAndFixers(IPrint print) : this(Enumerable.Empty<KeyValuePair<FileMapper, List<Rule>>>(), print)
     {
     }
 
-    public AnalyzersAndFixers(IEnumerable<KeyValuePair<Rule, List<FileMapper>>> values, IPrint print) : base(values)
+    public AnalyzersAndFixers(IEnumerable<KeyValuePair<FileMapper, List<Rule>>> values, IPrint print) : base(values)
     {
         this.print = print;
     }
 
-    public bool TryMatchRole(DirectoryNode directoryNode, ImmutableList<Rule> roles)
+    public bool TryMatchRole(DirectoryNode directoryNode, ImmutableList<Rule> rules)
     {
         foreach (FileMapper file in directoryNode.Files)
         {
-            foreach (Rule role in roles)
+            foreach (Rule rule in rules)
             {
-                Match skipDirMatch = new SkipMatch(directoryNode.Directory, file, role.Skip);
-                Match extensionMatch = new ExtensionMatch(file.Extension, role.Extensions);
+                Match skipDirMatch = new SkipMatch(directoryNode.Directory, file, rule.Skip);
+                Match extensionMatch = new ExtensionMatch(file.Extension, rule.Extensions);
 
                 if (skipDirMatch.HasMatch || !extensionMatch.HasMatch)
                 {
                     continue;
                 }
 
-                if (!this.ContainsKey(role))
+                if (!this.ContainsKey(file))
                 {
-                    this.Add(role, new List<FileMapper>());
+                    this.Add(file, new List<Rule>());
                 }
 
-                this[role].Add(file);
+                this[file].Add(rule);
             }
         }
 
@@ -43,9 +43,9 @@ internal class AnalyzersAndFixers : Dictionary<Rule, List<FileMapper>>
 
     private void Print()
     {
-        foreach (KeyValuePair<Rule, List<FileMapper>> item in this)
+        foreach (KeyValuePair<FileMapper, List<Rule>> item in this)
         {
-            print.Information($"Total of [Cyan]{item.Value.Count} files match to rule [Cyan]{item.Key.Name}.");
+            print.Information($"[Cyan]{item.Value.Count} rules in total match the file [Cyan]{item.Key.Name}.");
         }
     }
 

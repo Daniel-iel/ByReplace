@@ -1,18 +1,18 @@
 ﻿namespace ByReplace.Exceptions;
 
-internal class RuleNotFoundException : NotfoundException
+internal class RuleNotFoundException : NotFoundException
 {
     public RuleNotFoundException() : base() { }
 
-    public RuleNotFoundException(string? message) : base(message)
+    public RuleNotFoundException(string message) : base(message)
     {
     }
 
-    public RuleNotFoundException(string? message, Exception? innerException) : base(message, innerException)
+    public RuleNotFoundException(string message, Exception innerException) : base(message, innerException)
     {
     }
 
-    public static void ThrowIfNull([NotNull] object? argument, [CallerArgumentExpression("argument")] string? paramName = null)
+    public static void ThrowIfNull([NotNull] object argument, [CallerArgumentExpression("argument")] string paramName = null)
     {
         if (argument is null)
         {
@@ -21,6 +21,6 @@ internal class RuleNotFoundException : NotfoundException
     }
 
     [DoesNotReturn]
-    private static void Throw(string? paramName)
+    private static void Throw(string paramName)
         => throw new RuleNotFoundException(paramName);
 }

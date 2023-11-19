@@ -8,11 +8,10 @@ using Cocona.Builder;
 CoconaAppBuilder builder = CoconaApp.CreateBuilder(
     new[]
     {
-        "rule",
-        "open-rule",
-        //@"-p C:\Users\iel_1\Documents\TestLieu",
-        "-n RemoveServiceBus",
-        @"-f C:\Users\iel_1\Documents\Projetos\ByReplace\src\ByReplace"
+        "apply",
+        "rules",
+        @"-p C:\Projetos\Daniel-iel\ByReplace\samples",
+        @"-f C:\Projetos\Daniel-iel\ByReplace\src\ByReplace"
     });
 builder.Services.AddScoped<IPrint, PrintConsole>();
 CoconaApp app = builder.Build();
@@ -122,4 +121,6 @@ app
     .WithDescription("rule commands");
 #endregion
 
-app.Run();
+await app
+    .RunAsync()
+    .ConfigureAwait(false);

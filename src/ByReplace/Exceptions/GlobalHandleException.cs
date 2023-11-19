@@ -12,7 +12,7 @@ internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
     {
         handles = new Dictionary<Type, Action<Exception>>
         {
-            { typeof(NotfoundException), NotFoundHandle }
+            { typeof(NotFoundException), NotFoundHandle }
         };
     }
 
@@ -29,7 +29,7 @@ internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
         }
         catch (Exception ex)
         {
-            handles[typeof(NotfoundException)].Invoke(ex);
+            handles[typeof(NotFoundException)].Invoke(ex);
 
             return 1;
         }

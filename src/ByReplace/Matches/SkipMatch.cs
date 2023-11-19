@@ -28,6 +28,9 @@ internal sealed class SkipMatch : Match
 
     private bool SkipDir()
     {
-        return param.Any(c => c.StartsWith("**") && c.EndsWith("*") && dir.Contains(c));
+        return param.Any(c =>
+            c.StartsWith("**", StringComparison.Ordinal) &&
+            c.EndsWith("*",StringComparison.Ordinal) &&
+            dir.Contains(c));
     }
 }

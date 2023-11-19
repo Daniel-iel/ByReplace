@@ -1,4 +1,6 @@
-﻿using NuGet.Configuration;
+﻿// Ignore Spelling: Nuget
+
+using NuGet.Configuration;
 using System.Reflection;
 namespace ByReplace.Commands.Version;
 
@@ -15,7 +17,7 @@ internal class NugetVersion
         _printConsole = new PrintConsole();
     }
 
-    public async Task<string> GetByReplaceNugetVersionAsync()
+    public async Task<string> GetByReplaceNugetVersionAsync(CancellationToken cancellationToken)
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
         string version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
@@ -24,14 +26,14 @@ internal class NugetVersion
 
         _printConsole.Information($"Version: [Green]{currentVersion}.");
 
-        SemanticVersion latestVersion = await GetVersionAsync(preRelease: false);
+        SemanticVersion latestVersion = await GetVersionAsync(preRelease: false, cancellationToken);
         if (latestVersion > currentVersion)
         {
             _printConsole.Information($"A new version of ByReplace [Yellow]({latestVersion}) is available. Please consider upgrading using the command `dotnet tool update -g ByReplace`");
         }
         else
         {
-            SemanticVersion previewVersion = await GetVersionAsync(preRelease: true);
+            SemanticVersion previewVersion = await GetVersionAsync(preRelease: true, cancellationToken);
             if (previewVersion > currentVersion)
             {
                 _printConsole.Information($@"A preview version of ByReplace [Yellow]({previewVersion}) is available on nuget.
@@ -43,19 +45,19 @@ Since this is a preview feature things might not work as expected! Please report
         return currentVersion.ToString();
     }
 
-    private async Task<SemanticVersion> GetVersionAsync(bool preRelease)
+    private async Task<SemanticVersion> GetVersionAsync(bool preRelease, CancellationToken cancellationToken)
     {
         try
         {
-            MetadataResource metadataResource = await _sourceRepository.GetResourceAsync<MetadataResource>();
+            MetadataResource metadataResource = await _sourceRepository.GetResourceAsync<MetadataResource>(cancellationToken);
             IEnumerable<NuGetVersion> versionsFound = await metadataResource
-                 .GetVersions("ByReplace", includePrerelease: true, includeUnlisted: false, _sourceCacheContext, null, CancellationToken.None);
+                 .GetVersions("ByReplace", includePrerelease: true, includeUnlisted: false, _sourceCacheContext, null, cancellationToken);
 
             return versionsFound
                  .OrderBy(x => x)
                  .Last(x => preRelease ? x.IsPrerelease : !x.IsPrerelease);
         }
-        catch
+        catch (Exception ex)
         {
             return new SemanticVersion(0, 0, 0);
         }

@@ -2,9 +2,9 @@
 
 internal class PrintBRVersionCommand : ICommand
 {
-    public async ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
+    public async ValueTask ExecuteAsync(CancellationToken cancellationToken)
     {
         NugetVersion nugetVersion = new NugetVersion();
-        await nugetVersion.GetByReplaceNugetVersionAsync();
+        await nugetVersion.GetByReplaceNugetVersionAsync(cancellationToken);
     }
 }
