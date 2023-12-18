@@ -24,12 +24,12 @@ public class DirectoryThree
     {
         List<DirectoryNode> nodes = new List<DirectoryNode>();
 
-        MapThreeSubSources(_path, ref nodes);
+        MapThreeSubFolders(_path, ref nodes);
 
         Nodes = nodes;
     }
 
-    private void MapThreeSubSources(string dir, ref List<DirectoryNode> nodes)
+    private void MapThreeSubFolders(string dir, ref List<DirectoryNode> nodes)
     {
         DirectoryInfo directoryInfo = new DirectoryInfo(dir);
 
@@ -50,7 +50,7 @@ public class DirectoryThree
         // SubFolders
         foreach (string subDirectory in Directory.GetDirectories(dir))
         {
-            MapThreeSubSources(subDirectory, ref nodes);
+            MapThreeSubFolders(subDirectory, ref nodes);
         }
     }
 }

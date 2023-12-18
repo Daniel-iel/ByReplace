@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Analyzers;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Analyzers;
 
 internal class AnalyzersAndFixers : Dictionary<FileMapper, List<Rule>>
 {

@@ -5,14 +5,19 @@ using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Commands.TimerFinish;
 using Cocona.Builder;
 
-CoconaAppBuilder builder = CoconaApp.CreateBuilder(
-    new[]
-    {
-        "apply",
-        "rules",
-        @"-p C:\Projetos\Daniel-iel\ByReplace\samples",
-        @"-f C:\Projetos\Daniel-iel\ByReplace\src\ByReplace"
-    });
+#if DEBUG
+    CoconaAppBuilder builder = CoconaApp.CreateBuilder(
+        new[]
+        {
+            "apply",
+            "rules",
+            @"-p C:\Projetos\Daniel-iel\ByReplace\samples",
+            @"-f C:\Projetos\Daniel-iel\ByReplace\src\ByReplace"
+        });
+#else
+    CoconaAppBuilder builder = CoconaApp.CreateBuilder();
+#endif
+
 builder.Services.AddScoped<IPrint, PrintConsole>();
 CoconaApp app = builder.Build();
 

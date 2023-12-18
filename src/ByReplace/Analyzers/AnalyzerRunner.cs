@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Analyzers;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Analyzers;
 
 internal class AnalyzerRunner
 {
@@ -13,7 +15,7 @@ internal class AnalyzerRunner
 
     internal AnalyzersAndFixers RunAnalysis(ImmutableList<DirectoryNode> directoryThree, Analyses diagnostic)
     {
-        print.Information($"Identifying folder three files.");
+        print.Information("Identifying rules that has matches.");
 
         AnalyzersAndFixers analyzersAndFixers = new AnalyzersAndFixers(this.print);
 

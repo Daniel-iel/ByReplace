@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Analyzers;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Analyzers;
 
 internal class Analyzer
 {
@@ -13,7 +15,7 @@ internal class Analyzer
 
     internal ImmutableList<DirectoryNode> LoadThreeFiles()
     {
-        print.Information($"Identifying folder three files.");
+        print.Information("Identifying folder three files.");
 
         DirectoryThree directoryThree = new DirectoryThree(brConfiguration.Path);
         directoryThree.MapThreeSources();
