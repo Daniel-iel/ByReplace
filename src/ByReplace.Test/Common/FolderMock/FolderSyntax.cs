@@ -43,9 +43,15 @@ internal sealed class FolderSyntax
         return new FolderSyntax(name, parent, files);
     }
 
-    public FolderSyntax AddMenbers(FileSyntax fileSyntax)
+    public FolderSyntax AddMembers(FileSyntax fileSyntax)
     {
         this.Files.Add(fileSyntax);
+        return this;
+    }
+
+    public FolderSyntax AddMembers(params FileSyntax[] filesSyntax)
+    {
+        this.Files.AddRange(filesSyntax);
         return this;
     }
 

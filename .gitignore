@@ -28,6 +28,8 @@ StrykerOutput
 */StrykerOutput/*
 */StrykerOutput/
 
+src/**/nupkg/*
+*/src/*/nupkg/*
 .user
 *.user*
 

@@ -16,21 +16,21 @@ public class AnalyzersTest
 
     public AnalyzersTest()
     {
-        var levelOne = FolderSyntax
-           .FolderDeclaration("OneLevel")
-           .AddMenbers(FileSyntax.FileDeclaration("FileOne.cs", "ITest = new Test()"));
+        var rootFolder = FolderSyntax
+           .FolderDeclaration("RootFolder")
+           .AddMembers(FileSyntax.FileDeclaration("FileOne.cs", "ITest = new Test()"));
 
-        var SecondOne = FolderSyntax.FolderDeclaration("SecondLevel")
-            .AddParent(levelOne)
-            .AddMenbers(FileSyntax.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
+        var firstLevel = FolderSyntax.FolderDeclaration("FirstLevel")
+           .AddParent(rootFolder)
+           .AddMembers(FileSyntax.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
 
         _pathCompilationSyntax = PathFactory
            .Compile(nameof(AnalyzersTest))
-           .AddFolders(SecondOne)
-           .CreateThreeFolder();
+           .AddMembers(firstLevel)
+           .Create();
 
         _brConfiguration = BrConfigurationBuilder
-        .Instantiate()
+           .Create()
            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
            .Build();

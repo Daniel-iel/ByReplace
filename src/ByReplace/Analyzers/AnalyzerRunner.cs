@@ -21,7 +21,7 @@ internal class AnalyzerRunner
 
         foreach (DirectoryNode dir in directoryThree)
         {
-            analyzersAndFixers.TryMatchRole(dir, brConfiguration.Rules);
+            analyzersAndFixers.TryMatchRule(dir, brConfiguration.Rules);
         }
 
         return analyzersAndFixers;

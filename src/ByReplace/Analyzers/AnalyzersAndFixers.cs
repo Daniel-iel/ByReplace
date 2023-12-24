@@ -15,7 +15,7 @@ internal class AnalyzersAndFixers : Dictionary<FileMapper, List<Rule>>
         this.print = print;
     }
 
-    public bool TryMatchRole(DirectoryNode directoryNode, ImmutableList<Rule> rules)
+    public bool TryMatchRule(DirectoryNode directoryNode, ImmutableList<Rule> rules)
     {
         foreach (FileMapper file in directoryNode.Files)
         {

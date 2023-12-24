@@ -33,7 +33,7 @@ app
             CancellationToken token = source.Token;
 
             BrConfiguration configuration = BrConfigurationBuilder
-                .Instantiate()
+                .Create()
                 .SetRule(applyRuleParameters.Rule)
                 .SetPath(applyRuleParameters.Path)
                 .SetConfigPath(applyRuleParameters.ConfigFile)
@@ -56,7 +56,7 @@ app
             CancellationToken token = source.Token;
 
             BrConfiguration configuration = BrConfigurationBuilder
-               .Instantiate()
+               .Create()
                .SetPath(applyParameters.Path)
                .SetConfigPath(applyParameters.ConfigFile)
                .Build();
@@ -86,7 +86,7 @@ app
             CancellationToken token = source.Token;
 
             BrConfiguration configuration = BrConfigurationBuilder
-             .Instantiate()
+             .Create()
              .SetConfigPath(listRulesParameter.ConfigFile)
              .Build();
 
@@ -108,7 +108,7 @@ app
             CancellationToken token = source.Token;
 
             BrConfiguration configuration = BrConfigurationBuilder
-             .Instantiate()
+             .Create()
              .SetConfigPath(openRuleParameter.ConfigFile)
              .Build();
 

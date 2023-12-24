@@ -83,6 +83,7 @@
 
   <ItemGroup>
     <Folder Include="Commands\Rule\Parameters\" />
+    <Folder Include="nupkg\" />
   </ItemGroup>
 
 </Project>

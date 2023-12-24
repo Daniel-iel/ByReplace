@@ -1,52 +1,75 @@
-﻿using System.Runtime.InteropServices;
+﻿using ByReplace.Test.Common.ConfigMock;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 namespace ByReplace.Test.Common.FolderMock;
 
 internal sealed class PathCompilationSyntax
 {
-    public List<FolderSyntax> Folders = new List<FolderSyntax>();
+    private readonly List<FolderSyntax> _folders;
+    private ContentSyntax _brConfiguration;
 
     public string InternalIdentifier { get; private set; }
 
     public PathCompilationSyntax()
     {
         InternalIdentifier = Guid.NewGuid().ToString();
+        _folders = new List<FolderSyntax>();
+        _brConfiguration = new ContentSyntax();
     }
 
     public PathCompilationSyntax(string testCase)
     {
         InternalIdentifier = $"{testCase}_{Guid.NewGuid()}";
+        _folders = new List<FolderSyntax>();
+        _brConfiguration = new ContentSyntax();
     }
 
-    public PathCompilationSyntax AddFolders(params FolderSyntax[] foldersSyntax)
+    public PathCompilationSyntax AddMembers(params FolderSyntax[] foldersSyntax)
     {
-        this.Folders.AddRange(foldersSyntax);
+        this._folders.AddRange(foldersSyntax);
 
         return this;
     }
 
-    public PathCompilationSyntax AddFolder(FolderSyntax folderSyntax)
+    public PathCompilationSyntax AddMember(FolderSyntax folderSyntax)
     {
-        this.Folders.Add(folderSyntax);
+        _folders.Add(folderSyntax);
+
+        return this;
+    }
+
+    public PathCompilationSyntax AddBrConfiguration(ContentSyntax configSyntax)
+    {
+        _brConfiguration = configSyntax;
 
         return this;
     }
 
     public PathCompilationSyntax AddFolder(string name)
     {
-        this.Folders.Add(new FolderSyntax(name));
+        _folders.Add(new FolderSyntax(name));
 
         return this;
     }
 
-    public PathCompilationSyntax CreateThreeFolder()
+    public PathCompilationSyntax Create()
     {
-        foreach (ref var folder in CollectionsMarshal.AsSpan(Folders))
+        foreach (ref var folder in CollectionsMarshal.AsSpan(_folders))
         {
             CreateThreeFolder(folder);
         }
 
-        //TODO: Código temporário até o ConfigFactory ser implementado.
-        File.Copy("./brconfig.json", $"./{InternalIdentifier}/brconfig.json", true);
+        _brConfiguration.Path = "fasdasda";
+
+        if (_brConfiguration is not null)
+        {
+            var brConfig = JsonSerializer.Serialize(_brConfiguration, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            File.WriteAllText($"./{InternalIdentifier}/brconfig.json", brConfig);
+        }
 
         return this;
     }

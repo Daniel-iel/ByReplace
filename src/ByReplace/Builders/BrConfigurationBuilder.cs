@@ -6,7 +6,7 @@ internal class BrConfigurationBuilder
     private string _configFile;
     private string _rule;
 
-    internal static BrConfigurationBuilder Instantiate()
+    internal static BrConfigurationBuilder Create()
     {
         return new BrConfigurationBuilder();
     }
