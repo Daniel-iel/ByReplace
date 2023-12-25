@@ -30,6 +30,6 @@ internal class PrintLogoCommand : ICommand
 
         Console.WriteLine(logoAscii);
 
-        return new ValueTask();
+        return ValueTask.CompletedTask;
     }
 }
