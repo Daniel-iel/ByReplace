@@ -17,20 +17,51 @@ internal sealed class SkipMatch : Match
     {
         get
         {
-            return SkipFile() && SkipDir();
+            return SkipFile() || (SkipDir() || SkipDirWithFile());
         }
     }
 
     private bool SkipFile()
     {
-        return param.Contains(file.Name);
+        return param.Any(c => c.EndsWith(file.Name, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private bool SkipDirWithFile()
+    {
+        return param.Any(c => file.FullName.EndsWith(c, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private bool SkipDir()
     {
         return param.Any(c =>
                 c.StartsWith("**", StringComparison.Ordinal) &&
-                c.EndsWith("*",StringComparison.Ordinal) &&
-                dir.Contains(c));
+                c.EndsWith("*", StringComparison.Ordinal) &&
+                 dir.Contains(SanitizePattern(c), StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private static unsafe string SanitizePattern(string pattern)
+    {
+        int maxBufferSize = pattern.Length;
+        char* buffer = stackalloc char[maxBufferSize];
+        int index = 0;
+
+        foreach (char c in pattern)
+        {
+            if (c != '*' && c != '\\' && c != '/')
+            {
+                if (index < maxBufferSize - 1)
+                {
+                    buffer[index++] = c;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        buffer[index] = '\0';
+
+        return new string(buffer);
     }
 }

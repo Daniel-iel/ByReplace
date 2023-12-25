@@ -11,7 +11,7 @@ public class RuleSyntax
     {
         Name = name;
         Description = description;
-        Skips = skip;
+        Skip = skip;
         Extensions = extensions;
         Replacement = replacement;
     }
@@ -29,7 +29,7 @@ public class RuleSyntax
 
     public string Name { get; set; }
     public string Description { get; set; }
-    public List<string> Skips { get; set; }
+    public List<string> Skip { get; set; }
     public List<string> Extensions { get; set; }
     public ReplacementSyntax Replacement { get; set; }
 
@@ -60,16 +60,16 @@ public class RuleSyntax
         return this;
     }
 
-    public RuleSyntax WithSkips(params string[] skips)
+    public RuleSyntax WithSkips(params string[] skip)
     {
-        Skips = skips.ToList();
+        Skip = skip.ToList();
 
         return this;
     }
 
     public RuleSyntax WithExtensions(params string[] extensions)
     {
-        Extensions = extensions.ToList();
+        Extensions = [.. extensions];
 
         return this;
     }

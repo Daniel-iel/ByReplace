@@ -13,11 +13,11 @@ internal class AnalyzerRunner
         this.print = print;
     }
 
-    internal AnalyzersAndFixers RunAnalysis(ImmutableList<DirectoryNode> directoryThree, Analyses diagnostic)
+    internal AnalyzerAndFixer RunAnalysis(ImmutableList<DirectoryNode> directoryThree, Analyses diagnostic)
     {
         print.Information("Identifying rules that has matches.");
 
-        AnalyzersAndFixers analyzersAndFixers = new AnalyzersAndFixers(this.print);
+        AnalyzerAndFixer analyzersAndFixers = new AnalyzerAndFixer(this.print);
 
         foreach (DirectoryNode dir in directoryThree)
         {

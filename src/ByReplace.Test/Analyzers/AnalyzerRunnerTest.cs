@@ -22,8 +22,8 @@ public class AnalyzerRunnerTest
            .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
            .AddRules(BrContentFactory
                     .Rule("RuleTest")
-                    .WithExtensions(".cs")
-                    .WithSkips("**/Controller/*")
+                    .WithExtensions(".cs", ".txt")
+                    .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
                     .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
            .Compile();
 
@@ -31,17 +31,29 @@ public class AnalyzerRunnerTest
             .FolderDeclaration("RootFolder")
             .AddMembers(
                 FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"));
+                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
-        var controllerFolder = FolderSyntax.FolderDeclaration("Controller")
+        var controllerFolder = FolderSyntax.FolderDeclaration("Controllers")
             .AddParent(rootFolder)
             .AddMembers(
                FileSyntax.FileDeclaration("Controller1.cs", "ITest2 = new Test()"),
                FileSyntax.FileDeclaration("Controller2.cs", "ITest2 = new Test()"));
 
+        var binFolder = FolderSyntax.FolderDeclaration("bin")
+            .AddParent(rootFolder)
+            .AddMembers(
+                FileSyntax.FileDeclaration("bin1.txt", "ITest = new Test()"),
+                FileSyntax.FileDeclaration("bin2.txt", "ITest = new Test()"));
+
+        var objFolder = FolderSyntax.FolderDeclaration("obj")
+            .AddParent(rootFolder)
+            .AddMembers(
+                FileSyntax.FileDeclaration("obj1.txt", "ITest = new Test()"),
+                FileSyntax.FileDeclaration("obj2.txt", "ITest = new Test()"));
+
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzersTest))
-            .AddMembers(controllerFolder)
+            .Compile(nameof(AnalyzerTest))
+            .AddMembers(controllerFolder, binFolder, objFolder)
             .AddBrConfiguration(configContent)
             .Create();
 
@@ -63,11 +75,39 @@ public class AnalyzerRunnerTest
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();
-        analyzerRunner.RunAnalysis(directoryNodes, Analyses.Fix);
+        var analyzersAndFixers = analyzerRunner.RunAnalysis(directoryNodes, Analyses.Fix);
 
         // Assert
-        Assert.Fail();
+        var files = analyzersAndFixers.Keys.ToList();
+        var rules = analyzersAndFixers.Values.ToList();
 
+        Assert.Equal(4, analyzersAndFixers.Count);
+
+        Assert.Collection(analyzersAndFixers,
+        entry =>
+        {
+            Assert.Equal("RootFile1.cs", entry.Key.Name);
+            Assert.Equal(".cs", entry.Key.Extension);
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+        },
+        entry =>
+        {
+            Assert.Equal("RootFile2.cs", entry.Key.Name);
+            Assert.Equal(".cs", entry.Key.Extension);
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+        },
+        entry =>
+        {
+            Assert.Equal("bin2.txt", entry.Key.Name);
+            Assert.Equal(".txt", entry.Key.Extension);
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+        },
+        entry =>
+        {
+            Assert.Equal("obj1.txt", entry.Key.Name);
+            Assert.Equal(".txt", entry.Key.Extension);
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+        });
     }
 
     [Fact]

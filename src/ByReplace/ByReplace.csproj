@@ -19,6 +19,7 @@
     <Company>Daniel-iel</Company>
     <ToolCommandName>br</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -4,10 +4,10 @@ namespace ByReplace.Analyzers;
 
 internal class DocumentFix
 {
-    private readonly AnalyzersAndFixers codeFixes;
+    private readonly AnalyzerAndFixer codeFixes;
     private readonly IPrint print;
 
-    public DocumentFix(AnalyzersAndFixers codeFixes, IPrint print)
+    public DocumentFix(AnalyzerAndFixer codeFixes, IPrint print)
     {
         this.codeFixes = codeFixes;
         this.print = print;
@@ -24,12 +24,12 @@ internal class DocumentFix
     {
         print.Information($"Initializing fixing.");
 
-        AnalyzersAndFixers codeFixersFiltered = this.codeFixes.FindByKey(rule);
+        AnalyzerAndFixer codeFixersFiltered = this.codeFixes.FindByKey(rule);
 
         return FindAndReplaceAsync(codeFixersFiltered, cancellationToken);
     }
 
-    private async ValueTask FindAndReplaceAsync(AnalyzersAndFixers codeFixes, CancellationToken cancellationToken)
+    private async ValueTask FindAndReplaceAsync(AnalyzerAndFixer codeFixes, CancellationToken cancellationToken)
     {
         foreach (KeyValuePair<FileMapper, List<Rule>> codeFixe in codeFixes)
         {

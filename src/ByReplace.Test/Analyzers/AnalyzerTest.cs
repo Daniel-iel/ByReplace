@@ -8,13 +8,13 @@ using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class AnalyzersTest
+public class AnalyzerTest
 {
     private readonly PathCompilationSyntax _pathCompilationSyntax;
     private readonly BrConfiguration _brConfiguration;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzersTest()
+    public AnalyzerTest()
     {
         var rootFolder = FolderSyntax
            .FolderDeclaration("RootFolder")
@@ -25,7 +25,7 @@ public class AnalyzersTest
            .AddMembers(FileSyntax.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
 
         _pathCompilationSyntax = PathFactory
-           .Compile(nameof(AnalyzersTest))
+           .Compile(nameof(AnalyzerTest))
            .AddMembers(firstLevel)
            .Create();
 

@@ -2,15 +2,15 @@
 
 namespace ByReplace.Analyzers;
 
-internal class AnalyzersAndFixers : Dictionary<FileMapper, List<Rule>>
+internal class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
 {
     private readonly IPrint print;
 
-    public AnalyzersAndFixers(IPrint print) : this(Enumerable.Empty<KeyValuePair<FileMapper, List<Rule>>>(), print)
+    public AnalyzerAndFixer(IPrint print) : this(Enumerable.Empty<KeyValuePair<FileMapper, List<Rule>>>(), print)
     {
     }
 
-    public AnalyzersAndFixers(IEnumerable<KeyValuePair<FileMapper, List<Rule>>> values, IPrint print) : base(values)
+    public AnalyzerAndFixer(IEnumerable<KeyValuePair<FileMapper, List<Rule>>> values, IPrint print) : base(values)
     {
         this.print = print;
     }
@@ -51,8 +51,8 @@ internal class AnalyzersAndFixers : Dictionary<FileMapper, List<Rule>>
         }
     }
 
-    public AnalyzersAndFixers FindByKey(string rule)
+    public AnalyzerAndFixer FindByKey(string rule)
     {
-        return new AnalyzersAndFixers(this.Where(c => c.Key.Name == rule), this.print);
+        return new AnalyzerAndFixer(this.Where(c => c.Key.Name == rule), this.print);
     }
 }

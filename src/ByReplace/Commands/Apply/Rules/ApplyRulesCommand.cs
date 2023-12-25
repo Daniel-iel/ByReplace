@@ -17,7 +17,7 @@ internal class ApplyRulesCommand : ICommand
         ImmutableList<DirectoryNode> three = analyser.LoadThreeFiles();
 
         AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration, print);
-        AnalyzersAndFixers fixers = analyzerRunner.RunAnalysis(three, Analyses.Fix);
+        AnalyzerAndFixer fixers = analyzerRunner.RunAnalysis(three, Analyses.Fix);
 
         DocumentFix analyzerFix = new DocumentFix(fixers, print);
         return analyzerFix.ApplyAsync(cancellationToken);
