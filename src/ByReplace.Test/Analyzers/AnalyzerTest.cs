@@ -49,9 +49,10 @@ public class AnalyzerTest
 
         // Assert
         Assert.Equal(3, directoryNodes.Count);
-        Assert.Single(directoryNodes[0].Files);
-        Assert.Single(directoryNodes[1].Files);
-        Assert.Single(directoryNodes[2].Files);
+        Assert.Collection(directoryNodes,
+              node => Assert.Single(node.Files),
+              node => Assert.Single(node.Files),
+              node => Assert.Single(node.Files));
     }
 
     [Fact]

@@ -57,7 +57,7 @@ Since this is a preview feature things might not work as expected! Please report
                  .OrderBy(x => x)
                  .Last(x => preRelease ? x.IsPrerelease : !x.IsPrerelease);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return new SemanticVersion(0, 0, 0);
         }
