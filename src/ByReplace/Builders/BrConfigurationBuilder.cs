@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Builders;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Builders;
 
 internal class BrConfigurationBuilder
 {
@@ -15,7 +17,7 @@ internal class BrConfigurationBuilder
     {
         ArgumentNullException.ThrowIfNull(configFile);
 
-        _configFile = configFile;
+        _configFile = Sanitizer(configFile);
 
         return this;
     }
@@ -24,7 +26,7 @@ internal class BrConfigurationBuilder
     {
         ArgumentNullException.ThrowIfNull(path);
 
-        _path = path;
+        _path = Sanitizer(path);
 
         return this;
     }

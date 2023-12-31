@@ -59,8 +59,6 @@ internal sealed class PathCompilationSyntax
             CreateThreeFolder(folder);
         }
 
-        _brConfiguration.Path = "fasdasda";
-
         if (_brConfiguration is not null)
         {
             var brConfig = JsonSerializer.Serialize(_brConfiguration, new JsonSerializerOptions
