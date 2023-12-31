@@ -47,7 +47,7 @@ internal sealed class SkipMatch : Match
 
         foreach (char c in pattern)
         {
-            if (c != '*' && c != '\\' && c != '/')
+            if (c is not '*' and not '\\' and not '/')
             {
                 if (index < maxBufferSize - 1)
                 {

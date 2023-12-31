@@ -1,4 +1,6 @@
-﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+﻿using System.Linq;
+
+[assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Analyzers;
 
@@ -38,21 +40,24 @@ internal class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
             }
         }
 
-        Print();
-
-        return false;
-    }
-
-    private void Print()
-    {
         foreach (KeyValuePair<FileMapper, List<Rule>> item in this)
         {
             print.Information($"[Cyan]{item.Value.Count} rules in total match the file [Cyan]{item.Key.Name}.");
         }
+
+        return false;
     }
 
     public AnalyzerAndFixer FindByKey(string rule)
     {
         return new AnalyzerAndFixer(this.Where(c => c.Key.Name == rule), this.print);
+    }
+
+    public AnalyzerAndFixer FindByRule(string rule)
+    {
+        var filteredDictionary = this.Where(entry => entry.Value.Any(r => r.Name == rule))
+                                     .ToDictionary(entry => entry.Key, entry => entry.Value);
+
+        return new AnalyzerAndFixer(filteredDictionary, print);
     }
 }

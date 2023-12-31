@@ -15,16 +15,16 @@ internal class DocumentFix
 
     public ValueTask ApplyAsync(CancellationToken cancellationToken)
     {
-        print.Information($"Initializing fixing.");
+        print.Information("Initializing fixing.");
 
         return FindAndReplaceAsync(this.codeFixes, cancellationToken);
     }
 
     public ValueTask ApplyAsync(string rule, CancellationToken cancellationToken)
     {
-        print.Information($"Initializing fixing.");
+        print.Information("Initializing fixing.");
 
-        AnalyzerAndFixer codeFixersFiltered = this.codeFixes.FindByKey(rule);
+        AnalyzerAndFixer codeFixersFiltered = this.codeFixes.FindByRule(rule);
 
         return FindAndReplaceAsync(codeFixersFiltered, cancellationToken);
     }
