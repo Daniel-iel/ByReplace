@@ -25,5 +25,10 @@ namespace ByReplace.Test.Common.Helpers
         {
             return Type.GetInterfaces();
         }
+
+        public static Type? GetBaseType()
+        {
+            return Type.BaseType;
+        }
     }
 }
