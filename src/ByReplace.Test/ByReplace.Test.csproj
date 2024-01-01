@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Builders\" />
+    <Folder Include="Common\Asserts\" />
   </ItemGroup>
 
   <ItemGroup>
