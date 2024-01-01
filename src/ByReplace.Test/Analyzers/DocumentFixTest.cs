@@ -40,7 +40,7 @@ public class DocumentFixTest
             FileSyntax.FileDeclaration("RootFile1.txt", "var test = new Test2()"));
 
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerTest))
+            .Compile(nameof(DocumentFixTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
         .Create();

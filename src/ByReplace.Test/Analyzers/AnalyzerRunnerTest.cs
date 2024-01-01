@@ -52,7 +52,7 @@ public class AnalyzerRunnerTest
                 FileSyntax.FileDeclaration("obj2.txt", "ITest = new Test()"));
 
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerTest))
+            .Compile(nameof(AnalyzerRunnerTest))
             .AddMembers(controllerFolder, binFolder, objFolder)
             .AddBrConfiguration(configContent)
             .Create();

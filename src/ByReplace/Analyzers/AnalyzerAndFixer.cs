@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-[assembly: InternalsVisibleTo("ByReplace.Test")]
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Analyzers;
 

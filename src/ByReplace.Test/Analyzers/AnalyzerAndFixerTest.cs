@@ -34,7 +34,7 @@ public class AnalyzerAndFixerTest
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerTest))
+            .Compile(nameof(AnalyzerAndFixerTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
             .Create();
