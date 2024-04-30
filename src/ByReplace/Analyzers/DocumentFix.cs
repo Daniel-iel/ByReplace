@@ -42,7 +42,7 @@ internal class DocumentFix
 
             foreach (var rule in rules)
             {
-                print.Information($"Appling rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
+                print.Information($"Applying rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
 
                 foreach (string removeTerm in rule.Replacement.Old)
                 {

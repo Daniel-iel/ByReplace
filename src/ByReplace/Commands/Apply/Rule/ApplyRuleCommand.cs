@@ -3,16 +3,16 @@
 internal class ApplyRuleCommand : ICommand
 {
     private readonly BrConfiguration configuration;
-    private readonly ApplyRuleParameter parameters;
+    private readonly ApplyRuleParameter applyRuleParameter;
     private readonly IPrint print;
 
     public ApplyRuleCommand(
         BrConfiguration configuration,
-        ApplyRuleParameter parameters,
+        ApplyRuleParameter applyRuleParameter,
         IPrint print)
     {
         this.configuration = configuration;
-        this.parameters = parameters;
+        this.applyRuleParameter = applyRuleParameter;
         this.print = print;
     }
 
@@ -25,6 +25,6 @@ internal class ApplyRuleCommand : ICommand
         AnalyzerAndFixer fixers = analyzerRunner.RunAnalysis(three, Analyses.Fix);
 
         DocumentFix analyzerFix = new DocumentFix(fixers, print);
-        return analyzerFix.ApplyAsync(parameters.Rule, cancellationToken);
+        return analyzerFix.ApplyAsync(applyRuleParameter.Rule, cancellationToken);
     }
 }

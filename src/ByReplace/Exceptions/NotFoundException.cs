@@ -1,5 +1,6 @@
 ﻿namespace ByReplace.Exceptions;
 
+[ExcludeFromCodeCoverage]
 internal abstract class NotFoundException : Exception
 {
     protected NotFoundException() { }

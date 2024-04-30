@@ -1,5 +1,6 @@
 ﻿namespace ByReplace.Printers;
 
+[ExcludeFromCodeCoverage]
 internal class PrintBox
 {
     private IConsole consoleBox;

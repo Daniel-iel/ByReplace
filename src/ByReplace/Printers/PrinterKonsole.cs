@@ -1,7 +1,10 @@
-﻿using NoAlloq;
+﻿// Ignore Spelling: Konsole
+
+using NoAlloq;
 
 namespace ByReplace.Printers;
 
+[ExcludeFromCodeCoverage]
 internal class PrinterKonsole
 {
     readonly ConcurrentWriter console;
@@ -71,7 +74,7 @@ internal class PrinterKonsole
         consoleBox.WriteLine(text);
     }
 
-    private static bool ShouldColourPredicate(string text)
+    private bool ShouldColourPredicate(string text)
     {
         return text.StartsWith("[Green]", StringComparison.InvariantCultureIgnoreCase) ||
                text.StartsWith("[Yellow]", StringComparison.InvariantCultureIgnoreCase) ||

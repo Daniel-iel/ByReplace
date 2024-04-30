@@ -4,7 +4,7 @@ namespace ByReplace.Exceptions;
 
 internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
 {
-    IPrint print = new PrintConsole();
+    readonly IPrint print = new PrintConsole();
 
     private readonly Dictionary<Type, Action<Exception>> handles;
 

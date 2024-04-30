@@ -39,15 +39,15 @@
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
     <PackageReference Include="Goblinfactory.Konsole" Version="6.2.2" />
     <PackageReference Include="Mediator.Abstractions" Version="2.1.7" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.8.14" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14">
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.9.28" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.9.28">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="morelinq" Version="4.1.0" />
     <PackageReference Include="NoAlloq" Version="0.2.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.8.0" />
-    <PackageReference Include="NuGet.Versioning" Version="6.8.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.9.1" />
+    <PackageReference Include="NuGet.Versioning" Version="6.9.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -83,8 +83,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Rule\Parameters\" />
-    <Folder Include="nupkg\" />
+    <Folder Include="Commons\" />
   </ItemGroup>
 
 </Project>
