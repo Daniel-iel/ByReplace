@@ -1,4 +1,7 @@
-﻿namespace ByReplace.Commands.Command;
+﻿[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Commands.Command;
 
 internal interface ICommand
 {

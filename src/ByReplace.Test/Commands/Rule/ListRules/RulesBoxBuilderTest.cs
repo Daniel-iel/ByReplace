@@ -2,8 +2,13 @@
 
 namespace ByReplace.Test.Commands.Rule.ListRules;
 
-public class ListRulesParameterTest
+public class RulesBoxBuilderTest
 {
+    public RulesBoxBuilderTest()
+    {
+
+    }
+
     [Fact]
     public void Test1()
     {

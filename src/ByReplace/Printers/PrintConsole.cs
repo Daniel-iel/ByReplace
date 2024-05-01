@@ -12,30 +12,27 @@ internal class PrintConsole : IPrint
         timer = new Stopwatch();
         timer.Start();
     }
-
-    private enum IPrintType
+    public void PureText(string text)
     {
-        Info,
-        Warning,
-        Error
-    };
+        printerKonsole.PrintColorText($"{text}");
+    }
 
     public void Information(string text)
     {
         printerKonsole.PrintColorText($"[{GetTimeElapsedText()} INF] {text}");
     }
 
-    public void InformationTimer()
+    public void Timer()
     {
         printerKonsole.PrintColorText($"[{GetTimeElapsedText()} INF] [Green]{timer.Elapsed.Duration().ToString()}");
     }
 
-    public void PrintWarning(string text)
+    public void Warning(string text)
     {
         printerKonsole.PrintColorText($"[{GetTimeElapsedText()} [Yellow]WRN] {text}");
     }
 
-    public void PrintError(string text)
+    public void Error(string text)
     {
         printerKonsole.PrintColorText($"[{GetTimeElapsedText()} [Red]ERR] {text}");
     }
@@ -45,7 +42,7 @@ internal class PrintConsole : IPrint
         printerKonsole.DrawBox(boxName);
     }
 
-    public void PrintToBox(string text)
+    public void Box(string text)
     {
         printerKonsole.PrintToBox(text);
     }

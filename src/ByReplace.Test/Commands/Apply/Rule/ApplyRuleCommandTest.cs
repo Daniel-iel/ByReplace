@@ -61,10 +61,7 @@ public class ApplyRuleCommandTest
         var command = new ApplyRuleCommand(_brConfiguration, applyRuleParameter, _printMock.Object);
 
         // Act
-        var executionResult = Record.Exception(() =>
-        {
-            command.ExecuteAsync();
-        });
+        var executionResult = Record.Exception(() => command.ExecuteAsync());
 
         // Assert
         Assert.Null(executionResult);

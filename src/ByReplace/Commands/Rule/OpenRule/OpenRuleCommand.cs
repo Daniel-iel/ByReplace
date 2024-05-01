@@ -22,7 +22,7 @@ internal class OpenRuleCommand : ICommand
 
         if (rule is null)
         {
-            print.PrintWarning($"Rule named {ruleName} was not found on brconfig file");
+            print.Warning($"Rule named {ruleName} was not found on brconfig file");
 
             return ValueTask.CompletedTask;
         }

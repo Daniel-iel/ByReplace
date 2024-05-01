@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Printers;
 
-internal interface IPrintBox
+internal interface IBox
 {
     string BoxName { get; }
     int Width { get; }

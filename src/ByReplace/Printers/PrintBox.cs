@@ -1,7 +1,7 @@
 ﻿namespace ByReplace.Printers;
 
 [ExcludeFromCodeCoverage]
-internal class PrintBox
+internal class PrintBox : IPrintBox
 {
     private IConsole consoleBox;
 
@@ -25,7 +25,7 @@ internal class PrintBox
         consoleBox.WriteLine(text);
     }
 
-    public void CreateBoxAndPrint(IPrintBox printBoxBuilder)
+    public void CreateBoxAndPrint(IBox printBoxBuilder)
     {
         PrintBox printer = new PrintBox();
         printer.CreateBox(printBoxBuilder.BoxName, printBoxBuilder.Width, printBoxBuilder.Height);

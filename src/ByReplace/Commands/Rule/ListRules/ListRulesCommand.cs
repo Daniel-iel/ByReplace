@@ -3,20 +3,19 @@
 internal class ListRulesCommand : ICommand
 {
     private readonly BrConfiguration configuration;
-    private readonly IPrint print;
+    private readonly IPrintBox printBox;
 
-    public ListRulesCommand(BrConfiguration configuration, IPrint print)
+    public ListRulesCommand(BrConfiguration configuration, IPrintBox printBox)
     {
         this.configuration = configuration;
-        this.print = print;
+        this.printBox = printBox;
     }
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        PrintRulesBuilder builder = new PrintRulesBuilder(configuration.Rules);
+        RulesBox builder = new RulesBox(configuration.Rules);
 
-        PrintBox printer = new PrintBox();
-        printer.CreateBoxAndPrint(builder);
+        printBox.CreateBoxAndPrint(builder);
 
         return ValueTask.CompletedTask;
     }

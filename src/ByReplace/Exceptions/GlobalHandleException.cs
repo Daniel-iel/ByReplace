@@ -18,7 +18,7 @@ internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
 
     private void NotFoundHandle(Exception ex)
     {
-        print.PrintWarning(ex.Message);
+        print.Warning(ex.Message);
     }
 
     public override async ValueTask<int> OnCommandExecutionAsync(CoconaCommandExecutingContext ctx, CommandExecutionDelegate next)

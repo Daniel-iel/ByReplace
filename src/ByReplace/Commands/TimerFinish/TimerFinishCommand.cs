@@ -11,7 +11,7 @@ internal class TimerFinishCommand : ICommand
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        print.InformationTimer();
+        print.Timer();
 
         return ValueTask.CompletedTask;
     }

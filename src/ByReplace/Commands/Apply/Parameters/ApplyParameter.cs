@@ -1,4 +1,5 @@
-﻿
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
 namespace ByReplace.Commands.Apply.Parameters;
 
 internal record ApplyParameter : ICommandParameterSet

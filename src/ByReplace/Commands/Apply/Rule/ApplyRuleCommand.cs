@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Commands.Apply.Rule;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Commands.Apply.Rule;
 
 internal class ApplyRuleCommand : ICommand
 {

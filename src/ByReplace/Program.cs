@@ -6,19 +6,20 @@ using ByReplace.Commands.TimerFinish;
 using Cocona.Builder;
 
 #if DEBUG
-    CoconaAppBuilder builder = CoconaApp.CreateBuilder(
-        new[]
-        {
+CoconaAppBuilder builder = CoconaApp.CreateBuilder(
+    new[]
+    {
             "apply",
             "rules",
             @"-p C:\Projetos\Daniel-iel\ByReplace\samples",
             @"-f C:\Projetos\Daniel-iel\ByReplace\src\ByReplace"
-        });
+    });
 #else
     CoconaAppBuilder builder = CoconaApp.CreateBuilder();
 #endif
 
 builder.Services.AddScoped<IPrint, PrintConsole>();
+builder.Services.AddScoped<IPrintBox, PrintBox>();
 CoconaApp app = builder.Build();
 
 app.UseFilter(new GlobalHandleExceptionAttribute());
@@ -41,7 +42,7 @@ app
 
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
-                new PrintLogoCommand(),
+                new PrintLogoCommand(print),
                 new PrintBRVersionCommand(),
                 new ApplyRuleCommand(configuration, applyRuleParameters, print),
                 new TimerFinishCommand(print)
@@ -63,7 +64,7 @@ app
 
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
-                new PrintLogoCommand(),
+                new PrintLogoCommand(print),
                 new PrintBRVersionCommand(),
                 new ApplyRulesCommand(configuration, print),
                 new TimerFinishCommand(print)
@@ -79,7 +80,7 @@ app
 app
     .AddSubCommand("rule", rule =>
     {
-        rule.AddCommand("list-rules", async (ListRulesParameter listRulesParameter, IPrint print) =>
+        rule.AddCommand("list-rules", async (ListRulesParameter listRulesParameter, IPrint print, IPrintBox printBox) =>
         {
             //Print all rule's names from config file
             CancellationTokenSource source = new CancellationTokenSource();
@@ -92,9 +93,9 @@ app
 
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
-                new PrintLogoCommand(),
+                new PrintLogoCommand(print),
                 new PrintBRVersionCommand(),
-                new ListRulesCommand(configuration,print),
+                new ListRulesCommand(configuration, printBox),
                 new TimerFinishCommand(print)
             });
 
@@ -114,7 +115,7 @@ app
 
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
-                new PrintLogoCommand(),
+                new PrintLogoCommand(print),
                 new PrintBRVersionCommand(),
                 new OpenRuleCommand(configuration, openRuleParameter.Name , print),
                 new TimerFinishCommand(print)

@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Commands.Command;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Commands.Command;
 
 internal class CompositeCommand : ICommand
 {

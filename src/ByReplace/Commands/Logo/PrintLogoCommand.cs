@@ -1,7 +1,16 @@
-﻿namespace ByReplace.Commands.Logo;
+﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Commands.Logo;
 
 internal class PrintLogoCommand : ICommand
 {
+    private readonly IPrint _print;
+
+    public PrintLogoCommand(IPrint print)
+    {
+        _print = print;
+    }
+
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
         const string logoAscii = @"
@@ -27,8 +36,8 @@ internal class PrintLogoCommand : ICommand
         ╨▀▀╨   ▀É░▀▒@░░░░▀▌▀╙                  └▀▀╝`                          `╙`
 
 ";
-
-        Console.WriteLine(logoAscii);
+        _print.PureText(logoAscii);
+        //Console.WriteLine(logoAscii);
 
         return ValueTask.CompletedTask;
     }

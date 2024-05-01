@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Commands.Rule.OpenRule;
 
-internal class PrintRuleBuilder : IPrintBox
+internal class PrintRuleBuilder : IBox
 {
     private readonly Models.Rule _rule;
 
