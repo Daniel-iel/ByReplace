@@ -13,9 +13,9 @@ internal class ListRulesCommand : ICommand
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        RulesBox builder = new RulesBox(configuration.Rules);
+        RulesBox rulesBox = new RulesBox(configuration.Rules);
 
-        printBox.CreateBoxAndPrint(builder);
+        printBox.CreateBoxAndPrint(rulesBox);
 
         return ValueTask.CompletedTask;
     }
