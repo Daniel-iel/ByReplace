@@ -20,6 +20,8 @@ CoconaAppBuilder builder = CoconaApp.CreateBuilder(
 
 builder.Services.AddScoped<IPrint, PrintConsole>();
 builder.Services.AddScoped<IPrintBox, PrintBox>();
+builder.Services.AddScoped<INugetVersion, NugetVersion>();
+
 CoconaApp app = builder.Build();
 
 app.UseFilter(new GlobalHandleExceptionAttribute());
@@ -28,7 +30,7 @@ app.UseFilter(new GlobalHandleExceptionAttribute());
 app
     .AddSubCommand("apply", apply =>
     {
-        apply.AddCommand("rule", async (ApplyRuleParameter applyRuleParameters, IPrint print) =>
+        apply.AddCommand("rule", async (ApplyRuleParameter applyRuleParameters, IPrint print, INugetVersion nugetVersion) =>
         {
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
@@ -43,7 +45,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new VersionCommand(),
+                new VersionCommand(nugetVersion),
                 new ApplyRuleCommand(configuration, applyRuleParameters, print),
                 new TimerFinishCommand(print)
             });
@@ -51,7 +53,7 @@ app
             await compositeCommand.ExecuteAsync(token);
         });
 
-        apply.AddCommand("rules", async (ApplyParameter applyParameters, IPrint print) =>
+        apply.AddCommand("rules", async (ApplyParameter applyParameters, IPrint print, INugetVersion nugetVersion) =>
         {
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
@@ -65,7 +67,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new VersionCommand(),
+                new VersionCommand(nugetVersion),
                 new ApplyRulesCommand(configuration, print),
                 new TimerFinishCommand(print)
             });
@@ -80,7 +82,7 @@ app
 app
     .AddSubCommand("rule", rule =>
     {
-        rule.AddCommand("list-rules", async (ListRulesParameter listRulesParameter, IPrint print, IPrintBox printBox) =>
+        rule.AddCommand("list-rules", async (ListRulesParameter listRulesParameter, IPrint print, IPrintBox printBox, INugetVersion nugetVersion) =>
         {
             //Print all rule's names from config file
             CancellationTokenSource source = new CancellationTokenSource();
@@ -94,7 +96,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new VersionCommand(),
+                new VersionCommand(nugetVersion),
                 new ListRulesCommand(configuration, printBox),
                 new TimerFinishCommand(print)
             });
@@ -102,7 +104,7 @@ app
             await compositeCommand.ExecuteAsync(token);
         });
 
-        rule.AddCommand("open-rule", async (OpenRuleParameter openRuleParameter, IPrint print, IPrintBox printBox) =>
+        rule.AddCommand("open-rule", async (OpenRuleParameter openRuleParameter, IPrint print, IPrintBox printBox, INugetVersion nugetVersion) =>
         {
             //Print rule in config file
             CancellationTokenSource source = new CancellationTokenSource();
@@ -116,7 +118,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new VersionCommand(),
+                new VersionCommand(nugetVersion),
                 new OpenRuleCommand(configuration, openRuleParameter.Name, print, printBox),
                 new TimerFinishCommand(print)
             });

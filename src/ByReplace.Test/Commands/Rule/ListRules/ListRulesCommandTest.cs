@@ -2,7 +2,6 @@
 using ByReplace.Commands.Rule.ListRules;
 using ByReplace.Models;
 using ByReplace.Printers;
-using ByReplace.Test.Analyzers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
@@ -37,7 +36,7 @@ public class ListRulesCommandTest
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerAndFixerTest))
+            .Compile(nameof(ListRulesCommandTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
             .Create();

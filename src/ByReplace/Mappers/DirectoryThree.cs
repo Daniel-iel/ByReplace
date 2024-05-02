@@ -2,13 +2,11 @@
 
 public class DirectoryThree
 {
-    private readonly string _path;
-    private readonly PrintConsole _printer;
+    private readonly IPrint _printer;
 
-    public DirectoryThree(string path)
+    public DirectoryThree(IPrint print)
     {
-        _path = path;
-        _printer = new PrintConsole();
+        _printer = print;
     }
 
     public record struct DirectoryNode(
@@ -18,15 +16,17 @@ public class DirectoryThree
         ImmutableList<FileMapper> Files
     );
 
-    public List<DirectoryNode> Nodes { get; private set; }
+    public ImmutableList<DirectoryNode> Nodes { get; private set; }
 
-    public void MapThreeSources()
+    public ImmutableList<DirectoryNode> MapThreeSources(string path)
     {
         List<DirectoryNode> nodes = new List<DirectoryNode>();
 
-        MapThreeSubFolders(_path, ref nodes);
+        MapThreeSubFolders(path, ref nodes);
 
-        Nodes = nodes;
+        Nodes = nodes.ToImmutableList();
+
+        return Nodes;
     }
 
     private void MapThreeSubFolders(string dir, ref List<DirectoryNode> nodes)

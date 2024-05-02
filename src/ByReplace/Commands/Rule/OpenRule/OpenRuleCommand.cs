@@ -1,6 +1,4 @@
-﻿using ByReplace.Printers;
-
-namespace ByReplace.Commands.Rule.OpenRule;
+﻿namespace ByReplace.Commands.Rule.OpenRule;
 
 internal class OpenRuleCommand : ICommand
 {

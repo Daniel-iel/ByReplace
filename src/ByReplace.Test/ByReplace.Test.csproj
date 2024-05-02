@@ -31,9 +31,6 @@
   <ItemGroup>
     <Folder Include="Common\Builders\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Matches\" />
-    <Folder Include="Models\" />
     <Folder Include="Printers\" />
   </ItemGroup>
 

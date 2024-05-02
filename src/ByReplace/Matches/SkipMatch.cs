@@ -39,6 +39,7 @@ internal sealed class SkipMatch : Match
                  dir.Contains(SanitizePattern(c), StringComparison.InvariantCultureIgnoreCase));
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private static unsafe string SanitizePattern(string pattern)
     {
         int maxBufferSize = pattern.Length;

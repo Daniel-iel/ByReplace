@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace ByReplace.Commands.Rule.ListRules;
+﻿namespace ByReplace.Commands.Rule.ListRules;
 
 internal sealed class RulesBox : IBox, IEquatable<RulesBox>, IEqualityComparer<RulesBox>
 {

@@ -1,6 +1,4 @@
-﻿using ByReplace.Commands.Rule.ListRules;
-
-namespace ByReplace.Commands.Rule.OpenRule;
+﻿namespace ByReplace.Commands.Rule.OpenRule;
 
 internal sealed class RuleBox : IBox, IEquatable<RuleBox>, IEqualityComparer<RuleBox>
 {

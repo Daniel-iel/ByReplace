@@ -4,17 +4,22 @@ using NuGet.Configuration;
 using System.Reflection;
 namespace ByReplace.Commands.Version;
 
-internal class NugetVersion
+internal interface INugetVersion
+{
+    Task<string> GetByReplaceNugetVersionAsync(CancellationToken cancellationToken);
+}
+
+internal class NugetVersion : INugetVersion
 {
     private readonly SourceRepository _sourceRepository;
     private readonly SourceCacheContext _sourceCacheContext;
-    private readonly PrintConsole _printConsole;
+    private readonly IPrint _printConsole;
 
-    public NugetVersion()
+    public NugetVersion(IPrint print)
     {
+        _printConsole = print;
         _sourceRepository = Repository.Factory.GetCoreV3(new PackageSource(NuGetConstants.V3FeedUrl));
         _sourceCacheContext = new SourceCacheContext();
-        _printConsole = new PrintConsole();
     }
 
     public async Task<string> GetByReplaceNugetVersionAsync(CancellationToken cancellationToken)

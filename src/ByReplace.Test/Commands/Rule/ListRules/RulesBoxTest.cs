@@ -3,7 +3,6 @@ using ByReplace.Commands.Rule.ListRules;
 using ByReplace.Builders;
 using ByReplace.Models;
 using ByReplace.Printers;
-using ByReplace.Test.Analyzers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
@@ -38,7 +37,7 @@ public class RulesBoxTest
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerAndFixerTest))
+            .Compile(nameof(RulesBoxTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
             .Create();
@@ -86,7 +85,7 @@ public class RulesBoxTest
     {
         // Arrange
         var rulesBoxFirst = new RulesBox(_brConfiguration.Rules);
-        var rulesBoxSecond = new RulesBox(ImmutableList<Models.Rule>.Empty);
+        var rulesBoxSecond = new RulesBox(ImmutableList<ByReplace.Models.Rule>.Empty);
 
         // Act
         var isEquals = rulesBoxFirst.Equals(rulesBoxSecond);

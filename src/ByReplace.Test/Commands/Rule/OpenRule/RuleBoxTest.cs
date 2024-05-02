@@ -1,13 +1,10 @@
 ﻿using ByReplace.Builders;
-using ByReplace.Commands.Rule.ListRules;
 using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Models;
 using ByReplace.Printers;
-using ByReplace.Test.Analyzers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
-using System.Collections.Immutable;
 using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.OpenRule;
@@ -44,7 +41,7 @@ public class RuleBoxTest
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
         _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerAndFixerTest))
+            .Compile(nameof(RuleBoxTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
             .Create();
