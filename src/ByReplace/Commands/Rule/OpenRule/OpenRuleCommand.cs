@@ -1,23 +1,27 @@
-﻿namespace ByReplace.Commands.Rule.OpenRule;
+﻿using ByReplace.Printers;
+
+namespace ByReplace.Commands.Rule.OpenRule;
 
 internal class OpenRuleCommand : ICommand
 {
     private readonly BrConfiguration configuration;
     private readonly string ruleName;
     private readonly IPrint print;
+    private readonly IPrintBox printBox;
 
-    public OpenRuleCommand(BrConfiguration configuration, string ruleName, IPrint print)
+    public OpenRuleCommand(BrConfiguration configuration, string ruleName, IPrint print, IPrintBox printBox)
     {
         this.configuration = configuration;
         this.ruleName = ruleName;
         this.print = print;
+        this.printBox = printBox;
     }
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
         Models.Rule rule = configuration
             .Rules
-            .Where(c => c.Name.Equals(ruleName.Trim(), StringComparison.InvariantCulture))
+            .Where(c => c.Name.Equals(ruleName.Trim(), StringComparison.CurrentCultureIgnoreCase))
             .FirstOrDefault();
 
         if (rule is null)
@@ -27,10 +31,9 @@ internal class OpenRuleCommand : ICommand
             return ValueTask.CompletedTask;
         }
 
-        PrintRuleBuilder builder = new PrintRuleBuilder(rule);
+        RuleBox builder = new RuleBox(rule);
 
-        PrintBox printer = new PrintBox();
-        printer.CreateBoxAndPrint(builder);
+        printBox.CreateBoxAndPrint(builder);
 
         return ValueTask.CompletedTask;
     }

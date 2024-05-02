@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Commands.Version;
 
-internal class PrintBRVersionCommand : ICommand
+internal class VersionCommand : ICommand
 {
     public async ValueTask ExecuteAsync(CancellationToken cancellationToken)
     {

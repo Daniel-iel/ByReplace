@@ -1,10 +1,12 @@
-﻿namespace ByReplace.Commands.Rule.OpenRule;
+﻿using ByReplace.Commands.Rule.ListRules;
 
-internal class PrintRuleBuilder : IBox
+namespace ByReplace.Commands.Rule.OpenRule;
+
+internal sealed class RuleBox : IBox, IEquatable<RuleBox>, IEqualityComparer<RuleBox>
 {
     private readonly Models.Rule _rule;
 
-    public PrintRuleBuilder(Models.Rule rule)
+    public RuleBox(Models.Rule rule)
     {
         _rule = rule;
 
@@ -30,5 +32,35 @@ internal class PrintRuleBuilder : IBox
         sb.AppendLine($"Replacement: FROM [ {_rule.Replacement.Old.Aggregate((a, b) => $"{a}, {b}")} ] To [ {_rule.Replacement.New} ]");
 
         return sb.ToString();
+    }
+
+    public bool Equals(RuleBox other)
+    {
+        return Width == other.Width &&
+               Height == other.Height &&
+               BoxName == other.BoxName &&
+               _rule == other._rule;
+    }
+
+    public override bool Equals(object obj)
+    {
+        RuleBox other = (RuleBox)obj;
+
+        return other.Equals(this);
+    }
+
+    public bool Equals(RuleBox x, RuleBox y)
+    {
+        return x.Equals(y);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Width, Height, BoxName, _rule);
+    }
+
+    public int GetHashCode([DisallowNull] RuleBox obj)
+    {
+        return HashCode.Combine(obj.Width, obj.Height, obj.BoxName, obj._rule);
     }
 }

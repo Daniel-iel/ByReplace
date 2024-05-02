@@ -56,7 +56,7 @@ public class DocumentFixTest
     }
 
     [Fact]
-    public async Task ApplyAsync_WhenPassAllRules_ShoulApplyTheRulesInAllFilesAsync()
+    public async Task ApplyAsync_WhenPassAllRules_ShouldApplyTheRulesInAllFilesAsync()
     {
         // Arrange
         var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
@@ -75,7 +75,7 @@ public class DocumentFixTest
         Assert.Contains("var test = new Test()", fileContents);
         _printMock.Verify(x => x.Information("Initializing fixing."), Times.Once);
         _printMock.Verify(x => x.Information("Processing file [Cyan]RootFile1.cs"), Times.Once);
-        _printMock.Verify(x => x.Information("Appling rule [Cyan]RuleTest 1/1 on file [Cyan]RootFile1.cs."), Times.Once);
+        _printMock.Verify(x => x.Information("Applying rule [Cyan]RuleTest 1/1 on file [Cyan]RootFile1.cs."), Times.Once);
     }
 
     [Fact]
@@ -106,6 +106,6 @@ public class DocumentFixTest
 
         _printMock.Verify(x => x.Information("Initializing fixing."), Times.Once);
         _printMock.Verify(x => x.Information("Processing file [Cyan]RootFile1.cs"), Times.Once);
-        _printMock.Verify(x => x.Information("Appling rule [Cyan]RuleTest 1/1 on file [Cyan]RootFile1.cs."), Times.Once);
+        _printMock.Verify(x => x.Information("Applying rule [Cyan]RuleTest 1/1 on file [Cyan]RootFile1.cs."), Times.Once);
     }
 }

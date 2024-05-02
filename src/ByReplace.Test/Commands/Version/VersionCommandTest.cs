@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Test.Commands.Version
 {
-    internal class PrintBRVersionCommandTest
+    internal class VersionCommandTest
     {
     }
 }

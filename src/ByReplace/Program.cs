@@ -43,7 +43,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new PrintBRVersionCommand(),
+                new VersionCommand(),
                 new ApplyRuleCommand(configuration, applyRuleParameters, print),
                 new TimerFinishCommand(print)
             });
@@ -65,7 +65,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new PrintBRVersionCommand(),
+                new VersionCommand(),
                 new ApplyRulesCommand(configuration, print),
                 new TimerFinishCommand(print)
             });
@@ -94,7 +94,7 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new PrintBRVersionCommand(),
+                new VersionCommand(),
                 new ListRulesCommand(configuration, printBox),
                 new TimerFinishCommand(print)
             });
@@ -102,7 +102,7 @@ app
             await compositeCommand.ExecuteAsync(token);
         });
 
-        rule.AddCommand("open-rule", async (OpenRuleParameter openRuleParameter, IPrint print) =>
+        rule.AddCommand("open-rule", async (OpenRuleParameter openRuleParameter, IPrint print, IPrintBox printBox) =>
         {
             //Print rule in config file
             CancellationTokenSource source = new CancellationTokenSource();
@@ -116,8 +116,8 @@ app
             CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
             {
                 new PrintLogoCommand(print),
-                new PrintBRVersionCommand(),
-                new OpenRuleCommand(configuration, openRuleParameter.Name , print),
+                new VersionCommand(),
+                new OpenRuleCommand(configuration, openRuleParameter.Name, print, printBox),
                 new TimerFinishCommand(print)
             });
 

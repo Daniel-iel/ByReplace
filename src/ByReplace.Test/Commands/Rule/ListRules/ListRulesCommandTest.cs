@@ -61,6 +61,6 @@ public class ListRulesCommandTest
         await command.ExecuteAsync(It.IsAny<CancellationToken>());
 
         // Assert
-        _printBoxMock.Verify(c => c.CreateBoxAndPrint(builder));
+        _printBoxMock.Verify(c => c.CreateBoxAndPrint(builder), Times.Once);
     }
 }
