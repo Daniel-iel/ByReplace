@@ -14,7 +14,6 @@ public class DocumentFixTest
     private readonly PathCompilationSyntax _pathCompilationSyntax;
     private readonly BrConfiguration _brConfiguration;
     private readonly Mock<IPrint> _printMock;
-    private CancellationToken _cancellationTokenMock;
 
     public DocumentFixTest()
     {
@@ -52,7 +51,6 @@ public class DocumentFixTest
             .Build();
 
         _printMock = new Mock<IPrint>();
-        _cancellationTokenMock = new CancellationTokenSource().Token;
     }
 
     [Fact]
@@ -66,11 +64,11 @@ public class DocumentFixTest
         var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
 
         // Act
-        await documentFix.ApplyAsync(_cancellationTokenMock);
+        await documentFix.ApplyAsync(It.IsAny<CancellationToken>());
 
         // Assert
-        var fileFixedPath = directoryNode.Files.First().FullName;
-        var fileContents = await File.ReadAllTextAsync(fileFixedPath, _cancellationTokenMock);
+        var fileFixedPath = directoryNode.Files[0].FullName;
+        var fileContents = await File.ReadAllTextAsync(fileFixedPath, It.IsAny<CancellationToken>());
 
         Assert.Contains("var test = new Test()", fileContents);
         _printMock.Verify(x => x.Information("Initializing fixing."), Times.Once);
@@ -79,7 +77,7 @@ public class DocumentFixTest
     }
 
     [Fact]
-    public async Task ApplyAsync_WhenPassOnlyOneRule_ShoulApplyTheRuleInAllFiles()
+    public async Task ApplyAsync_WhenPassOnlyOneRule_ShouldApplyTheRuleInAllFiles()
     {
         // Arrange
         var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
@@ -89,17 +87,17 @@ public class DocumentFixTest
         var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
 
         // Act
-        await documentFix.ApplyAsync("RuleTest", _cancellationTokenMock);
+        await documentFix.ApplyAsync("RuleTest", It.IsAny<CancellationToken>());
 
         // Assert
 
         // File with .cs extension
-        var fileCsFixedPath = directoryNode.Files.First().FullName;
-        var fileCsContents = await File.ReadAllTextAsync(fileCsFixedPath, _cancellationTokenMock);
+        var fileCsFixedPath = directoryNode.Files[0].FullName;
+        var fileCsContents = await File.ReadAllTextAsync(fileCsFixedPath, It.IsAny<CancellationToken>());
 
         // File with .txt extension
         var fileTextFixedPath = directoryNode.Files.Last().FullName;
-        var fileTextContents = await File.ReadAllTextAsync(fileTextFixedPath, _cancellationTokenMock);
+        var fileTextContents = await File.ReadAllTextAsync(fileTextFixedPath, It.IsAny<CancellationToken>());
 
         Assert.Contains("var test = new Test()", fileCsContents);
         Assert.Contains("var test = new Test2()", fileTextContents);

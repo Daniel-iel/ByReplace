@@ -9,7 +9,7 @@ internal interface INugetVersion
     Task<string> GetByReplaceNugetVersionAsync(CancellationToken cancellationToken);
 }
 
-internal class NugetVersion : INugetVersion
+internal sealed class NugetVersion : INugetVersion
 {
     private readonly SourceRepository _sourceRepository;
     private readonly SourceCacheContext _sourceCacheContext;

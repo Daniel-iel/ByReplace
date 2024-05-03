@@ -2,7 +2,7 @@
 
 namespace ByReplace.Analyzers;
 
-internal class Analyzer
+internal sealed class Analyzer
 {
     private readonly BrConfiguration brConfiguration;
     private readonly IPrint print;

@@ -13,6 +13,9 @@ test-nocoverage:
 test-mutant:
 	cd ByReplace.Test && dotnet stryker --reporter "html"
 
+test-docker:
+	docker build -t byreplace-docker-test . && docker run byreplace-docker-test
+
 format:
 	dotnet format '.\' -v diag --severity error --verbosity --no-restore
 

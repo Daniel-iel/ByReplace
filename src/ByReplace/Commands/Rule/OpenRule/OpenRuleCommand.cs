@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Commands.Rule.OpenRule;
 
-internal class OpenRuleCommand : ICommand
+internal sealed class OpenRuleCommand : ICommand
 {
     private readonly BrConfiguration configuration;
     private readonly string ruleName;
@@ -19,8 +19,7 @@ internal class OpenRuleCommand : ICommand
     {
         Models.Rule rule = configuration
             .Rules
-            .Where(c => c.Name.Equals(ruleName.Trim(), StringComparison.CurrentCultureIgnoreCase))
-            .FirstOrDefault();
+            .FirstOrDefault(c => c.Name.Equals(ruleName.Trim(), StringComparison.CurrentCultureIgnoreCase));
 
         if (rule is null)
         {

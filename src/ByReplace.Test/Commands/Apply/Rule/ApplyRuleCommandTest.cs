@@ -52,7 +52,7 @@ public class ApplyRuleCommandTest
     public void Execute_ApplyIndividualRuleToFileThree_DoesNotThrowException()
     {
         // Arrange
-        var applyRuleParameter = new ApplyRuleParameter()
+        var applyRuleParameter = new ApplyRuleParameter
         {
             Rule = "RuleTest"
         };

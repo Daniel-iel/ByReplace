@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Test.Common.ConfigMock;
 
-public class RuleSyntax
+public sealed class RuleSyntax
 {
     private RuleSyntax(
         string name,

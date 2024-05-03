@@ -2,7 +2,7 @@
 
 namespace ByReplace.Commands.Apply.Rules;
 
-internal class ApplyRulesCommand : ICommand
+internal sealed class ApplyRulesCommand : ICommand
 {
     private readonly BrConfiguration configuration;
     private readonly IPrint print;

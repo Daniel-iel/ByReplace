@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Models;
 
-internal record Rule(
+internal record class Rule(
     string Name,
     string Description,
     string[] Skip,

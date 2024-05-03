@@ -85,7 +85,7 @@ public class RulesBoxTest
     {
         // Arrange
         var rulesBoxFirst = new RulesBox(_brConfiguration.Rules);
-        var rulesBoxSecond = new RulesBox(ImmutableList<ByReplace.Models.Rule>.Empty);
+        var rulesBoxSecond = new RulesBox([]);
 
         // Act
         var isEquals = rulesBoxFirst.Equals(rulesBoxSecond);

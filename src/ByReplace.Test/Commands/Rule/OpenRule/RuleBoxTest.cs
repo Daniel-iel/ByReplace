@@ -57,7 +57,7 @@ public class RuleBoxTest
     public void RuleBox_WhenInstantiate_ShouldValidateTheBoxConfiguration()
     {
         // Arrange & Act
-        var ruleBox = new RuleBox(_brConfiguration.Rules.First());
+        var ruleBox = new RuleBox(_brConfiguration.Rules[0]);
 
         // Assert
         Assert.Equal(100, ruleBox.Width);
@@ -69,8 +69,8 @@ public class RuleBoxTest
     public void RuleBox_WhenInstantiate_ShouldValidateIfTwoObjectWithTheSameParametersAreEquals()
     {
         // Arrange
-        var ruleBoxFirst = new RuleBox(_brConfiguration.Rules.First());
-        var ruleBoxSecond = new RuleBox(_brConfiguration.Rules.First());
+        var ruleBoxFirst = new RuleBox(_brConfiguration.Rules[0]);
+        var ruleBoxSecond = new RuleBox(_brConfiguration.Rules[0]);
 
         // Act
         var isEquals = ruleBoxFirst.Equals(ruleBoxSecond);
@@ -88,7 +88,7 @@ public class RuleBoxTest
     public void RuleBox_WhenInstantiate_ShouldValidateIfTwoObjectWithTheSameParametersAreNotEquals()
     {
         // Arrange
-        var ruleBoxFirst = new RuleBox(_brConfiguration.Rules.First());
+        var ruleBoxFirst = new RuleBox(_brConfiguration.Rules[0]);
         var ruleBoxSecond = new RuleBox(_brConfiguration.Rules.Last());
 
         // Act

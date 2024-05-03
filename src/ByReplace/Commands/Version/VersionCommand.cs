@@ -1,6 +1,8 @@
-﻿namespace ByReplace.Commands.Version;
+﻿// Ignore Spelling: nuget
 
-internal class VersionCommand : ICommand
+namespace ByReplace.Commands.Version;
+
+internal sealed class VersionCommand : ICommand
 {
     private readonly INugetVersion _nugetVersion;
 

@@ -5,7 +5,7 @@ using NoAlloq;
 namespace ByReplace.Printers;
 
 [ExcludeFromCodeCoverage]
-internal class PrinterKonsole
+internal sealed class PrinterKonsole
 {
     readonly ConcurrentWriter console;
     IConsole consoleBox;
@@ -26,7 +26,7 @@ internal class PrinterKonsole
             return;
         }
 
-        foreach (string textPart in textParts)
+        foreach (ref readonly string textPart in textParts)
         {
             if (textPart.StartsWith("[Green]"))
             {

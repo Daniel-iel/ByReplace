@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Commands.Rule.ListRules;
 
-internal class ListRulesCommand : ICommand
+internal sealed class ListRulesCommand : ICommand
 {
     private readonly BrConfiguration configuration;
     private readonly IPrintBox printBox;

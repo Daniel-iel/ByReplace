@@ -49,7 +49,7 @@ public class ListRulesCommandTest
     }
 
     [Fact]
-    public async Task Execute_WhenPrintTheBoxWithTheRules_ShouldValidadeIfBoxWasPrintedOnce()
+    public async Task Execute_WhenPrintTheBoxWithTheRules_ShouldValidateIfBoxWasPrintedOnce()
     {
         // Arrange
         var builder = new RulesBox(_brConfiguration.Rules);

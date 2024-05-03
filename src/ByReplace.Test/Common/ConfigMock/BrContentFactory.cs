@@ -3,7 +3,7 @@
 internal sealed class BrContentFactory
 {
     private ContentSyntax _configSyntax;
-    private List<RuleSyntax> _rulesSyntax = new List<RuleSyntax>();
+    private readonly List<RuleSyntax> _rulesSyntax = new List<RuleSyntax>();
 
     public static BrContentFactory CreateDefault() => new BrContentFactory();
 

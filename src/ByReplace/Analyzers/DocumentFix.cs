@@ -2,7 +2,7 @@
 
 namespace ByReplace.Analyzers;
 
-internal class DocumentFix
+internal sealed class DocumentFix
 {
     private readonly AnalyzerAndFixer codeFixes;
     private readonly IPrint print;
@@ -34,7 +34,7 @@ internal class DocumentFix
         foreach (KeyValuePair<FileMapper, List<Rule>> codeFixe in codeFixes)
         {
             FileMapper file = codeFixe.Key;
-            IReadOnlyList<Rule> rules = codeFixe.Value;
+            List<Rule> rules = codeFixe.Value;
 
             print.Information($"Processing file [Cyan]{file.Name}");
 

@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Commands.Rule.OpenRule;
 
-internal class OpenRuleParameter : ICommandParameterSet
+internal sealed class OpenRuleParameter : ICommandParameterSet
 {
     [Option(shortName: 'n', Description = "Rule's name")]
     public string Name { get; set; }

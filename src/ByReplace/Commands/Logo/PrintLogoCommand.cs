@@ -2,7 +2,7 @@
 
 namespace ByReplace.Commands.Logo;
 
-internal class PrintLogoCommand : ICommand
+internal sealed class PrintLogoCommand : ICommand
 {
     private readonly IPrint _print;
 

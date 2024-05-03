@@ -35,17 +35,14 @@ public class ApplyRuleParameterTest
             Assert.Equal(typeof(string), entry.Name.GetType());
             Assert.Equal("Rule", entry.Name);
             Assert.Single(attributes);
-            Assert.Collection(attributes,
-            attribute =>
-            {
-                var option = (OptionAttribute)attribute;
+            var attribute = Assert.Single(attributes);
+            var option = (OptionAttribute)attribute;
 
-                Assert.Equal(typeof(OptionAttribute), attribute.GetType());
-                Assert.Null(option.Name);
-                Assert.Equal("Rule name to be applied.", option.Description);
-                Assert.Collection(option.ShortNames,
-                entry => Assert.Equal('r', entry));
-            });
+            Assert.Equal(typeof(OptionAttribute), attribute.GetType());
+            Assert.Null(option.Name);
+            Assert.Equal("Rule name to be applied.", option.Description);
+            Assert.Collection(option.ShortNames,
+            entry => Assert.Equal('r', entry));
         },
         entry =>
         {
@@ -54,17 +51,14 @@ public class ApplyRuleParameterTest
             Assert.Equal(typeof(string), entry.Name.GetType());
             Assert.Equal("Path", entry.Name);
             Assert.Single(attributes);
-            Assert.Collection(attributes,
-            attribute =>
-            {
-                var option = (OptionAttribute)attribute;
+            var attribute = Assert.Single(attributes);
+            var option = (OptionAttribute)attribute;
 
-                Assert.Equal(typeof(OptionAttribute), attribute.GetType());
-                Assert.Null(option.Name);
-                Assert.Equal("Path of the files to be applied to the rule.", option.Description);
-                Assert.Collection(option.ShortNames,
-                entry => Assert.Equal('p', entry));
-            });
+            Assert.Equal(typeof(OptionAttribute), attribute.GetType());
+            Assert.Null(option.Name);
+            Assert.Equal("Path of the files to be applied to the rule.", option.Description);
+            Assert.Collection(option.ShortNames,
+            entry => Assert.Equal('p', entry));
         },
         entry =>
         {
@@ -73,17 +67,14 @@ public class ApplyRuleParameterTest
             Assert.Equal(typeof(string), entry.Name.GetType());
             Assert.Equal("ConfigFile", entry.Name);
             Assert.Single(attributes);
-            Assert.Collection(attributes,
-            attribute =>
-            {
-                var option = (OptionAttribute)attribute;
+            var attribute = Assert.Single(attributes);
+            var option = (OptionAttribute)attribute;
 
-                Assert.Equal(typeof(OptionAttribute), attribute.GetType());
-                Assert.Null(option.Name);
-                Assert.Equal("Path of the brconfig file.", option.Description);
-                Assert.Collection(option.ShortNames,
-                entry => Assert.Equal('f', entry));
-            });
+            Assert.Equal(typeof(OptionAttribute), attribute.GetType());
+            Assert.Null(option.Name);
+            Assert.Equal("Path of the brconfig file.", option.Description);
+            Assert.Collection(option.ShortNames,
+            entry => Assert.Equal('f', entry));
         });
     }
 }

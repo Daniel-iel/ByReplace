@@ -2,7 +2,7 @@
 
 namespace ByReplace.Commands.Apply.Rule;
 
-internal class ApplyRuleCommand : ICommand
+internal sealed class ApplyRuleCommand : ICommand
 {
     private readonly BrConfiguration configuration;
     private readonly ApplyRuleParameter applyRuleParameter;

@@ -1,7 +1,7 @@
 ﻿namespace ByReplace.Exceptions;
 
 [ExcludeFromCodeCoverage]
-internal class RuleNotFoundException : NotFoundException
+internal sealed class RuleNotFoundException : NotFoundException
 {
     public RuleNotFoundException() : base() { }
 

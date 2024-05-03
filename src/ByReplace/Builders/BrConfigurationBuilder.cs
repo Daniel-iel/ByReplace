@@ -2,7 +2,7 @@
 
 namespace ByReplace.Builders;
 
-internal class BrConfigurationBuilder
+internal sealed class BrConfigurationBuilder
 {
     private string _path;
     private string _configFile;
@@ -46,9 +46,9 @@ internal class BrConfigurationBuilder
 
         if (!string.IsNullOrEmpty(_rule))
         {
-            Rule rule = configuration.Rules
-                .Where(r => r.Name.Equals(_rule, StringComparison.InvariantCultureIgnoreCase))
-                .FirstOrDefault();
+            Rule rule = configuration
+                        .Rules
+                        .FirstOrDefault(r => r.Name.Equals(_rule, StringComparison.InvariantCultureIgnoreCase));
 
             // dado um arquivo com várias regras, esse código vai fazer o usuário escolher apenas uma
             // regra para ser aplicada individualmente.

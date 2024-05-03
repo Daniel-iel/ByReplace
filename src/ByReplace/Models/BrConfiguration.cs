@@ -2,7 +2,7 @@
 
 namespace ByReplace.Models;
 
-internal class BrConfiguration
+internal sealed class BrConfiguration
 {
     public BrConfiguration(string path, string[] skipDirectories, ImmutableList<Rule> rules)
     {

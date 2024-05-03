@@ -3,7 +3,7 @@
 namespace ByReplace.Exceptions;
 
 [ExcludeFromCodeCoverage]
-internal class GlobalHandleExceptionAttribute : CommandFilterAttribute
+internal sealed class GlobalHandleExceptionAttribute : CommandFilterAttribute
 {
     readonly IPrint print = new PrintConsole();
 

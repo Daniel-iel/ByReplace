@@ -19,7 +19,7 @@ internal sealed class RulesBox : IBox, IEquatable<RulesBox>, IEqualityComparer<R
 
     public string GetValuesToPrint()
     {
-        StringBuilder rules = new StringBuilder();
+        StringBuilder rules = new StringBuilder(_rules.Count);
 
         foreach (Models.Rule rule in _rules)
         {

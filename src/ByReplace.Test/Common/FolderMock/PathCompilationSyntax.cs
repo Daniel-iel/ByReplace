@@ -8,7 +8,7 @@ internal sealed class PathCompilationSyntax
     private readonly List<FolderSyntax> _folders;
     private ContentSyntax _brConfiguration;
 
-    public string InternalIdentifier { get; private set; }
+    public string InternalIdentifier { get; }
 
     public PathCompilationSyntax()
     {

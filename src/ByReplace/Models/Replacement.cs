@@ -1,4 +1,4 @@
 ﻿namespace ByReplace.Models;
 
 [ExcludeFromCodeCoverage]
-internal record Replacement(string[] Old, string New);
+internal record class Replacement(string[] Old, string New);

@@ -54,7 +54,7 @@ public class ApplyRulesCommandTEst
         var command = new ApplyRulesCommand(_brConfiguration, _printMock.Object);
 
         // Act
-        var executionResult = Record.Exception(() => command.ExecuteAsync());
+        var executionResult = Record.Exception(() => command.ExecuteAsync(It.IsAny<CancellationToken>()));
 
         // Assert
         Assert.Null(executionResult);

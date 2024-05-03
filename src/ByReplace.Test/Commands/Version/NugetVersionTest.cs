@@ -1,4 +1,6 @@
-﻿using ByReplace.Commands.TimerFinish;
+﻿// Ignore Spelling: Nuget
+
+using ByReplace.Commands.TimerFinish;
 using ByReplace.Printers;
 using Moq;
 using Xunit;
@@ -15,7 +17,7 @@ namespace ByReplace.Test.Commands.Version
         }
 
         [Fact]
-        public async Task Execute_WhenCalledTimerToPrintTimeOfExecution_ShoulVerifyIfTimerWasCalledOnce()
+        public async Task Execute_WhenCalledTimerToPrintTimeOfExecution_ShouldVerifyIfTimerWasCalledOnce()
         {
             // Arrange
             var command = new TimerFinishCommand(_printMock.Object);

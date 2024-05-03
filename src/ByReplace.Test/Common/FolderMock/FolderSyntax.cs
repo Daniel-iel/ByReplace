@@ -24,9 +24,9 @@ internal sealed class FolderSyntax
 
     public FolderSyntax Parent { get; private set; }
 
-    public string Name { get; private set; }
+    public string Name { get; }
 
-    public List<FileSyntax> Files { get; private set; }
+    public List<FileSyntax> Files { get; }
 
     public static FolderSyntax FolderDeclaration(string name)
     {

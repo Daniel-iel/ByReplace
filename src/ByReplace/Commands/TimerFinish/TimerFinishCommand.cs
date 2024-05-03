@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Commands.TimerFinish;
 
-internal class TimerFinishCommand : ICommand
+internal sealed class TimerFinishCommand : ICommand
 {
     private readonly IPrint print;
 

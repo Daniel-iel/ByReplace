@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Test.Commands.Rule.OpenRule
 {
-    internal class OpenRuleParameterTest
+    internal sealed class OpenRuleParameterTest
     {
     }
 }

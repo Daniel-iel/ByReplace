@@ -15,7 +15,7 @@ public class ListRulesParameterTest
 
         // Assert
         Assert.NotNull(metadata);
-        Assert.Equal(typeof(ICommandParameterSet), metadata.First());
+        Assert.Equal(typeof(ICommandParameterSet), metadata[0]);
     }
 
     [Fact]
@@ -26,25 +26,22 @@ public class ListRulesParameterTest
 
         // Assert
         Assert.Single(metadata);
-        Assert.Collection(metadata,
-        entry =>
+        var entry = Assert.Single(metadata);
+        var attributes = entry.GetCustomAttributes(false);
+
+        Assert.Equal(typeof(string), entry.Name.GetType());
+        Assert.Equal("ConfigFile", entry.Name);
+        Assert.Single(attributes);
+        Assert.Collection(attributes,
+        attribute =>
         {
-            var attributes = entry.GetCustomAttributes(false);
+            var option = (OptionAttribute)attribute;
 
-            Assert.Equal(typeof(string), entry.Name.GetType());
-            Assert.Equal("ConfigFile", entry.Name);
-            Assert.Single(attributes);
-            Assert.Collection(attributes,
-            attribute =>
-            {
-                var option = (OptionAttribute)attribute;
-
-                Assert.Equal(typeof(OptionAttribute), attribute.GetType());
-                Assert.Null(option.Name);
-                Assert.Equal("Path of the brconfig file.", option.Description);
-                Assert.Collection(option.ShortNames,
-                entry => Assert.Equal('f', entry));
-            });
+            Assert.Equal(typeof(OptionAttribute), attribute.GetType());
+            Assert.Null(option.Name);
+            Assert.Equal("Path of the brconfig file.", option.Description);
+            Assert.Collection(option.ShortNames,
+            entry => Assert.Equal('f', entry));
         });
     }
 }

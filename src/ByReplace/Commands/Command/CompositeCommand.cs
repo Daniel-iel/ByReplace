@@ -2,7 +2,7 @@
 
 namespace ByReplace.Commands.Command;
 
-internal class CompositeCommand : ICommand
+internal sealed class CompositeCommand : ICommand
 {
     private readonly ICommand[] commands;
 

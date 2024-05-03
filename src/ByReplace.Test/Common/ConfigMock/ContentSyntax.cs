@@ -4,7 +4,6 @@ public class ContentSyntax
 {
     public ContentSyntax()
     {
-
     }
 
     private ContentSyntax(string path, List<string> skipDirectories)

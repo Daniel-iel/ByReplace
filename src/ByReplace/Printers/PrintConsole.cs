@@ -1,7 +1,7 @@
 ﻿namespace ByReplace.Printers;
 
 [ExcludeFromCodeCoverage]
-internal class PrintConsole : IPrint
+internal sealed class PrintConsole : IPrint
 {
     readonly Stopwatch timer;
     readonly PrinterKonsole printerKonsole;

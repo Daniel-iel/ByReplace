@@ -2,11 +2,11 @@
 
 namespace ByReplace.Analyzers;
 
-internal class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
+internal sealed class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
 {
     private readonly IPrint print;
 
-    public AnalyzerAndFixer(IPrint print) : this(Enumerable.Empty<KeyValuePair<FileMapper, List<Rule>>>(), print)
+    public AnalyzerAndFixer(IPrint print) : this([], print)
     {
     }
 
@@ -21,8 +21,8 @@ internal class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
         {
             foreach (Rule rule in rules)
             {
-                Match skipDirMatch = new SkipMatch(directoryNode.Directory, file, rule.Skip);
-                Match extensionMatch = new ExtensionMatch(file.Extension, rule.Extensions);
+                var skipDirMatch = new SkipMatch(directoryNode.Directory, file, rule.Skip);
+                var extensionMatch = new ExtensionMatch(file.Extension, rule.Extensions);
 
                 if (skipDirMatch.HasMatch || !extensionMatch.HasMatch)
                 {

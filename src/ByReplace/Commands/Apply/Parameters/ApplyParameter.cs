@@ -2,7 +2,7 @@
 
 namespace ByReplace.Commands.Apply.Parameters;
 
-internal record ApplyParameter : ICommandParameterSet
+internal record class ApplyParameter : ICommandParameterSet
 {
     [Option(shortName: 'p', Description = "Path of the files to be applied to the rule.")]
     public string Path { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace ByReplace.Test.Commands.Version
 {
-    internal class VersionCommandTest
+    internal sealed class VersionCommandTest
     {
     }
 }
