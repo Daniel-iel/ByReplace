@@ -76,13 +76,13 @@ public class BrConfigurationTest
     public void ChangeDefaultPath_WhenChangePathToAPathThatExists_ShouldReplaceTheValueOfPath()
     {
         // Arrange
-        var config = new BrConfiguration("C://ByReplace", ["**//Controllers/*"], []);
+        var config = new BrConfiguration("./ByReplace", ["**//Controllers/*"], []);
 
         // Act
-        config.ChangeDefaultPath("C:");
+        config.ChangeDefaultPath("./");
 
         // Assert
-        Assert.Equal("C:", config.Path);
+        Assert.Equal("./", config.Path);
     }
 
     [Fact]

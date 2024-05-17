@@ -14,20 +14,91 @@
 
 # About
 
-Coming soon!
+ByReplace is a powerful command-line interface (CLI) tool designed for efficiently executing find-and-replace operations within source files. This versatile utility enables users to seamlessly modify text within their codebase, enhancing productivity and streamlining development processes. Whether you're updating variable names, correcting typos, or implementing sweeping changes across multiple files.
 
 # Get Started
 
-Coming soon!
+[Dotnet 8](https://dotnet.microsoft.com/en-us/download) is required to run ByReplace.
+After installing the NuGet package, navigate to your terminal and execute the command `br -v`. If the installation was successful, the following text will be displayed in your terminal.
+
+```shell
+br
+
+Commands:
+  apply    apply commands
+  rule     rule commands
+
+Options:
+  -h, --help    Show help message
+  --version     Show version
+```
 
 ## Install
 
-Coming soon!
+ByReplace tool is delivery by [nuget](https://www.nuget.org/packages/ByReplace).
 
-## How create brconfig file
+```shell
+dotnet install -g ByReplace
+```
 
-Coming soon!
+## How Create the Configuration File
+
+```shell
+{
+  "Path": "",
+  "SkipDirectories": [ "" ],
+  "Rules": [
+    {
+      "Name": "",
+      "Description": "",
+      "Skip": [ "", "" ],
+      "Extensions": [ "", "" ],
+      "Replacement": {
+        "Old": [ "", "" ],
+        "New": ""
+      }
+    }
+  ]
+}
+```
+
+### Path
+
+### SkipDirectories
+
+### Rules
 
 ## Commands
 
-Coming soon!
+### Apply
+
+`br apply rule`: Is used to execute only one rule from brConfiguration file. 
+
+- `-r`: rule's name.
+- `-p`: path of files to execute the apply.
+- `-f`: folder's path that constains the brConfiguration file.
+
+```shell
+br apply rule -r "Rule" -p "C:/{three files" -f "C:"
+```
+
+`br apply rules`: Is used to execute all rules rule from brConfiguration file. 
+
+- `-p`: path of files to execute the apply.
+- `-f`: folder's path that constains the brConfiguration file.
+
+```shell
+br apply rules -p "C:/{three files" -f "C:"
+```
+
+### Rule
+
+`br rule list-rules` 
+
+```shell
+```
+
+`br rule open-rule` 
+
+```shell
+```

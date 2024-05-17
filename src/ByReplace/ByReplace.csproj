@@ -15,8 +15,8 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <Description>CLI to help developer to do bulk replace using shared configuration.</Description>
-    <Authors>Daniel-iel</Authors>
-    <Company>Daniel-iel</Company>
+    <Authors>Daniel Oliveira</Authors>
+    <Company>Daniel Oliveira</Company>
     <ToolCommandName>br</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

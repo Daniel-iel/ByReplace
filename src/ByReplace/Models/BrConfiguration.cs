@@ -1,4 +1,6 @@
-﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+﻿using ByReplace.Common;
+
+[assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Models;
 
@@ -34,7 +36,9 @@ internal sealed class BrConfiguration
 
     public static BrConfiguration GetConfiguration(string pathConfig)
     {
-        string configurationFilePath = Sanitizer(string.Join(@"\", pathConfig, "brconfig.json"));
+        PathFixer path = new PathFixer();
+
+        string configurationFilePath = path.GetFixedPath(pathConfig, "brconfig.json");
 
         if (!File.Exists(configurationFilePath))
         {
