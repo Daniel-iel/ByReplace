@@ -84,19 +84,6 @@ public class AnalyzerRunnerTest
         Assert.Equal(4, analyzersAndFixers.Count);
 
         Assert.Collection(analyzersAndFixers,
-              entry =>
-              {
-                  Assert.Equal("bin2.txt", entry.Key.Name);
-                  Assert.Equal(".txt", entry.Key.Extension);
-                  Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
-              },
-               entry =>
-               {
-                   Assert.Equal("obj1.txt", entry.Key.Name);
-                   Assert.Equal(".txt", entry.Key.Extension);
-                   Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
-               },
-
         entry =>
         {
             Assert.Equal("RootFile1.cs", entry.Key.Name);
@@ -107,6 +94,18 @@ public class AnalyzerRunnerTest
         {
             Assert.Equal("RootFile2.cs", entry.Key.Name);
             Assert.Equal(".cs", entry.Key.Extension);
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+        },
+        entry =>
+        {
+            Assert.Equal("bin2.txt", entry.Key.Name);
+            Assert.Equal(".txt", entry.Key.Extension);
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+        },
+        entry =>
+        {
+            Assert.Equal("obj1.txt", entry.Key.Name);
+            Assert.Equal(".txt", entry.Key.Extension);
             Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
         });
     }

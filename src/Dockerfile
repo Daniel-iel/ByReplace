@@ -6,8 +6,7 @@ RUN dotnet build ByReplace.sln -c Release -o /app
 RUN dotnet test ByReplace.sln
 
 # Build runtime image
-#FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
-#WORKDIR /app
-#COPY --from=build /app .
-#ENTRYPOINT ["dotnet", "ByReplace.dll"]
-#
+# FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+# WORKDIR /app
+# COPY --from=build /app .
+# ENTRYPOINT ["dotnet", "ByReplace.dll"]

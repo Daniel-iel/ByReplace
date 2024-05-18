@@ -24,10 +24,6 @@ internal sealed class AnalyzerRunner
             analyzersAndFixers.TryMatchRule(dir, brConfiguration.Rules);
         }
 
-       return new AnalyzerAndFixer(
-           analyzersAndFixers
-           .OrderBy(x => x.Key.FullName)
-           .ToDictionary(x => x.Key, x => x.Value), print);
-
+        return analyzersAndFixers;
     }
 }
