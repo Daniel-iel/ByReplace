@@ -24,7 +24,9 @@ public class DirectoryThree
 
         MapThreeSubFolders(path, ref nodes);
 
-        Nodes = nodes.ToImmutableList();
+        Nodes = nodes
+            .OrderBy(c => c.Directory)
+            .ToImmutableList();
 
         return Nodes;
     }
@@ -40,6 +42,7 @@ public class DirectoryThree
             Files: directoryInfo
                   .GetFiles()
                   .Select(file => new FileMapper(Guid.NewGuid(), file.Name, file.FullName, file.Extension))
+                  .OrderBy(file => file.Name)
                   .ToImmutableList()
            );
 

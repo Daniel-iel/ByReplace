@@ -20,6 +20,9 @@ internal sealed class Analyzer
         DirectoryThree directoryThree = new DirectoryThree(print);
         directoryThree.MapThreeSources(brConfiguration.Path);
 
-        return directoryThree.Nodes.ToImmutableList();
+        return directoryThree
+            .Nodes
+            .OrderBy(c => c.Directory)
+            .ToImmutableList();
     }
 }
