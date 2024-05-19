@@ -155,3 +155,7 @@ br rule list-rules -f "C:/"
 ```bash
 br rule open-rule -n "rule name" -f "C:/"
 ```
+
+# License
+
+Our code and framework are licensed under the MIT license. Please see the license file for more information. You can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source.
