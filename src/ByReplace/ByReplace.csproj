@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Title>ByReplace</Title>
+    <PackageProjectUrl>https://github.com/Daniel-iel/ByReplace</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Daniel-iel/ByReplace</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>replace;automate;replace ci;replace cli;replace tool;bulk replace</PackageTags>
+    <PackAsTool>True</PackAsTool>
+    <SignAssembly>False</SignAssembly>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <Description>CLI to help developer to do bulk replace using shared configuration.</Description>
+    <Authors>Daniel Oliveira</Authors>
+    <Company>Daniel Oliveira</Company>
+    <ToolCommandName>br</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>7</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>7</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AsyncAwaitBestPractices" Version="7.0.0" />
+    <PackageReference Include="ClrHeapAllocationAnalyzer" Version="3.0.0" />
+    <PackageReference Include="Cocona" Version="2.2.0" />
+    <PackageReference Include="Cocona.Core" Version="2.2.0" />
+    <PackageReference Include="CommunityToolkit.Common" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageReference Include="Goblinfactory.Konsole" Version="6.2.2" />
+    <PackageReference Include="Mediator.Abstractions" Version="2.1.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.9.28" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.9.28">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="morelinq" Version="4.1.0" />
+    <PackageReference Include="NoAlloq" Version="0.2.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.9.1" />
+    <PackageReference Include="NuGet.Versioning" Version="6.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="brconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
