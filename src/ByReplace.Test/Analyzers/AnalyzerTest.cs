@@ -1,21 +1,25 @@
 ﻿using ByReplace.Analyzers;
 using ByReplace.Builders;
-using ByReplace.Models;
 using ByReplace.Printers;
+using ByReplace.Test.ClassFixture;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
 using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class AnalyzerTest
+public class AnalyzerTest : IClassFixture<WorkspaceFixture>
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceFixture _workspace;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzerTest()
+    public AnalyzerTest(WorkspaceFixture workspace)
     {
+        _workspace = workspace;
+        _printMock = new Mock<IPrint>();
+
+        _workspace.ClearPrevious();
+
         var rootFolder = FolderSyntax
            .FolderDeclaration("RootFolder")
            .AddMembers(FileSyntax.FileDeclaration("FileOne.cs", "ITest = new Test()"));
@@ -24,25 +28,23 @@ public class AnalyzerTest
            .AddParent(rootFolder)
            .AddMembers(FileSyntax.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
 
-        _pathCompilationSyntax = PathFactory
+        _workspace.WorkspaceSyntax = WorkspaceFactory
            .Compile(nameof(AnalyzerTest))
            .AddMembers(firstLevel)
            .Create();
 
-        _brConfiguration = BrConfigurationBuilder
+        _workspace.BrConfiguration = BrConfigurationBuilder
            .Create()
-           .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-           .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
+           .SetPath($"./{_workspace.WorkspaceSyntax.Identifier}")
+           .SetConfigPath($"./{_workspace.WorkspaceSyntax.Identifier}")
            .Build();
-
-        _printMock = new Mock<IPrint>();
     }
 
     [Fact]
     public void LoadThreeFiles_MapAllSourceThreeOfDirectory_ShouldReturnSourceFileThree()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();
@@ -59,7 +61,7 @@ public class AnalyzerTest
     public void LoadThreeFiles_WhenPrintLogInformation_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();

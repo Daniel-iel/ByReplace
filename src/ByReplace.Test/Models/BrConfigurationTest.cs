@@ -1,16 +1,14 @@
 ﻿using ByReplace.Builders;
 using ByReplace.Models;
-using ByReplace.Test.Analyzers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
-using System.Collections.Immutable;
 using Xunit;
 
 namespace ByReplace.Test.Models;
 
 public class BrConfigurationTest
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
+    private readonly WorkspaceSyntax _workspaceSyntax;
     private readonly BrConfiguration _brConfiguration;
 
     public BrConfigurationTest()
@@ -27,11 +25,11 @@ public class BrConfigurationTest
 
         var rootFolder = FolderSyntax
             .FolderDeclaration("RootFolder")
-            .AddMembers(
+            .AddFiles(
                 FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
-        _pathCompilationSyntax = PathFactory
+        _workspaceSyntax = WorkspaceFactory
             .Compile(nameof(BrConfigurationTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
@@ -39,8 +37,8 @@ public class BrConfigurationTest
 
         _brConfiguration = BrConfigurationBuilder
             .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
+            .SetPath($"./{_workspaceSyntax.Identifier}")
+            .SetConfigPath($"./{_workspaceSyntax.Identifier}")
             .Build();
     }
 
@@ -99,7 +97,7 @@ public class BrConfigurationTest
     public void GetConfiguration_WhenGetConfigurationThatExistsOnPath_ShouldReturnBrConfiguration()
     {
         // Arrange && Act
-        var config = BrConfiguration.GetConfiguration(_pathCompilationSyntax.InternalIdentifier);
+        var config = BrConfiguration.GetConfiguration(_workspaceSyntax.Identifier);
 
         // Assert
         Assert.NotNull(config);
