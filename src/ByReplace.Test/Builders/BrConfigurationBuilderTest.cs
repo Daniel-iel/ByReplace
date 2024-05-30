@@ -7,7 +7,7 @@ namespace ByReplace.Test.Builders;
 
 public class BrConfigurationBuilderTest
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
+    private readonly WorkspaceSyntax _workspaceSyntax;
 
     public BrConfigurationBuilderTest()
     {
@@ -23,7 +23,7 @@ public class BrConfigurationBuilderTest
                   .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
          .Compile();
 
-        _pathCompilationSyntax = PathFactory
+        _workspaceSyntax = WorkspaceFactory
           .Compile(nameof(BrConfigurationBuilderTest))
           .AddMember(rootFolder)
           .AddBrConfiguration(configContent)
@@ -34,8 +34,8 @@ public class BrConfigurationBuilderTest
     public void Build_ReturnsCorrectConfiguration()
     {
         // Arrange
-        var configFile = $"./{_pathCompilationSyntax.InternalIdentifier}";
-        var path = $"./{_pathCompilationSyntax.InternalIdentifier}";
+        var configFile = $"./{_workspaceSyntax.Identifier}";
+        var path = $"./{_workspaceSyntax.Identifier}";
         const string rule = "RuleTest";
 
         var builder = BrConfigurationBuilder

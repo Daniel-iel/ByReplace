@@ -1,7 +1,7 @@
 ﻿using ByReplace.Analyzers;
 using ByReplace.Builders;
-using ByReplace.Models;
 using ByReplace.Printers;
+using ByReplace.Test.ClassFixture;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
@@ -9,15 +9,19 @@ using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class AnalyzerRunnerTest
+public class AnalyzerRunnerTest : IClassFixture<WorkspaceFixture>
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceFixture _workspace;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzerRunnerTest()
+    public AnalyzerRunnerTest(WorkspaceFixture workspace)
     {
-        var configContent = BrContentFactory
+        _workspace = workspace;
+        _printMock = new Mock<IPrint>();
+
+        workspace.ClearPrevious();
+
+        _workspace.ConfigContent = BrContentFactory
            .CreateDefault()
            .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
            .AddRules(BrContentFactory
@@ -29,49 +33,47 @@ public class AnalyzerRunnerTest
 
         var rootFolder = FolderSyntax
             .FolderDeclaration("RootFolder")
-            .AddMembers(
+            .AddFiles(
                 FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
         var controllerFolder = FolderSyntax.FolderDeclaration("Controllers")
             .AddParent(rootFolder)
-            .AddMembers(
+            .AddFiles(
                FileSyntax.FileDeclaration("Controller1.cs", "ITest2 = new Test()"),
                FileSyntax.FileDeclaration("Controller2.cs", "ITest2 = new Test()"));
 
         var binFolder = FolderSyntax.FolderDeclaration("bin")
             .AddParent(rootFolder)
-            .AddMembers(
+            .AddFiles(
                 FileSyntax.FileDeclaration("bin1.txt", "ITest = new Test()"),
                 FileSyntax.FileDeclaration("bin2.txt", "ITest = new Test()"));
 
         var objFolder = FolderSyntax.FolderDeclaration("obj")
             .AddParent(rootFolder)
-            .AddMembers(
+            .AddFiles(
                 FileSyntax.FileDeclaration("obj1.txt", "ITest = new Test()"),
                 FileSyntax.FileDeclaration("obj2.txt", "ITest = new Test()"));
 
-        _pathCompilationSyntax = PathFactory
+        _workspace.WorkspaceSyntax = WorkspaceFactory
             .Compile(nameof(AnalyzerRunnerTest))
             .AddMembers(controllerFolder, binFolder, objFolder)
-            .AddBrConfiguration(configContent)
+            .AddBrConfiguration(_workspace.ConfigContent)
             .Create();
 
-        _brConfiguration = BrConfigurationBuilder
+        _workspace.BrConfiguration = BrConfigurationBuilder
             .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
+            .SetPath($"./{_workspace.WorkspaceSyntax.Identifier}")
+            .SetConfigPath($"./{_workspace.WorkspaceSyntax.Identifier}")
             .Build();
-
-        _printMock = new Mock<IPrint>();
     }
 
     [Fact]
     public void RunAnalysis_MapAllRulesThatMatchToFileInSourceTree_ShouldReturnRulesThatMatch()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
-        var analyzerRunner = new AnalyzerRunner(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
+        var analyzerRunner = new AnalyzerRunner(_workspace.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();
@@ -114,8 +116,8 @@ public class AnalyzerRunnerTest
     public void RunAnalysis_WhenPrintLogInformation_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
-        var analyzerRunner = new AnalyzerRunner(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
+        var analyzerRunner = new AnalyzerRunner(_workspace.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();

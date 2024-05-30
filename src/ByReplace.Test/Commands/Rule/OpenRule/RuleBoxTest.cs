@@ -11,7 +11,7 @@ namespace ByReplace.Test.Commands.Rule.OpenRule;
 
 public class RuleBoxTest
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
+    private readonly WorkspaceSyntax _workspaceSyntax;
     private readonly BrConfiguration _brConfiguration;
     private readonly Mock<IPrint> _printMock;
 
@@ -36,11 +36,11 @@ public class RuleBoxTest
 
         var rootFolder = FolderSyntax
             .FolderDeclaration("RootFolder")
-            .AddMembers(
+            .AddFiles(
                 FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
                 FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
 
-        _pathCompilationSyntax = PathFactory
+        _workspaceSyntax = WorkspaceFactory
             .Compile(nameof(RuleBoxTest))
             .AddMembers(rootFolder)
             .AddBrConfiguration(configContent)
@@ -48,8 +48,8 @@ public class RuleBoxTest
 
         _brConfiguration = BrConfigurationBuilder
             .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
+            .SetPath($"./{_workspaceSyntax.Identifier}")
+            .SetConfigPath($"./{_workspaceSyntax.Identifier}")
             .Build();
     }
 

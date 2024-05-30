@@ -1,51 +1,20 @@
-﻿using ByReplace.Builders;
-using ByReplace.Commands.Apply.Rule;
-using ByReplace.Models;
+﻿using ByReplace.Commands.Apply.Rule;
 using ByReplace.Printers;
-using ByReplace.Test.Common.ConfigMock;
-using ByReplace.Test.Common.FolderMock;
+using ByReplace.Test.ClassFixture;
 using Moq;
 using Xunit;
 
 namespace ByReplace.Test.Commands.Apply.Rule;
 
-public class ApplyRuleCommandTest
+public class ApplyRuleCommandTest : IClassFixture<WorkspaceFixture>
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceFixture _workspace;
     private readonly Mock<IPrint> _printMock;
 
-    public ApplyRuleCommandTest()
+    public ApplyRuleCommandTest(WorkspaceFixture workspace)
     {
+        _workspace = workspace;
         _printMock = new Mock<IPrint>();
-
-        var configContent = BrContentFactory
-          .CreateDefault()
-          .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-          .AddRules(BrContentFactory
-                   .Rule("RuleTest")
-                   .WithExtensions(".cs", ".txt")
-                   .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                   .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-          .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddMembers(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
-        _pathCompilationSyntax = PathFactory
-            .Compile(nameof(ApplyRuleCommandTest))
-            .AddMembers(rootFolder)
-            .AddBrConfiguration(configContent)
-            .Create();
-
-        _brConfiguration = BrConfigurationBuilder
-            .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .Build();
     }
 
     [Fact]
@@ -57,7 +26,7 @@ public class ApplyRuleCommandTest
             Rule = "RuleTest"
         };
 
-        var command = new ApplyRuleCommand(_brConfiguration, applyRuleParameter, _printMock.Object);
+        var command = new ApplyRuleCommand(_workspace.BrConfiguration, applyRuleParameter, _printMock.Object);
 
         // Act
         var executionResult = Record.Exception(() => command.ExecuteAsync());

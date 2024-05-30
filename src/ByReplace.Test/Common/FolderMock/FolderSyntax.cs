@@ -49,7 +49,7 @@ internal sealed class FolderSyntax
         return this;
     }
 
-    public FolderSyntax AddMembers(params FileSyntax[] filesSyntax)
+    public FolderSyntax AddFiles(params FileSyntax[] filesSyntax)
     {
         this.Files.AddRange(filesSyntax);
         return this;

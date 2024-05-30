@@ -28,6 +28,9 @@ StrykerOutput
 */StrykerOutput/*
 */StrykerOutput/
 
+*/coverage.opencover.xml
+coverage.opencover.xml
+
 src/**/nupkg/*
 */src/*/nupkg/*
 .user

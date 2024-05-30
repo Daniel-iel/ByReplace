@@ -3,56 +3,56 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 namespace ByReplace.Test.Common.FolderMock;
 
-internal sealed class PathCompilationSyntax
+internal sealed class WorkspaceSyntax
 {
     private readonly List<FolderSyntax> _folders;
     private ContentSyntax _brConfiguration;
 
-    public string InternalIdentifier { get; }
+    public string Identifier { get; }
 
-    public PathCompilationSyntax()
+    public WorkspaceSyntax()
     {
-        InternalIdentifier = Guid.NewGuid().ToString();
+        Identifier = Guid.NewGuid().ToString();
         _folders = new List<FolderSyntax>();
         _brConfiguration = new ContentSyntax();
     }
 
-    public PathCompilationSyntax(string testCase)
+    public WorkspaceSyntax(string testCase)
     {
-        InternalIdentifier = $"{testCase}_{Guid.NewGuid()}";
+        Identifier = $"{testCase}_{Guid.NewGuid()}";
         _folders = new List<FolderSyntax>();
         _brConfiguration = new ContentSyntax();
     }
 
-    public PathCompilationSyntax AddMembers(params FolderSyntax[] foldersSyntax)
+    public WorkspaceSyntax AddMembers(params FolderSyntax[] foldersSyntax)
     {
         this._folders.AddRange(foldersSyntax);
 
         return this;
     }
 
-    public PathCompilationSyntax AddMember(FolderSyntax folderSyntax)
+    public WorkspaceSyntax AddMember(FolderSyntax folderSyntax)
     {
         _folders.Add(folderSyntax);
 
         return this;
     }
 
-    public PathCompilationSyntax AddBrConfiguration(ContentSyntax configSyntax)
+    public WorkspaceSyntax AddBrConfiguration(ContentSyntax configSyntax)
     {
         _brConfiguration = configSyntax;
 
         return this;
     }
 
-    public PathCompilationSyntax AddFolder(string name)
+    public WorkspaceSyntax AddFolder(string name)
     {
         _folders.Add(new FolderSyntax(name));
 
         return this;
     }
 
-    public PathCompilationSyntax Create()
+    public WorkspaceSyntax Create()
     {
         foreach (ref var folder in CollectionsMarshal.AsSpan(_folders))
         {
@@ -66,13 +66,13 @@ internal sealed class PathCompilationSyntax
                 WriteIndented = true
             });
 
-            File.WriteAllText($"./{InternalIdentifier}/brconfig.json", brConfig);
+            File.WriteAllText($"./{Identifier}/brconfig.json", brConfig);
         }
 
         return this;
     }
 
-    public PathCompilationSyntax CreateThreeFolder(FolderSyntax folderSyntax)
+    public WorkspaceSyntax CreateThreeFolder(FolderSyntax folderSyntax)
     {
         if (folderSyntax is null)
         {
@@ -85,8 +85,8 @@ internal sealed class PathCompilationSyntax
         }
 
         var dirPath = folderSyntax.Parent is not null
-                ? $"./{InternalIdentifier}/{folderSyntax.Parent.Name}/{folderSyntax.Name}"
-                : $"./{InternalIdentifier}/{folderSyntax.Name}";
+                ? $"./{Identifier}/{folderSyntax.Parent.Name}/{folderSyntax.Name}"
+                : $"./{Identifier}/{folderSyntax.Name}";
 
         if (!Directory.Exists(dirPath))
         {
