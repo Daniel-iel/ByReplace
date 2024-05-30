@@ -58,6 +58,8 @@ public class DirectoryThreeTest
         var nodes = dirThree.MapThreeSources(_brConfiguration.Path);
 
         // Assert
+        _printMock.Verify(c => c.Information(It.IsAny<string>()), Times.Exactly(2));
+
         Assert.Equal(2, nodes.Count);
         Assert.Collection(nodes,
         entry =>

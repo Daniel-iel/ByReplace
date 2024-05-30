@@ -67,7 +67,7 @@ public class BrConfigurationTest
         config.SetOnlyOneRule(newRule);
 
         // Assert
-        Assert.Single(config.SkipDirectories);
+        Assert.Single(config.Rules);
     }
 
     [Fact]
@@ -89,8 +89,15 @@ public class BrConfigurationTest
         // Arrange
         var config = new BrConfiguration("C://ByReplace", ["**//Controllers/*"], []);
 
-        // Act && Assert
-        Assert.Throws<DirectoryNotFoundException>(() => config.ChangeDefaultPath("//FakeFolder"));
+        // Act
+        Action act = () =>
+        {
+            config.ChangeDefaultPath("//FakeFolder");
+        };
+
+        // Assert
+        DirectoryNotFoundException ex = Assert.Throws<DirectoryNotFoundException>(act);
+        Assert.Equal($"Path //FakeFolder does not exists.", ex.Message);
     }
 
     [Fact]
@@ -109,7 +116,14 @@ public class BrConfigurationTest
         // Arrange
         var config = new BrConfiguration("C://ByReplace", ["**//Controllers/*"], []);
 
-        // Act && Assert
-        Assert.Throws<FileNotFoundException>(() => BrConfiguration.GetConfiguration("//FakeFolder"));
+        // Act
+        Action act = () =>
+        {
+            BrConfiguration.GetConfiguration("//FakeFolder");
+        };
+
+        // Assert
+        FileNotFoundException ex = Assert.Throws<FileNotFoundException>(act);
+        Assert.Equal($"BR Configuration not found on //FakeFolder path.", ex.Message);
     }
 }
