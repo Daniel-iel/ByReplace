@@ -1,7 +1,6 @@
 ﻿using ByReplace.Analyzers;
-using ByReplace.Builders;
-using ByReplace.Models;
 using ByReplace.Printers;
+using ByReplace.Test.ClassFixture;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
@@ -9,58 +8,52 @@ using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class DocumentFixTest
+public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceFixture<DocumentFixTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public DocumentFixTest()
+    public DocumentFixTest(WorkspaceFixture<DocumentFixTest> fixture)
     {
-        var configContent = BrContentFactory
-          .CreateDefault()
-          .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-          .AddRules(BrContentFactory
-                   .Rule("RuleTest")
-                   .WithExtensions(".cs")
-                   .WithSkips("teste.cs")
-                   .WithReplacement(BrContentFactory.Replacement("Test", "Test2")),
-                   BrContentFactory
-                   .Rule("RuleTest2")
-                   .WithExtensions(".txt")
-                   .WithSkips("teste.txt")
-                   .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-          .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddMembers(
-            FileSyntax.FileDeclaration("RootFile1.cs", "var test = new Test2()"),
-            FileSyntax.FileDeclaration("RootFile1.txt", "var test = new Test2()"));
-
-        _pathCompilationSyntax = PathFactory
-            .Compile(nameof(DocumentFixTest))
-            .AddMembers(rootFolder)
-            .AddBrConfiguration(configContent)
-        .Create();
-
-        _brConfiguration = BrConfigurationBuilder
-        .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .Build();
-
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
+
+        _fixture.ClearPrevious();
+
+        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(DocumentFixTest))
+           .BRContent(c =>
+           {
+               c.AddPath("")
+                .AddSkip("obj", ".bin")
+                .AddRules(
+                   ruleOne => ruleOne
+                              .WithName("RuleTest")
+                              .WithExtensions(".cs")
+                              .WithSkips("teste.cs")
+                              .WithReplacement(BrContentFactory.Replacement("Test", "Test2")),
+                   ruleTwo => ruleTwo
+                              .WithName("RuleTest2")
+                              .WithExtensions(".txt")
+                              .WithSkips("teste.txt")
+                              .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
+           })
+           .Folder(folderStructure =>
+           {
+               folderStructure
+                   .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "var test = new Test2()"))
+                   .AddFile(FileSyntax.FileDeclaration("RootFile1.txt", "var test = new Test2()"));
+           })
+           .Create();
     }
 
     [Fact]
     public async Task ApplyAsync_WhenPassAllRules_ShouldApplyTheRulesInAllFilesAsync()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _brConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
         var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
 
         // Act
@@ -80,10 +73,10 @@ public class DocumentFixTest
     public async Task ApplyAsync_WhenPassOnlyOneRule_ShouldApplyTheRuleInAllFiles()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _brConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
         var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
 
         // Act

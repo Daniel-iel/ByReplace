@@ -4,6 +4,8 @@ public class ContentSyntax
 {
     public ContentSyntax()
     {
+        SkipDirectories = new List<string>();
+        Rules = new List<RuleSyntax>();
     }
 
     private ContentSyntax(string path, List<string> skipDirectories)
@@ -21,6 +23,20 @@ public class ContentSyntax
         return new ContentSyntax(path, skipDirectories);
     }
 
+    public ContentSyntax AddPath(string path)
+    {
+        Path = path;
+
+        return this;
+    }
+
+    public ContentSyntax AddSkip(params string[] skipDirectories)
+    {
+        SkipDirectories = [.. skipDirectories];
+
+        return this;
+    }
+
     public void AddRule(RuleSyntax ruleSyntax)
     {
         Rules.Add(ruleSyntax);
@@ -29,5 +45,18 @@ public class ContentSyntax
     public void AddRules(List<RuleSyntax> rulesSyntax)
     {
         Rules.AddRange(rulesSyntax);
+    }
+
+    public ContentSyntax AddRules(params Action<RuleSyntax>[] actions)
+    {
+
+        foreach (var action in actions)
+        {
+            var ruleSyntax = new RuleSyntax();
+            action(ruleSyntax);
+            Rules.Add(ruleSyntax);
+        }
+
+        return this;
     }
 }

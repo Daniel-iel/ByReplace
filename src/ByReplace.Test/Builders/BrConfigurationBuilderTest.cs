@@ -7,35 +7,34 @@ namespace ByReplace.Test.Builders;
 
 public class BrConfigurationBuilderTest
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
+    private readonly WorkspaceSyntax _workspaceSyntax;
 
     public BrConfigurationBuilderTest()
     {
-        var rootFolder = FolderSyntax.FolderDeclaration("RootFolder");
-
-        var configContent = BrContentFactory
-         .CreateDefault()
-         .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-         .AddRules(BrContentFactory
-                  .Rule("RuleTest")
-                  .WithExtensions(".cs")
-                  .WithSkips("**\\Controllers\\*")
-                  .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-         .Compile();
-
-        _pathCompilationSyntax = PathFactory
-          .Compile(nameof(BrConfigurationBuilderTest))
-          .AddMember(rootFolder)
-          .AddBrConfiguration(configContent)
-          .Create();
+        _workspaceSyntax = new WorkspaceSyntax(nameof(BrConfigurationBuilderTest))
+            .BRContent(c =>
+            {
+                c.AddPath("")
+                 .AddSkip("obj", ".bin")
+                 .AddRules(
+                    ruleOne => ruleOne
+                               .WithName("RuleTest")
+                               .WithExtensions(".cs")
+                               .WithSkips("**\\Controllers\\*")
+                               .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
+            })
+            .Folder(folderStructure =>
+            {
+            })
+            .Create();
     }
 
     [Fact]
     public void Build_ReturnsCorrectConfiguration()
     {
         // Arrange
-        var configFile = $"./{_pathCompilationSyntax.InternalIdentifier}";
-        var path = $"./{_pathCompilationSyntax.InternalIdentifier}";
+        var configFile = $"./{_workspaceSyntax.Identifier}";
+        var path = $"./{_workspaceSyntax.Identifier}";
         const string rule = "RuleTest";
 
         var builder = BrConfigurationBuilder

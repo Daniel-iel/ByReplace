@@ -1,63 +1,51 @@
-﻿using Xunit;
-using ByReplace.Commands.Rule.ListRules;
-using ByReplace.Builders;
-using ByReplace.Models;
+﻿using ByReplace.Commands.Rule.ListRules;
 using ByReplace.Printers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
-using System.Collections.Immutable;
+using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.ListRules;
 
 public class RulesBoxTest
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceSyntax _workspaceSyntax;
     private readonly Mock<IPrint> _printMock;
 
     public RulesBoxTest()
     {
         _printMock = new Mock<IPrint>();
 
-        var configContent = BrContentFactory
-          .CreateDefault()
-          .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-          .AddRules(BrContentFactory
-                   .Rule("RuleTest")
-                   .WithExtensions(".cs", ".txt")
-                   .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                   .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-          .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddMembers(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
-        _pathCompilationSyntax = PathFactory
-            .Compile(nameof(RulesBoxTest))
-            .AddMembers(rootFolder)
-            .AddBrConfiguration(configContent)
+        _workspaceSyntax = new WorkspaceSyntax(nameof(RulesBoxTest))
+            .BRContent(c =>
+            {
+                c.AddPath("")
+                 .AddSkip("obj", ".bin")
+                 .AddRules(
+                    ruleOne => ruleOne
+                               .WithName("RuleTest")
+                               .WithExtensions(".cs", ".txt")
+                               .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                               .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
+            })
+            .Folder(folderStructure =>
+            {
+                folderStructure
+                    .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                    .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
+            })
             .Create();
-
-        _brConfiguration = BrConfigurationBuilder
-            .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .Build();
     }
 
     [Fact]
     public void RulesBox_WhenInstantiate_ShouldValidateTheBoxConfiguration()
     {
         // Arrange & Act
-        var rulesBox = new RulesBox(_brConfiguration.Rules);
+        var rulesBox = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
 
         // Assert
         Assert.Equal(100, rulesBox.Width);
-        Assert.Equal(_brConfiguration.Rules.Count * 2, rulesBox.Height);
+        Assert.Equal(_workspaceSyntax.BrConfiguration.Rules.Count * 2, rulesBox.Height);
         Assert.Equal("Rules", rulesBox.BoxName);
     }
 
@@ -65,8 +53,8 @@ public class RulesBoxTest
     public void RulesBox_WhenInstantiate_ShouldValidateIfTwoObjectWithTheSameParametersAreEquals()
     {
         // Arrange
-        var rulesBoxFirst = new RulesBox(_brConfiguration.Rules);
-        var rulesBoxSecond = new RulesBox(_brConfiguration.Rules);
+        var rulesBoxFirst = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
+        var rulesBoxSecond = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
 
         // Act
         var isEquals = rulesBoxFirst.Equals(rulesBoxSecond);
@@ -84,7 +72,7 @@ public class RulesBoxTest
     public void RulesBox_WhenInstantiate_ShouldValidateIfTwoObjectWithTheSameParametersAreNotEquals()
     {
         // Arrange
-        var rulesBoxFirst = new RulesBox(_brConfiguration.Rules);
+        var rulesBoxFirst = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
         var rulesBoxSecond = new RulesBox([]);
 
         // Act

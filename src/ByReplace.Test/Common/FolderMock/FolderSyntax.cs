@@ -2,62 +2,38 @@
 
 internal sealed class FolderSyntax
 {
+
     public FolderSyntax(string name)
     {
         Name = name;
         Files = new List<FileSyntax>();
+        Folders = new List<FolderSyntax>();
     }
 
-    public FolderSyntax(string name, FolderSyntax parent)
-    {
-        Name = name;
-        Parent = parent;
-        Files = new List<FileSyntax>();
-    }
-
-    public FolderSyntax(string name, FolderSyntax parent, List<FileSyntax> files)
-    {
-        Name = name;
-        Parent = parent;
-        Files = files;
-    }
-
-    public FolderSyntax Parent { get; private set; }
+    public List<FolderSyntax> Folders { get; private set; }
 
     public string Name { get; }
 
     public List<FileSyntax> Files { get; }
 
-    public static FolderSyntax FolderDeclaration(string name)
+    public FolderSyntax AddFolder(string name, Action<FolderSyntax> action)
     {
-        return new FolderSyntax(name);
-    }
+        var folderSyntax = new FolderSyntax(name);
+        action(folderSyntax);
+        this.Folders.Add(folderSyntax);
 
-    public static FolderSyntax FolderDeclaration(string name, FolderSyntax parent)
-    {
-        return new FolderSyntax(name, parent);
-    }
-
-    public static FolderSyntax FolderDeclaration(string name, FolderSyntax parent, List<FileSyntax> files)
-    {
-        return new FolderSyntax(name, parent, files);
-    }
-
-    public FolderSyntax AddMembers(FileSyntax fileSyntax)
-    {
-        this.Files.Add(fileSyntax);
         return this;
     }
 
-    public FolderSyntax AddMembers(params FileSyntax[] filesSyntax)
+    public FolderSyntax AddFiles(params FileSyntax[] filesSyntax)
     {
         this.Files.AddRange(filesSyntax);
         return this;
     }
 
-    public FolderSyntax AddParent(FolderSyntax parent)
+    public FolderSyntax AddFile(FileSyntax fileSyntax)
     {
-        this.Parent = parent;
+        this.Files.Add(fileSyntax);
         return this;
     }
 }

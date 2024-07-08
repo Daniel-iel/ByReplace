@@ -1,7 +1,6 @@
 ﻿using ByReplace.Analyzers;
-using ByReplace.Builders;
-using ByReplace.Models;
 using ByReplace.Printers;
+using ByReplace.Test.ClassFixture;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Moq;
@@ -9,69 +8,60 @@ using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class AnalyzerRunnerTest
+public class AnalyzerRunnerTest : IClassFixture<WorkspaceFixture<AnalyzerRunnerTest>>
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceFixture<AnalyzerRunnerTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzerRunnerTest()
+    public AnalyzerRunnerTest(WorkspaceFixture<AnalyzerRunnerTest> fixture)
     {
-        var configContent = BrContentFactory
-           .CreateDefault()
-           .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-           .AddRules(BrContentFactory
-                    .Rule("RuleTest")
-                    .WithExtensions(".cs", ".txt")
-                    .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                    .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-           .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddMembers(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
-        var controllerFolder = FolderSyntax.FolderDeclaration("Controllers")
-            .AddParent(rootFolder)
-            .AddMembers(
-               FileSyntax.FileDeclaration("Controller1.cs", "ITest2 = new Test()"),
-               FileSyntax.FileDeclaration("Controller2.cs", "ITest2 = new Test()"));
-
-        var binFolder = FolderSyntax.FolderDeclaration("bin")
-            .AddParent(rootFolder)
-            .AddMembers(
-                FileSyntax.FileDeclaration("bin1.txt", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("bin2.txt", "ITest = new Test()"));
-
-        var objFolder = FolderSyntax.FolderDeclaration("obj")
-            .AddParent(rootFolder)
-            .AddMembers(
-                FileSyntax.FileDeclaration("obj1.txt", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("obj2.txt", "ITest = new Test()"));
-
-        _pathCompilationSyntax = PathFactory
-            .Compile(nameof(AnalyzerRunnerTest))
-            .AddMembers(controllerFolder, binFolder, objFolder)
-            .AddBrConfiguration(configContent)
-            .Create();
-
-        _brConfiguration = BrConfigurationBuilder
-            .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .Build();
-
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
+
+        fixture.ClearPrevious();
+
+        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(AnalyzerRunnerTest))
+            .BRContent(c =>
+            {
+                c.AddPath("")
+                 .AddSkip("obj", ".bin")
+                 .AddRules(
+                    ruleOne => ruleOne
+                               .WithName("RuleTest")
+                               .WithExtensions(".cs", ".txt")
+                               .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                               .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
+            })
+            .Folder(folderStructure =>
+            {
+                folderStructure
+                    .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                    .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"))
+                    .AddFolder("Controllers", c =>
+                    {
+                        c.AddFile(FileSyntax.FileDeclaration("Controller1.cs", "ITest2 = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("Controller2.cs", "ITest2 = new Test()"));
+                    })
+                    .AddFolder("bin", c =>
+                    {
+                        c.AddFile(FileSyntax.FileDeclaration("bin1.txt", "ITest = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("bin2.txt", "ITest = new Test()"));
+                    })
+                    .AddFolder("obj", c =>
+                    {
+                        c.AddFile(FileSyntax.FileDeclaration("obj1.txt", "ITest = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("obj2.txt", "ITest = new Test()"));
+                    });
+            })
+            .Create();
     }
 
     [Fact]
     public void RunAnalysis_MapAllRulesThatMatchToFileInSourceTree_ShouldReturnRulesThatMatch()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
-        var analyzerRunner = new AnalyzerRunner(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzerRunner = new AnalyzerRunner(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();
@@ -114,8 +104,8 @@ public class AnalyzerRunnerTest
     public void RunAnalysis_WhenPrintLogInformation_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_brConfiguration, _printMock.Object);
-        var analyzerRunner = new AnalyzerRunner(_brConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzerRunner = new AnalyzerRunner(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();

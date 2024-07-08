@@ -1,6 +1,4 @@
-﻿using ByReplace.Builders;
-using ByReplace.Commands.Rule.OpenRule;
-using ByReplace.Models;
+﻿using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Printers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
@@ -11,53 +9,44 @@ namespace ByReplace.Test.Commands.Rule.OpenRule;
 
 public class RuleBoxTest
 {
-    private readonly PathCompilationSyntax _pathCompilationSyntax;
-    private readonly BrConfiguration _brConfiguration;
+    private readonly WorkspaceSyntax _workspaceSyntax;
     private readonly Mock<IPrint> _printMock;
 
     public RuleBoxTest()
     {
         _printMock = new Mock<IPrint>();
 
-        var configContent = BrContentFactory
-          .CreateDefault()
-          .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-          .AddRules(BrContentFactory
-                .Rule("RuleOne")
-                .WithExtensions(".cs", ".txt")
-                .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                .WithReplacement(BrContentFactory.Replacement("OldText", "NewText")),
-                BrContentFactory
-                .Rule("RuleTwo")
-                .WithExtensions(".cs")
-                .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                .WithReplacement(BrContentFactory.Replacement("MyOldText", "MyNewText")))
-          .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddMembers(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
-        _pathCompilationSyntax = PathFactory
-            .Compile(nameof(RuleBoxTest))
-            .AddMembers(rootFolder)
-            .AddBrConfiguration(configContent)
-            .Create();
-
-        _brConfiguration = BrConfigurationBuilder
-            .Create()
-            .SetPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .SetConfigPath($"./{_pathCompilationSyntax.InternalIdentifier}")
-            .Build();
+        _workspaceSyntax = new WorkspaceSyntax(nameof(RuleBoxTest))
+           .BRContent(c =>
+           {
+               c.AddPath("")
+                .AddSkip("obj", ".bin")
+                .AddRules(
+                   ruleOne => ruleOne
+                              .WithName("RuleOne")
+                              .WithExtensions(".cs", ".txt")
+                              .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                              .WithReplacement(BrContentFactory.Replacement("OldText", "NewText")),
+                   ruleTwo => ruleTwo
+                              .WithName("RuleTwo")
+                              .WithExtensions(".cs")
+                              .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                              .WithReplacement(BrContentFactory.Replacement("MyOldText", "MyNewText")));
+           })
+           .Folder(folderStructure =>
+           {
+               folderStructure
+                   .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                   .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
+           })
+           .Create();
     }
 
     [Fact]
     public void RuleBox_WhenInstantiate_ShouldValidateTheBoxConfiguration()
     {
         // Arrange & Act
-        var ruleBox = new RuleBox(_brConfiguration.Rules[0]);
+        var ruleBox = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
 
         // Assert
         Assert.Equal(100, ruleBox.Width);
@@ -69,8 +58,8 @@ public class RuleBoxTest
     public void RuleBox_WhenInstantiate_ShouldValidateIfTwoObjectWithTheSameParametersAreEquals()
     {
         // Arrange
-        var ruleBoxFirst = new RuleBox(_brConfiguration.Rules[0]);
-        var ruleBoxSecond = new RuleBox(_brConfiguration.Rules[0]);
+        var ruleBoxFirst = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
+        var ruleBoxSecond = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
 
         // Act
         var isEquals = ruleBoxFirst.Equals(ruleBoxSecond);
@@ -88,8 +77,8 @@ public class RuleBoxTest
     public void RuleBox_WhenInstantiate_ShouldValidateIfTwoObjectWithTheSameParametersAreNotEquals()
     {
         // Arrange
-        var ruleBoxFirst = new RuleBox(_brConfiguration.Rules[0]);
-        var ruleBoxSecond = new RuleBox(_brConfiguration.Rules.Last());
+        var ruleBoxFirst = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
+        var ruleBoxSecond = new RuleBox(_workspaceSyntax.BrConfiguration.Rules.Last());
 
         // Act
         var isEquals = ruleBoxFirst.Equals(ruleBoxSecond);

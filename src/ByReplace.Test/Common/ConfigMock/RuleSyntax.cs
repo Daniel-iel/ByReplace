@@ -2,6 +2,11 @@
 
 public sealed class RuleSyntax
 {
+    public RuleSyntax()
+    {
+
+    }
+
     private RuleSyntax(
         string name,
         string description,
@@ -33,16 +38,6 @@ public sealed class RuleSyntax
     public List<string> Extensions { get; set; }
     public ReplacementSyntax Replacement { get; set; }
 
-    public static RuleSyntax Create(
-        string name,
-        string description,
-        List<string> skips,
-        List<string> extensions,
-        ReplacementSyntax replacement)
-    {
-        return new RuleSyntax(name, description, skips, extensions, replacement);
-    }
-
     public static RuleSyntax Create(string name, string description)
     {
         return new RuleSyntax(name, description);
@@ -51,6 +46,13 @@ public sealed class RuleSyntax
     public static RuleSyntax Create(string name)
     {
         return new RuleSyntax(name);
+    }
+
+    public RuleSyntax WithName(string name)
+    {
+        Name = name;
+
+        return this;
     }
 
     public RuleSyntax WithReplacement(ReplacementSyntax replacementSyntax)

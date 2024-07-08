@@ -4,18 +4,10 @@ namespace ByReplace.Common;
 
 internal class PathFixer
 {
-    public string OS
-    {
-        get
-        {
-            return Environment.OSVersion.ToString();
-        }
-    }
-
     public string GetFixedPath(params string[] parts)
     {
         IPathFixer linux = new PathFixerLinux();
-        IPathFixer windows = new PathFixerLinux();
+        IPathFixer windows = new PathFixerWindows();
 
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
             ? linux.PathFixed(parts)
@@ -28,7 +20,7 @@ internal interface IPathFixer
     string PathFixed(params string[] parts);
 }
 
-internal class PathFixerWindowns : IPathFixer
+internal sealed class PathFixerWindows : IPathFixer
 {
     public string PathFixed(params string[] parts)
     {
@@ -38,7 +30,7 @@ internal class PathFixerWindowns : IPathFixer
     }
 }
 
-internal class PathFixerLinux : IPathFixer
+internal sealed class PathFixerLinux : IPathFixer
 {
     public string PathFixed(params string[] parts)
     {
