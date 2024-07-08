@@ -35,22 +35,22 @@ public class AnalyzerRunnerTest : IClassFixture<WorkspaceFixture<AnalyzerRunnerT
             .Folder(folderStructure =>
             {
                 folderStructure
-                    .AddFile(FileSyntaxV2.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
-                    .AddFile(FileSyntaxV2.FileDeclaration("RootFile2.cs", "ITest = new Test()"))
+                    .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                    .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"))
                     .AddFolder("Controllers", c =>
                     {
-                        c.AddFile(FileSyntaxV2.FileDeclaration("Controller1.cs", "ITest2 = new Test()"));
-                        c.AddFile(FileSyntaxV2.FileDeclaration("Controller2.cs", "ITest2 = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("Controller1.cs", "ITest2 = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("Controller2.cs", "ITest2 = new Test()"));
                     })
                     .AddFolder("bin", c =>
                     {
-                        c.AddFile(FileSyntaxV2.FileDeclaration("bin1.txt", "ITest = new Test()"));
-                        c.AddFile(FileSyntaxV2.FileDeclaration("bin2.txt", "ITest = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("bin1.txt", "ITest = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("bin2.txt", "ITest = new Test()"));
                     })
                     .AddFolder("obj", c =>
                     {
-                        c.AddFile(FileSyntaxV2.FileDeclaration("obj1.txt", "ITest = new Test()"));
-                        c.AddFile(FileSyntaxV2.FileDeclaration("obj2.txt", "ITest = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("obj1.txt", "ITest = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("obj2.txt", "ITest = new Test()"));
                     });
             })
             .Create();

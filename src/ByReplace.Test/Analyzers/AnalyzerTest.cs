@@ -23,10 +23,10 @@ public class AnalyzerTest : IClassFixture<WorkspaceFixture<AnalyzerTest>>
             .Folder(folderStructure =>
             {
                 folderStructure
-                    .AddFile(FileSyntaxV2.FileDeclaration("FileOne.cs", "ITest = new Test()"))
+                    .AddFile(FileSyntax.FileDeclaration("FileOne.cs", "ITest = new Test()"))
                     .AddFolder("FirstLevel", c =>
                     {
-                        c.AddFile(FileSyntaxV2.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
+                        c.AddFile(FileSyntax.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
                     });
             })
             .Create();

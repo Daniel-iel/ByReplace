@@ -7,7 +7,7 @@ namespace ByReplace.Test.Common.FolderMock;
 
 internal sealed class WorkspaceSyntax
 {
-    private readonly List<FolderSyntaxV2> _folders;
+    private readonly List<FolderSyntax> _folders;
     private ContentSyntax _contextSyntax;
 
     public string Identifier { get; }
@@ -17,27 +17,27 @@ internal sealed class WorkspaceSyntax
     public WorkspaceSyntax()
     {
         Identifier = Guid.NewGuid().ToString();
-        _folders = new List<FolderSyntaxV2>();
+        _folders = new List<FolderSyntax>();
         _contextSyntax = new ContentSyntax();
     }
 
     public WorkspaceSyntax(string testCase)
     {
         Identifier = $"{testCase}_{Guid.NewGuid()}";
-        _folders = new List<FolderSyntaxV2>();
+        _folders = new List<FolderSyntax>();
         _contextSyntax = new ContentSyntax();
     }
 
-    public WorkspaceSyntax FolderStructure(params FolderSyntaxV2[] foldersSyntax)
+    public WorkspaceSyntax FolderStructure(params FolderSyntax[] foldersSyntax)
     {
         this._folders.AddRange(foldersSyntax);
 
         return this;
     }
 
-    public WorkspaceSyntax Folder(Action<FolderSyntaxV2> action)
+    public WorkspaceSyntax Folder(Action<FolderSyntax> action)
     {
-        var rootFolder = new FolderSyntaxV2("RootFolder");
+        var rootFolder = new FolderSyntax("RootFolder");
         action(rootFolder);
         this._folders.Add(rootFolder);
 
@@ -86,7 +86,7 @@ internal sealed class WorkspaceSyntax
         return this;
     }
 
-    public WorkspaceSyntax CreateThreeFolder(string parentFolder, FolderSyntaxV2 folderSyntax)
+    public WorkspaceSyntax CreateThreeFolder(string parentFolder, FolderSyntax folderSyntax)
     {
         if (folderSyntax is null)
         {

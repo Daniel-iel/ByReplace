@@ -40,8 +40,8 @@ public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
            .Folder(folderStructure =>
            {
                folderStructure
-                   .AddFile(FileSyntaxV2.FileDeclaration("RootFile1.cs", "var test = new Test2()"))
-                   .AddFile(FileSyntaxV2.FileDeclaration("RootFile1.txt", "var test = new Test2()"));
+                   .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "var test = new Test2()"))
+                   .AddFile(FileSyntax.FileDeclaration("RootFile1.txt", "var test = new Test2()"));
            })
            .Create();
     }
