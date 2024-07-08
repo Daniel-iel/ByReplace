@@ -1,13 +1,13 @@
 ﻿namespace ByReplace.Test.Common.FolderMock;
 
-internal sealed class FileSyntaxV2
+internal sealed class FileSyntax
 {
-    public FileSyntaxV2(string name)
+    public FileSyntax(string name)
     {
         Name = name;
     }
 
-    public FileSyntaxV2(string name, string content)
+    public FileSyntax(string name, string content)
     {
         Name = name;
         Content = content;
@@ -18,33 +18,33 @@ internal sealed class FileSyntaxV2
 
     public string Extension => System.IO.Path.GetExtension(Name);
 
-    public static FileSyntaxV2 New()
+    public static FileSyntax New()
     {
-        return new FileSyntaxV2("");
+        return new FileSyntax("");
     }
 
-    public static FileSyntaxV2 FileDeclaration(string name)
+    public static FileSyntax FileDeclaration(string name)
     {
-        return new FileSyntaxV2(name);
+        return new FileSyntax(name);
     }
 
-    public static FileSyntaxV2 FileDeclaration(string name, string content)
+    public static FileSyntax FileDeclaration(string name, string content)
     {
-        return new FileSyntaxV2(name, content);
+        return new FileSyntax(name, content);
     }
 
-    public FileSyntaxV2 Create(string name, string content)
+    public FileSyntax Create(string name, string content)
     {
-        return new FileSyntaxV2(name, content);
+        return new FileSyntax(name, content);
     }
 
-    public FileSyntaxV2 AddName(string name)
+    public FileSyntax AddName(string name)
     {
         Name = name;
         return this;
     }
 
-    public FileSyntaxV2 AddContent(string content)
+    public FileSyntax AddContent(string content)
     {
         Content = content;
         return this;

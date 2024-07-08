@@ -31,8 +31,8 @@ public class RulesBoxTest
             .Folder(folderStructure =>
             {
                 folderStructure
-                    .AddFile(FileSyntaxV2.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
-                    .AddFile(FileSyntaxV2.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
+                    .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                    .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
             })
             .Create();
     }
