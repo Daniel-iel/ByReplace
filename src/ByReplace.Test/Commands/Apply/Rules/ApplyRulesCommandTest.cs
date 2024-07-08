@@ -6,14 +6,14 @@ using Xunit;
 
 namespace ByReplace.Test.Commands.Apply.Rules;
 
-public class ApplyRulesCommandTest : IClassFixture<WorkspaceFixture>
+public class ApplyRulesCommandTest : IClassFixture<WorkspaceFixture<ApplyRulesCommandTest>>
 {
-    private readonly WorkspaceFixture _workspace;
+    private readonly WorkspaceFixture<ApplyRulesCommandTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public ApplyRulesCommandTest(WorkspaceFixture workspace)
+    public ApplyRulesCommandTest(WorkspaceFixture<ApplyRulesCommandTest> fixture)
     {
-        _workspace = workspace;
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
     }
 
@@ -21,7 +21,7 @@ public class ApplyRulesCommandTest : IClassFixture<WorkspaceFixture>
     public void Execute_ApplyRulesToFileThree_DoesNotThrowException()
     {
         // Arrange
-        var command = new ApplyRulesCommand(_workspace.BrConfiguration, _printMock.Object);
+        var command = new ApplyRulesCommand(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
         var executionResult = Record.Exception(() => command.ExecuteAsync(It.IsAny<CancellationToken>()));

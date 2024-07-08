@@ -1,5 +1,4 @@
 ﻿using ByReplace.Analyzers;
-using ByReplace.Builders;
 using ByReplace.Printers;
 using ByReplace.Test.ClassFixture;
 using ByReplace.Test.Common.FolderMock;
@@ -8,43 +7,36 @@ using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class AnalyzerTest : IClassFixture<WorkspaceFixture>
+public class AnalyzerTest : IClassFixture<WorkspaceFixture<AnalyzerTest>>
 {
-    private readonly WorkspaceFixture _workspace;
+    private readonly WorkspaceFixture<AnalyzerTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzerTest(WorkspaceFixture workspace)
+    public AnalyzerTest(WorkspaceFixture<AnalyzerTest> fixture)
     {
-        _workspace = workspace;
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
 
-        _workspace.ClearPrevious();
+        _fixture.ClearPrevious();
 
-        var rootFolder = FolderSyntax
-           .FolderDeclaration("RootFolder")
-           .AddMembers(FileSyntax.FileDeclaration("FileOne.cs", "ITest = new Test()"));
-
-        var firstLevel = FolderSyntax.FolderDeclaration("FirstLevel")
-           .AddParent(rootFolder)
-           .AddMembers(FileSyntax.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
-
-        _workspace.WorkspaceSyntax = WorkspaceFactory
-           .Compile(nameof(AnalyzerTest))
-           .AddMembers(firstLevel)
-           .Create();
-
-        _workspace.BrConfiguration = BrConfigurationBuilder
-           .Create()
-           .SetPath($"./{_workspace.WorkspaceSyntax.Identifier}")
-           .SetConfigPath($"./{_workspace.WorkspaceSyntax.Identifier}")
-           .Build();
+        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(AnalyzerTest))
+            .Folder(folderStructure =>
+            {
+                folderStructure
+                    .AddFile(FileSyntaxV2.FileDeclaration("FileOne.cs", "ITest = new Test()"))
+                    .AddFolder("FirstLevel", c =>
+                    {
+                        c.AddFile(FileSyntaxV2.FileDeclaration("FileSecond.cs", "ITest2 = new Test()"));
+                    });
+            })
+            .Create();
     }
 
     [Fact]
     public void LoadThreeFiles_MapAllSourceThreeOfDirectory_ShouldReturnSourceFileThree()
     {
         // Arrange
-        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();
@@ -61,7 +53,7 @@ public class AnalyzerTest : IClassFixture<WorkspaceFixture>
     public void LoadThreeFiles_WhenPrintLogInformation_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
         var directoryNodes = analyzer.LoadThreeFiles();

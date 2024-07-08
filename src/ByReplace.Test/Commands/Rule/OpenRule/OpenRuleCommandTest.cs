@@ -1,6 +1,6 @@
-﻿using ByReplace.Builders;
-using ByReplace.Commands.Rule.OpenRule;
+﻿using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Printers;
+using ByReplace.Test.Analyzers;
 using ByReplace.Test.ClassFixture;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
@@ -9,61 +9,51 @@ using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.OpenRule;
 
-public class OpenRuleCommandTest : IClassFixture<WorkspaceFixture>
+public class OpenRuleCommandTest : IClassFixture<WorkspaceFixture<OpenRuleCommandTest>>
 {
-    private readonly WorkspaceFixture _workspace;
+    private readonly WorkspaceFixture<OpenRuleCommandTest> _fixture;
     private readonly Mock<IPrint> _printMock;
     private readonly Mock<IPrintBox> _printBoxMock;
 
-    public OpenRuleCommandTest(WorkspaceFixture workspace)
+    public OpenRuleCommandTest(WorkspaceFixture<OpenRuleCommandTest> fixture)
     {
-        _workspace = workspace;
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
         _printBoxMock = new Mock<IPrintBox>();
 
-        _workspace.ClearPrevious();
+        _fixture.ClearPrevious();
 
-        workspace.ConfigContent = BrContentFactory
-            .CreateDefault()
-            .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-            .AddRules(
-                BrContentFactory
-                .Rule("RuleOne")
-                .WithExtensions(".cs", ".txt")
-                .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                .WithReplacement(BrContentFactory.Replacement("OldText", "NewText")),
-                BrContentFactory
-                .Rule("RuleTwo")
-                .WithExtensions(".cs")
-                .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                .WithReplacement(BrContentFactory.Replacement("MyOldText", "MyNewText"))
-              )
-            .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddFiles(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
-        workspace.WorkspaceSyntax = WorkspaceFactory
-            .Compile(nameof(OpenRuleCommandTest))
-            .AddMembers(rootFolder)
-            .AddBrConfiguration(workspace.ConfigContent)
-            .Create();
-
-        workspace.BrConfiguration = BrConfigurationBuilder
-            .Create()
-            .SetPath($"./{workspace.WorkspaceSyntax.Identifier}")
-            .SetConfigPath($"./{workspace.WorkspaceSyntax.Identifier}")
-            .Build();
+        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(OpenRuleCommandTest))
+           .BRContent(c =>
+           {
+               c.AddPath("")
+                .AddSkip("obj", ".bin")
+                .AddRules(
+                   ruleOne => ruleOne
+                              .WithName("RuleOne")
+                              .WithExtensions(".cs", ".txt")
+                              .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                              .WithReplacement(BrContentFactory.Replacement("OldText", "NewText")),
+                   ruleTwo => ruleTwo
+                              .WithName("RuleTwo")
+                              .WithExtensions(".cs")
+                              .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                              .WithReplacement(BrContentFactory.Replacement("MyOldText", "MyNewText")));
+           })
+           .Folder(folderStructure =>
+           {
+               folderStructure
+                   .AddFile(FileSyntaxV2.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                   .AddFile(FileSyntaxV2.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
+           })
+           .Create();
     }
 
     [Fact]
     public async Task Execute_WhenNotFindTheRuleOnRulesConfiguration_ShouldValidateTheLogThatShowRuleWasNotFind()
     {
         // Arrange
-        var command = new OpenRuleCommand(_workspace.BrConfiguration, "NotConfiguratedRule", _printMock.Object, _printBoxMock.Object);
+        var command = new OpenRuleCommand(_fixture.WorkspaceSyntax.BrConfiguration, "NotConfiguratedRule", _printMock.Object, _printBoxMock.Object);
 
         // Act
         await command.ExecuteAsync(It.IsAny<CancellationToken>());
@@ -76,9 +66,9 @@ public class OpenRuleCommandTest : IClassFixture<WorkspaceFixture>
     public async Task Execute_WhenFindTheRuleOnRulesConfiguration_ShouldValidateIfThePrintBoxWasCalled()
     {
         // Arrange
-        var expectedRule = _workspace.BrConfiguration.Rules.Last();
+        var expectedRule = _fixture.WorkspaceSyntax.BrConfiguration.Rules.Last();
         var expectedPrintBox = new RuleBox(expectedRule);
-        var command = new OpenRuleCommand(_workspace.BrConfiguration, "RuleTwo", _printMock.Object, _printBoxMock.Object);
+        var command = new OpenRuleCommand(_fixture.WorkspaceSyntax.BrConfiguration, "RuleTwo", _printMock.Object, _printBoxMock.Object);
 
         // Act
         await command.ExecuteAsync(It.IsAny<CancellationToken>());

@@ -6,14 +6,14 @@ using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
-public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture>
+public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFixerTest>>
 {
-    private readonly WorkspaceFixture _workspace;
+    private readonly WorkspaceFixture<AnalyzerAndFixerTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzerAndFixerTest(WorkspaceFixture workspace)
+    public AnalyzerAndFixerTest(WorkspaceFixture<AnalyzerAndFixerTest> fixture)
     {
-        _workspace = workspace;
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
     }
 
@@ -21,12 +21,12 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture>
     public void TryMatchRule_MapTheFilesThatMatchToRule_ShouldReturnFilesThatMatch()
     {
         // Arrange
-        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
 
         // Act
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _workspace.BrConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Assert
         Assert.Equal(2, analyzerAndFixer.Count);
@@ -50,12 +50,12 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture>
     public void TryMatchRule_WhenMapTheFilesThatMatchToRule_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_workspace.BrConfiguration, _printMock.Object);
+        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
 
         // Act
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _workspace.BrConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Assert
         _printMock.Verify(x => x.Information("[Cyan]1 rules in total match the file [Cyan]RootFile1.cs."), Times.Once);

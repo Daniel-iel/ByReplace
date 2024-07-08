@@ -6,14 +6,14 @@ using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.ListRules;
 
-public class ListRulesCommandTest : IClassFixture<WorkspaceFixture>
+public class ListRulesCommandTest : IClassFixture<WorkspaceFixture<ListRulesCommandTest>>
 {
-    private readonly WorkspaceFixture _workspace;
+    private readonly WorkspaceFixture<ListRulesCommandTest> _fixture;
     private readonly Mock<IPrintBox> _printBoxMock;
 
-    public ListRulesCommandTest(WorkspaceFixture workspace)
+    public ListRulesCommandTest(WorkspaceFixture<ListRulesCommandTest> fixture)
     {
-        _workspace = workspace;
+        _fixture = fixture;
         _printBoxMock = new Mock<IPrintBox>();
     }
 
@@ -21,9 +21,9 @@ public class ListRulesCommandTest : IClassFixture<WorkspaceFixture>
     public async Task Execute_WhenPrintTheBoxWithTheRules_ShouldValidateIfBoxWasPrintedOnce()
     {
         // Arrange
-        var builder = new RulesBox(_workspace.BrConfiguration.Rules);
+        var builder = new RulesBox(_fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
-        var command = new ListRulesCommand(_workspace.BrConfiguration, _printBoxMock.Object);
+        var command = new ListRulesCommand(_fixture.WorkspaceSyntax.BrConfiguration, _printBoxMock.Object);
 
         // Act
         await command.ExecuteAsync(It.IsAny<CancellationToken>());

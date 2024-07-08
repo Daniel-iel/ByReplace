@@ -2,14 +2,14 @@
 
 internal sealed class BrContentFactory
 {
-    private ContentSyntax _configSyntax;
+    private ContentSyntax _contentSyntax;
     private readonly List<RuleSyntax> _rulesSyntax = new List<RuleSyntax>();
 
     public static BrContentFactory CreateDefault() => new BrContentFactory();
 
     public BrContentFactory AddConfig(ContentSyntax configSyntax)
     {
-        _configSyntax = configSyntax;
+        _contentSyntax = configSyntax;
 
         return this;
     }
@@ -51,8 +51,8 @@ internal sealed class BrContentFactory
 
     public ContentSyntax Compile()
     {
-        _configSyntax.Rules = _rulesSyntax;
+        _contentSyntax.Rules = _rulesSyntax;
 
-        return _configSyntax;
+        return _contentSyntax;
     }
 }

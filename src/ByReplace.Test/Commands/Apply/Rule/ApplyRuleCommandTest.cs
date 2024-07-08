@@ -6,14 +6,14 @@ using Xunit;
 
 namespace ByReplace.Test.Commands.Apply.Rule;
 
-public class ApplyRuleCommandTest : IClassFixture<WorkspaceFixture>
+public class ApplyRuleCommandTest : IClassFixture<WorkspaceFixture<ApplyRuleCommandTest>>
 {
-    private readonly WorkspaceFixture _workspace;
+    private readonly WorkspaceFixture<ApplyRuleCommandTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public ApplyRuleCommandTest(WorkspaceFixture workspace)
+    public ApplyRuleCommandTest(WorkspaceFixture<ApplyRuleCommandTest> fixture)
     {
-        _workspace = workspace;
+        _fixture = fixture;
         _printMock = new Mock<IPrint>();
     }
 
@@ -26,7 +26,7 @@ public class ApplyRuleCommandTest : IClassFixture<WorkspaceFixture>
             Rule = "RuleTest"
         };
 
-        var command = new ApplyRuleCommand(_workspace.BrConfiguration, applyRuleParameter, _printMock.Object);
+        var command = new ApplyRuleCommand(_fixture.WorkspaceSyntax.BrConfiguration, applyRuleParameter, _printMock.Object);
 
         // Act
         var executionResult = Record.Exception(() => command.ExecuteAsync());

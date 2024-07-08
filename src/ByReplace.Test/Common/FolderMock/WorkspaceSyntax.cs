@@ -1,53 +1,61 @@
-﻿using ByReplace.Test.Common.ConfigMock;
+﻿using ByReplace.Builders;
+using ByReplace.Models;
+using ByReplace.Test.Common.ConfigMock;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 namespace ByReplace.Test.Common.FolderMock;
 
 internal sealed class WorkspaceSyntax
 {
-    private readonly List<FolderSyntax> _folders;
-    private ContentSyntax _brConfiguration;
+    private readonly List<FolderSyntaxV2> _folders;
+    private ContentSyntax _contextSyntax;
 
     public string Identifier { get; }
+
+    public BrConfiguration BrConfiguration { get; private set; }
 
     public WorkspaceSyntax()
     {
         Identifier = Guid.NewGuid().ToString();
-        _folders = new List<FolderSyntax>();
-        _brConfiguration = new ContentSyntax();
+        _folders = new List<FolderSyntaxV2>();
+        _contextSyntax = new ContentSyntax();
     }
 
     public WorkspaceSyntax(string testCase)
     {
         Identifier = $"{testCase}_{Guid.NewGuid()}";
-        _folders = new List<FolderSyntax>();
-        _brConfiguration = new ContentSyntax();
+        _folders = new List<FolderSyntaxV2>();
+        _contextSyntax = new ContentSyntax();
     }
 
-    public WorkspaceSyntax AddMembers(params FolderSyntax[] foldersSyntax)
+    public WorkspaceSyntax FolderStructure(params FolderSyntaxV2[] foldersSyntax)
     {
         this._folders.AddRange(foldersSyntax);
 
         return this;
     }
 
-    public WorkspaceSyntax AddMember(FolderSyntax folderSyntax)
+    public WorkspaceSyntax Folder(Action<FolderSyntaxV2> action)
     {
-        _folders.Add(folderSyntax);
+        var rootFolder = new FolderSyntaxV2("RootFolder");
+        action(rootFolder);
+        this._folders.Add(rootFolder);
 
         return this;
     }
 
     public WorkspaceSyntax AddBrConfiguration(ContentSyntax configSyntax)
     {
-        _brConfiguration = configSyntax;
+        _contextSyntax = configSyntax;
 
         return this;
     }
 
-    public WorkspaceSyntax AddFolder(string name)
+    public WorkspaceSyntax BRContent(Action<ContentSyntax> action)
     {
-        _folders.Add(new FolderSyntax(name));
+        var content = new ContentSyntax();
+        action(content);
+        _contextSyntax = content;
 
         return this;
     }
@@ -56,12 +64,12 @@ internal sealed class WorkspaceSyntax
     {
         foreach (ref var folder in CollectionsMarshal.AsSpan(_folders))
         {
-            CreateThreeFolder(folder);
+            CreateThreeFolder(folder.Name, folder);
         }
 
-        if (_brConfiguration is not null)
+        if (_contextSyntax is not null)
         {
-            var brConfig = JsonSerializer.Serialize(_brConfiguration, new JsonSerializerOptions
+            var brConfig = JsonSerializer.Serialize(_contextSyntax, new JsonSerializerOptions
             {
                 WriteIndented = true
             });
@@ -69,24 +77,23 @@ internal sealed class WorkspaceSyntax
             File.WriteAllText($"./{Identifier}/brconfig.json", brConfig);
         }
 
+        BrConfiguration = BrConfigurationBuilder
+            .Create()
+            .SetPath(Identifier)
+            .SetConfigPath(Identifier)
+            .Build();
+
         return this;
     }
 
-    public WorkspaceSyntax CreateThreeFolder(FolderSyntax folderSyntax)
+    public WorkspaceSyntax CreateThreeFolder(string parentFolder, FolderSyntaxV2 folderSyntax)
     {
         if (folderSyntax is null)
         {
             return this;
         }
 
-        if (folderSyntax.Parent is not null)
-        {
-            CreateThreeFolder(folderSyntax.Parent);
-        }
-
-        var dirPath = folderSyntax.Parent is not null
-                ? $"./{Identifier}/{folderSyntax.Parent.Name}/{folderSyntax.Name}"
-                : $"./{Identifier}/{folderSyntax.Name}";
+        var dirPath = $"./{Identifier}/{parentFolder}";
 
         if (!Directory.Exists(dirPath))
         {
@@ -95,9 +102,14 @@ internal sealed class WorkspaceSyntax
 
         foreach (ref var file in CollectionsMarshal.AsSpan(folderSyntax.Files))
         {
-            File.WriteAllText($"{dirPath}/{file.Name}", file.Content);
+            File.WriteAllText(string.Concat(dirPath, "/", file.Name), file.Content);
         }
 
+        foreach (var subFolder in CollectionsMarshal.AsSpan(folderSyntax.Folders))
+        {
+            CreateThreeFolder(string.Concat(parentFolder, "/", subFolder.Name), subFolder);
+        }
+        
         return this;
     }
 }

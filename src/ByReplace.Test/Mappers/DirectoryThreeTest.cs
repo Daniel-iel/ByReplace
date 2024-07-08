@@ -1,6 +1,4 @@
-﻿using ByReplace.Builders;
-using ByReplace.Mappers;
-using ByReplace.Models;
+﻿using ByReplace.Mappers;
 using ByReplace.Printers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
@@ -12,40 +10,32 @@ namespace ByReplace.Test.Mappers;
 public class DirectoryThreeTest
 {
     private readonly WorkspaceSyntax _workspaceSyntax;
-    private readonly BrConfiguration _brConfiguration;
     private readonly Mock<IPrint> _printMock;
 
     public DirectoryThreeTest()
     {
         _printMock = new Mock<IPrint>();
 
-        var configContent = BrContentFactory
-            .CreateDefault()
-            .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-            .AddRules(BrContentFactory
-                     .Rule("RuleTest")
-                     .WithExtensions(".cs", ".txt")
-                     .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
-                     .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-            .Compile();
-
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddFiles(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
-        _workspaceSyntax = WorkspaceFactory
-            .Compile(nameof(DirectoryThreeTest))
-            .AddMembers(rootFolder)
-            .AddBrConfiguration(configContent)
-            .Create();
-
-        _brConfiguration = BrConfigurationBuilder
-            .Create()
-            .SetPath($"./{_workspaceSyntax.Identifier}")
-            .SetConfigPath($"./{_workspaceSyntax.Identifier}")
-            .Build();
+        _workspaceSyntax = new WorkspaceSyntax(nameof(DirectoryThreeTest))
+           .BRContent(c =>
+           {
+               c.AddPath("")
+                .AddSkip("obj", ".bin")
+                .AddRules(
+                   ruleOne => ruleOne
+                              .WithName("RuleTest")
+                              .WithExtensions(".cs", ".txt")
+                              .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
+                              .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
+           })
+           .Folder(folderStructure =>
+           {
+               folderStructure
+                   .AddFile(FileSyntaxV2.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
+                   .AddFile(FileSyntaxV2.FileDeclaration("RootFile2.cs", "ITest = new Test()"))
+                  ;
+           })
+           .Create();
     }
 
     [Fact]
@@ -55,7 +45,7 @@ public class DirectoryThreeTest
         var dirThree = new DirectoryThree(_printMock.Object);
 
         // Act
-        var nodes = dirThree.MapThreeSources(_brConfiguration.Path);
+        var nodes = dirThree.MapThreeSources(_workspaceSyntax.BrConfiguration.Path);
 
         // Assert
         _printMock.Verify(c => c.Information(It.IsAny<string>()), Times.Exactly(2));

@@ -11,23 +11,22 @@ public class BrConfigurationBuilderTest
 
     public BrConfigurationBuilderTest()
     {
-        var rootFolder = FolderSyntax.FolderDeclaration("RootFolder");
-
-        var configContent = BrContentFactory
-         .CreateDefault()
-         .AddConfig(BrContentFactory.ConfigNoPathDeclaration("obj", ".bin"))
-         .AddRules(BrContentFactory
-                  .Rule("RuleTest")
-                  .WithExtensions(".cs")
-                  .WithSkips("**\\Controllers\\*")
-                  .WithReplacement(BrContentFactory.Replacement("Test", "Test2")))
-         .Compile();
-
-        _workspaceSyntax = WorkspaceFactory
-          .Compile(nameof(BrConfigurationBuilderTest))
-          .AddMember(rootFolder)
-          .AddBrConfiguration(configContent)
-          .Create();
+        _workspaceSyntax = new WorkspaceSyntax(nameof(BrConfigurationBuilderTest))
+            .BRContent(c =>
+            {
+                c.AddPath("")
+                 .AddSkip("obj", ".bin")
+                 .AddRules(
+                    ruleOne => ruleOne
+                               .WithName("RuleTest")
+                               .WithExtensions(".cs")
+                               .WithSkips("**\\Controllers\\*")
+                               .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
+            })
+            .Folder(folderStructure =>
+            {
+            })
+            .Create();
     }
 
     [Fact]

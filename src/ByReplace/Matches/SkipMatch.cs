@@ -50,14 +50,7 @@ internal sealed class SkipMatch : Match
         {
             if (c is not '*' and not '\\' and not '/')
             {
-                if (index < maxBufferSize - 1)
-                {
-                    buffer[index++] = c;
-                }
-                else
-                {
-                    break;
-                }
+                buffer[index++] = c;
             }
         }
 
