@@ -16,12 +16,6 @@ public class RulesBoxTest
     {
         _printMock = new Mock<IPrint>();
 
-        var rootFolder = FolderSyntax
-            .FolderDeclaration("RootFolder")
-            .AddFiles(
-                FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"),
-                FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
-
         _workspaceSyntax = new WorkspaceSyntax(nameof(RulesBoxTest))
             .BRContent(c =>
             {
