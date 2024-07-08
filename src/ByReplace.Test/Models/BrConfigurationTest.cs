@@ -1,5 +1,4 @@
 ﻿using ByReplace.Models;
-using ByReplace.Test.Analyzers;
 using ByReplace.Test.Common.ConfigMock;
 using ByReplace.Test.Common.FolderMock;
 using Xunit;
@@ -12,7 +11,7 @@ public class BrConfigurationTest
 
     public BrConfigurationTest()
     {
-        _workspaceSyntax = new WorkspaceSyntax(nameof(AnalyzerRunnerTest))
+        _workspaceSyntax = new WorkspaceSyntax(nameof(BrConfigurationTest))
             .BRContent(c =>
             {
                 c.AddPath("")
