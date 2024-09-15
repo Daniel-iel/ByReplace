@@ -51,9 +51,9 @@ public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
     {
         // Arrange
         var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
-        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
+        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode);
         var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
 
         // Act
@@ -74,9 +74,9 @@ public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
     {
         // Arrange
         var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
-        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
+        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode);
         var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
 
         // Act

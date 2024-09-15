@@ -14,28 +14,3 @@ internal class PathFixer
             : windows.PathFixed(parts);
     }
 }
-
-internal interface IPathFixer
-{
-    string PathFixed(params string[] parts);
-}
-
-internal sealed class PathFixerWindows : IPathFixer
-{
-    public string PathFixed(params string[] parts)
-    {
-        return string
-            .Join('\\', parts)
-            .Trim();
-    }
-}
-
-internal sealed class PathFixerLinux : IPathFixer
-{
-    public string PathFixed(params string[] parts)
-    {
-        return string
-            .Join('/', parts)
-            .Trim();
-    }
-}

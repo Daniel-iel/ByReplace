@@ -48,7 +48,8 @@ public class DirectoryThreeTest
         var nodes = dirThree.MapThreeSources(_workspaceSyntax.BrConfiguration.Path);
 
         // Assert
-        _printMock.Verify(c => c.Information(It.IsAny<string>()), Times.Exactly(2));
+        _printMock.Verify(c => c.Information($"Found [Cyan]1 files on folder [Cyan]{_workspaceSyntax.Identifier}."), Times.Once);
+        _printMock.Verify(c => c.Information($"Found [Cyan]2 files on folder [Cyan]{_workspaceSyntax.Identifier}\\RootFolder."), Times.Once);
 
         Assert.Equal(2, nodes.Count);
         Assert.Collection(nodes,

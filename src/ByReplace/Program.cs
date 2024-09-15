@@ -30,11 +30,8 @@ app.UseFilter(new GlobalHandleExceptionAttribute());
 app
     .AddSubCommand("apply", apply =>
     {
-        apply.AddCommand("rule", async (ApplyRuleParameter applyRuleParameters, IPrint print, INugetVersion nugetVersion) =>
+        apply.AddCommand("rule", async (ApplyRuleParameter applyRuleParameters, IPrint print, INugetVersion nugetVersion, CancellationToken token) =>
         {
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-
             BrConfiguration configuration = BrConfigurationBuilder
                 .Create()
                 .SetRule(applyRuleParameters.Rule)
@@ -42,22 +39,19 @@ app
                 .SetConfigPath(applyRuleParameters.ConfigFile)
                 .Build();
 
-            CompositeCommand compositeCommand = new CompositeCommand(new ICommand[]
-            {
+            CompositeCommand compositeCommand = new CompositeCommand(
+            [
                 new PrintLogoCommand(print),
                 new VersionCommand(nugetVersion),
                 new ApplyRuleCommand(configuration, applyRuleParameters, print),
                 new TimerFinishCommand(print)
-            });
+            ]);
 
             await compositeCommand.ExecuteAsync(token);
         });
 
-        apply.AddCommand("rules", async (ApplyParameter applyParameters, IPrint print, INugetVersion nugetVersion) =>
+        apply.AddCommand("rules", async (ApplyParameter applyParameters, IPrint print, INugetVersion nugetVersion, CancellationToken token) =>
         {
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-
             BrConfiguration configuration = BrConfigurationBuilder
                .Create()
                .SetPath(applyParameters.Path)

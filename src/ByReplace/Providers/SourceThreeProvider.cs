@@ -1,20 +1,17 @@
-﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+﻿namespace ByReplace.Providers;
 
-namespace ByReplace.Analyzers;
-
-[Obsolete("This class will be removed in a future release, use SourceThreeProvider instead.")]
-internal sealed class Analyzer
+internal sealed class SourceThreeProvider
 {
     private readonly BrConfiguration brConfiguration;
     private readonly IPrint print;
 
-    public Analyzer(BrConfiguration brConfiguration, IPrint print)
+    public SourceThreeProvider(BrConfiguration brConfiguration, IPrint print)
     {
         this.brConfiguration = brConfiguration;
         this.print = print;
     }
 
-    internal ImmutableList<DirectoryNode> LoadThreeFiles()
+    public ImmutableList<DirectoryNode> Run()
     {
         print.Information("Identifying folder three files.");
 

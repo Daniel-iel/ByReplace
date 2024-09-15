@@ -36,7 +36,7 @@ public class DirectoryThree
         DirectoryInfo directoryInfo = new DirectoryInfo(dir);
 
         DirectoryNode node = new DirectoryNode(
-            Directory: directoryInfo.FullName,
+            Directory: directoryInfo.ToString(),
             Path: directoryInfo.Name,
             Parent: directoryInfo!.Parent!.Name,
             Files: directoryInfo

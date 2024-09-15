@@ -22,11 +22,11 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
     {
         // Arrange
         var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
-        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
+        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Act
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
         Assert.Equal(2, analyzerAndFixer.Count);
@@ -51,13 +51,15 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
     {
         // Arrange
         var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
-        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object);
+        var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Act
         var directoryNode = analyzer.LoadThreeFiles().Last();
-        analyzerAndFixer.TryMatchRule(directoryNode, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
+        analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
+
+        //"[Cyan]{0} rules in total match the file [Cyan]{1}.", item.Value.Count, item.Key.Name
         _printMock.Verify(x => x.Information("[Cyan]1 rules in total match the file [Cyan]RootFile1.cs."), Times.Once);
         _printMock.Verify(x => x.Information("[Cyan]1 rules in total match the file [Cyan]RootFile2.cs."), Times.Once);
     }

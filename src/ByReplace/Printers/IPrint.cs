@@ -4,6 +4,7 @@ public interface IPrint
 {
     void PureText(string text);
     void Information(string text);
+    //void Information(string text, params object[] args);
     void Timer();
     void Warning(string text);
     void Error(string text);

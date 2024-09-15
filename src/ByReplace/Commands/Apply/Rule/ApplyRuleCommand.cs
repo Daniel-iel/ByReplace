@@ -1,4 +1,6 @@
-﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+﻿using ByReplace.Providers;
+
+[assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Commands.Apply.Rule;
 
@@ -20,13 +22,11 @@ internal sealed class ApplyRuleCommand : ICommand
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        Analyzer analyser = new Analyzer(configuration, print);
-        ImmutableList<DirectoryNode> three = analyser.LoadThreeFiles();
+        var documentFix = new DocumentFixProvider(
+            print,
+            new MatchProvider(configuration, print,
+            new SourceThreeProvider(configuration, print)));
 
-        AnalyzerRunner analyzerRunner = new AnalyzerRunner(configuration, print);
-        AnalyzerAndFixer fixers = analyzerRunner.RunAnalysis(three, Analyses.Fix);
-
-        DocumentFix analyzerFix = new DocumentFix(fixers, print);
-        return analyzerFix.ApplyAsync(applyRuleParameter.Rule, cancellationToken);
+        return documentFix.RunAsync(applyRuleParameter.Rule, cancellationToken);
     }
 }

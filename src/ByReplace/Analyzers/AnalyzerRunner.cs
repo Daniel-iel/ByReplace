@@ -2,6 +2,7 @@
 
 namespace ByReplace.Analyzers;
 
+[Obsolete("This class will be removed in a future release, use AnalyzerRunner instead.")]
 internal sealed class AnalyzerRunner
 {
     private readonly BrConfiguration brConfiguration;
@@ -17,11 +18,11 @@ internal sealed class AnalyzerRunner
     {
         print.Information("Identifying rules that has matches.");
 
-        AnalyzerAndFixer analyzersAndFixers = new AnalyzerAndFixer(this.print);
+        AnalyzerAndFixer analyzersAndFixers = new AnalyzerAndFixer(this.print, brConfiguration.Rules);
 
         foreach (DirectoryNode dir in directoryThree)
         {
-            analyzersAndFixers.TryMatchRule(dir, brConfiguration.Rules);
+            analyzersAndFixers.TryMatchRule(dir);
         }
 
         return analyzersAndFixers;

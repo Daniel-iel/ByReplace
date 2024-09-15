@@ -109,7 +109,7 @@ internal sealed class WorkspaceSyntax
         {
             CreateThreeFolder(string.Concat(parentFolder, "/", subFolder.Name), subFolder);
         }
-        
+
         return this;
     }
 }

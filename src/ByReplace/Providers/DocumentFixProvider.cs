@@ -1,31 +1,34 @@
-﻿[assembly: InternalsVisibleTo("ByReplace.Test")]
+﻿namespace ByReplace.Providers;
 
-namespace ByReplace.Analyzers;
-
-[Obsolete("This class will be removed in a future release, use DocumentFixProvider instead.")]
-internal sealed class DocumentFix
+internal sealed class DocumentFixProvider
 {
-    private readonly AnalyzerAndFixer codeFixes;
     private readonly IPrint print;
+    private readonly MatchProvider matchProvider;
 
-    public DocumentFix(AnalyzerAndFixer codeFixes, IPrint print)
+    public DocumentFixProvider(
+        IPrint print,
+        MatchProvider matchProvider)
     {
-        this.codeFixes = codeFixes;
         this.print = print;
+        this.matchProvider = matchProvider;
     }
 
-    public ValueTask ApplyAsync(CancellationToken cancellationToken)
+    public ValueTask RunAsync(CancellationToken cancellationToken)
     {
         print.Information("Initializing fixing.");
 
-        return FindAndReplaceAsync(this.codeFixes, cancellationToken);
+        var codeFixes = matchProvider.Run();
+
+        return FindAndReplaceAsync(codeFixes, cancellationToken);
     }
 
-    public ValueTask ApplyAsync(string rule, CancellationToken cancellationToken)
+    public ValueTask RunAsync(string rule, CancellationToken cancellationToken)
     {
         print.Information("Initializing fixing.");
 
-        AnalyzerAndFixer codeFixersFiltered = this.codeFixes.FindByRule(rule);
+        var codeFixes = matchProvider.Run();
+
+        AnalyzerAndFixer codeFixersFiltered = codeFixes.FindByRule(rule);
 
         return FindAndReplaceAsync(codeFixersFiltered, cancellationToken);
     }

@@ -22,6 +22,11 @@ internal sealed class PrintConsole : IPrint
         printerKonsole.PrintColorText($"[{GetTimeElapsedText()} INF] {text}");
     }
 
+    public void Information(string text, params object[] args)
+    {
+        Information(string.Format(text, args));
+    }
+
     public void Timer()
     {
         printerKonsole.PrintColorText($"[{GetTimeElapsedText()} INF] [Green]{timer.Elapsed.Duration().ToString()}");
