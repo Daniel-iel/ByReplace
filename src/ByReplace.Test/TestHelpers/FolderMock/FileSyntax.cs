@@ -1,4 +1,4 @@
-﻿namespace ByReplace.Test.Common.FolderMock;
+﻿namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class FileSyntax
 {
@@ -16,7 +16,7 @@ internal sealed class FileSyntax
     public string Name { get; private set; }
     public string Content { get; private set; }
 
-    public string Extension => System.IO.Path.GetExtension(Name);
+    public string Extension => Path.GetExtension(Name);
 
     public static FileSyntax New()
     {

@@ -1,6 +1,6 @@
 ﻿using ByReplace.Common;
 
-[assembly: InternalsVisibleTo("ByReplace.Test")]
+
 
 namespace ByReplace.Models;
 

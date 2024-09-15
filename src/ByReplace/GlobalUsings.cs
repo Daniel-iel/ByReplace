@@ -6,7 +6,6 @@ global using ByReplace.Commands.Logo;
 global using ByReplace.Commands.Version;
 global using ByReplace.Exceptions;
 global using ByReplace.Mappers;
-global using ByReplace.Matches;
 global using ByReplace.Models;
 global using ByReplace.Printers;
 global using Cocona;

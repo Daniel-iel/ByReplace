@@ -1,4 +1,4 @@
-﻿namespace ByReplace.Test.Common.FolderMock;
+﻿namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class FolderSyntax
 {
@@ -20,20 +20,20 @@ internal sealed class FolderSyntax
     {
         var folderSyntax = new FolderSyntax(name);
         action(folderSyntax);
-        this.Folders.Add(folderSyntax);
+        Folders.Add(folderSyntax);
 
         return this;
     }
 
     public FolderSyntax AddFiles(params FileSyntax[] filesSyntax)
     {
-        this.Files.AddRange(filesSyntax);
+        Files.AddRange(filesSyntax);
         return this;
     }
 
     public FolderSyntax AddFile(FileSyntax fileSyntax)
     {
-        this.Files.Add(fileSyntax);
+        Files.Add(fileSyntax);
         return this;
     }
 }

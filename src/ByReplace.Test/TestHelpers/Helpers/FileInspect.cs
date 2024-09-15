@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ByReplace.Test.Common.Helpers
+namespace ByReplace.Test.TestHelpers.Helpers
 {
     internal static class FileInspect<T>
     {

@@ -1,6 +1,6 @@
 ﻿using ByReplace.Commands.Apply.Rules;
 using ByReplace.Printers;
-using ByReplace.Test.ClassFixture;
+using ByReplace.Test.TestHelpers.ClassFixture;
 using Moq;
 using Xunit;
 

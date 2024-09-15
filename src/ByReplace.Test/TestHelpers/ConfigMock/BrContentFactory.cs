@@ -1,4 +1,4 @@
-﻿namespace ByReplace.Test.Common.ConfigMock;
+﻿namespace ByReplace.Test.TestHelpers.ConfigMock;
 
 internal sealed class BrContentFactory
 {

@@ -1,4 +1,4 @@
-﻿namespace ByReplace.Test.Common.Asserts;
+﻿namespace ByReplace.Test.TestHelpers.Asserts;
 
 public static class AssertBr
 {

@@ -1,7 +1,7 @@
-﻿using ByReplace.Test.Common.ConfigMock;
-using ByReplace.Test.Common.FolderMock;
+﻿using ByReplace.Test.TestHelpers.ConfigMock;
+using ByReplace.Test.TestHelpers.FolderMock;
 
-namespace ByReplace.Test.ClassFixture;
+namespace ByReplace.Test.TestHelpers.ClassFixture;
 
 public class WorkspaceFixture<TTestClass> : IDisposable
 {

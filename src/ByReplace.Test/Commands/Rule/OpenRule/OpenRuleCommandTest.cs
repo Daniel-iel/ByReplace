@@ -1,9 +1,8 @@
 ﻿using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Printers;
-using ByReplace.Test.Analyzers;
-using ByReplace.Test.ClassFixture;
-using ByReplace.Test.Common.ConfigMock;
-using ByReplace.Test.Common.FolderMock;
+using ByReplace.Test.TestHelpers.ClassFixture;
+using ByReplace.Test.TestHelpers.ConfigMock;
+using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
 using Xunit;
 

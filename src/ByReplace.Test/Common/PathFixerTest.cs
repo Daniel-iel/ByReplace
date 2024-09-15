@@ -1,7 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using ByReplace.Common;
+using System.Runtime.InteropServices;
 using Xunit;
 
-namespace ByReplace.Common.Tests;
+namespace ByReplace.Test.Common;
 
 public class PathFixerTests
 {

@@ -1,7 +1,7 @@
 ﻿using ByReplace.Mappers;
 using ByReplace.Printers;
-using ByReplace.Test.Common.ConfigMock;
-using ByReplace.Test.Common.FolderMock;
+using ByReplace.Test.TestHelpers.ConfigMock;
+using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
 using Xunit;
 

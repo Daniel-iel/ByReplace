@@ -1,5 +1,5 @@
 ﻿using ByReplace.Commands.Rule.ListRules;
-using ByReplace.Test.Common.Helpers;
+using ByReplace.Test.TestHelpers.Helpers;
 using Cocona;
 using Xunit;
 

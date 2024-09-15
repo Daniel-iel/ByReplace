@@ -1,9 +1,9 @@
 ﻿using ByReplace.Builders;
 using ByReplace.Models;
-using ByReplace.Test.Common.ConfigMock;
+using ByReplace.Test.TestHelpers.ConfigMock;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-namespace ByReplace.Test.Common.FolderMock;
+namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class WorkspaceSyntax
 {
@@ -30,7 +30,7 @@ internal sealed class WorkspaceSyntax
 
     public WorkspaceSyntax FolderStructure(params FolderSyntax[] foldersSyntax)
     {
-        this._folders.AddRange(foldersSyntax);
+        _folders.AddRange(foldersSyntax);
 
         return this;
     }
@@ -39,7 +39,7 @@ internal sealed class WorkspaceSyntax
     {
         var rootFolder = new FolderSyntax("RootFolder");
         action(rootFolder);
-        this._folders.Add(rootFolder);
+        _folders.Add(rootFolder);
 
         return this;
     }

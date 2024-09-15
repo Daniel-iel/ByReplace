@@ -38,6 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="TestHelpers\Builders\RuleBuilderTest.cs">
+      <IsBuilderFile>True</IsBuilderFile>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="brconfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

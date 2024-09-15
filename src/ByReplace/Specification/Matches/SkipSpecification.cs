@@ -2,15 +2,11 @@
 
 internal class SkipMatchSpecification : IMatchSpecification
 {
-    private readonly DirectoryNode directoryNode;
+    private readonly string _directory;
 
-    //private readonly string dir;
-    //private readonly FileMapper file;
-    //private readonly string[] param;
-
-    public SkipMatchSpecification(DirectoryNode directoryNode)
+    public SkipMatchSpecification(string directory)
     {
-        this.directoryNode = directoryNode;
+        _directory = directory;
     }
 
     public bool IsSatisfiedBy(FileMapper file, Rule rule)
@@ -23,15 +19,15 @@ internal class SkipMatchSpecification : IMatchSpecification
         return rule.Skip.Any(c =>
                 c.StartsWith("**", StringComparison.Ordinal) &&
                 c.EndsWith("*", StringComparison.Ordinal) &&
-                directoryNode.Directory.Contains(SanitizePattern(c), StringComparison.InvariantCultureIgnoreCase));
+                _directory.Contains(SanitizePattern(c), StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private bool SkipFile(FileMapper file, Rule rule)
+    private static bool SkipFile(FileMapper file, Rule rule)
     {
         return rule.Skip.Any(c => c.EndsWith(file.Name, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private bool SkipDirWithFile(FileMapper file, Rule rule)
+    private static bool SkipDirWithFile(FileMapper file, Rule rule)
     {
         return rule.Skip.Any(c => file.FullName.EndsWith(c, StringComparison.InvariantCultureIgnoreCase));
     }

@@ -1,4 +1,4 @@
-﻿namespace ByReplace.Test.Common.FolderMock;
+﻿namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class WorkspaceFactory
 {

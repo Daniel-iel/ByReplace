@@ -1,4 +1,7 @@
-﻿namespace ByReplace.Models;
+﻿
+[assembly: InternalsVisibleTo("ByReplace.Test")]
+
+namespace ByReplace.Models;
 
 internal record class Rule(
     string Name,

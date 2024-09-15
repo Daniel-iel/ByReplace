@@ -22,7 +22,7 @@ internal sealed class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
 
     internal bool TryMatchRule(DirectoryNode directoryNode)
     {
-        var skipSpec = new SkipMatchSpecification(directoryNode);
+        var skipSpec = new SkipMatchSpecification(directoryNode.Directory);
         var extensionSpec = new ExtensionSpecification();
 
         foreach (FileMapper file in directoryNode.Files)
