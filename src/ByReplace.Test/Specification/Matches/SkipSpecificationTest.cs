@@ -7,46 +7,12 @@ namespace ByReplace.Test.Specification.Matches;
 
 public class SkipSpecificationTest
 {
-    [Fact]
-    public void SkipSpecification()
-    {
-        // Arrange
-        var skipMatchSpecification = new SkipMatchSpecification("c:\\test\\");
-        var fileMapper = FileMapperBuilderTest
-           .Create()
-           .WithName("test")
-           .WithFullName("c:\\test\\test.cs")
-           .WithExtension(".cs")
-           .Build();
-
-        var rule = RuleBuilderTest
-             .Create()
-             .WithName("Remove")
-             .WithDescription("ToRemove")
-             .WithSkip(".json")
-             .WithExtensions(".cs")
-             .WithReplacement(c =>
-             {
-                 c = c with
-                 {
-                     Old = ["_test.", "this._test"],
-                     New = "_test."
-                 };
-             })
-             .Build();
-
-        // Act
-        var hasMatch = skipMatchSpecification.IsSatisfiedBy(fileMapper, rule);
-
-        // Assert
-        Assert.True(hasMatch);
-    }
-
     [Theory]
-    [InlineData("test.txt", "/dir/test.txt", "/dir", "test.txt")]
-    [InlineData("test.txt", "/dir/test.txt", "/dir", "**\\dir\\*")]
-    [InlineData("test.txt", "/dir/test.txt", "/dir", "/dir/test.txt")]
-    public void SkipSpecification2(string fileName, string fullName, string dir, string skip)
+    [InlineData("test.txt", "/dir/test.txt", "/dir", new string[] { "test.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/dir", new string[] { "**\\dir\\*" })]
+    [InlineData("test.txt", "/dir/test.txt", "/dir", new string[] { "/dir/test.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/dir", new string[] { "/dir/test.txt", "/dir/test5.txt" })]
+    public void SkipSpecification2(string fileName, string fullName, string dir, string[] skip)
     {
         // Arrange
         var fileMapper = FileMapperBuilderTest
@@ -80,11 +46,15 @@ public class SkipSpecificationTest
     }
 
     [Theory]
-    [InlineData("test.txt", "/dir/test.txt", "/dir", new string[] { "test.txt", "test1.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/dir", new string[] { "test1.txt", "test2.txt" })]
     [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "**\\dir\\*", "test1.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "**//dir//*", "test1.txt" })]
     [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "*\\dir\\*", "test1.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "*//dir//*", "test1.txt" })]
     [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "*\\dir\\", "test1.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "*//dir//", "test1.txt" })]
     [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "\\dir\\", "test1.txt" })]
+    [InlineData("test.txt", "/dir/test.txt", "/folder", new string[] { "//dir//", "test1.txt" })]
     [InlineData("test1.txt", "/dir/test1.txt", "/dir", new string[] { "/folder/test.txt", "test5.txt" })]
     public void SkipSpecification3(string fileName, string fullName, string dir, string[] skip)
     {

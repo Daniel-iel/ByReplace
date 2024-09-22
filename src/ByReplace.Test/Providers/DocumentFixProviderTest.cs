@@ -1,26 +1,26 @@
 ﻿using ByReplace.Analyzers;
 using ByReplace.Printers;
+using ByReplace.Providers;
 using ByReplace.Test.TestHelpers.ClassFixture;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
 using Xunit;
 
-namespace ByReplace.Test.Analyzers;
+namespace ByReplace.Test.Providers;
 
-public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
+public class DocumentFixProviderTest : IClassFixture<WorkspaceFixture<DocumentFixProviderTest>>
 {
-    private readonly WorkspaceFixture<DocumentFixTest> _fixture;
+    private readonly WorkspaceFixture<DocumentFixProviderTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public DocumentFixTest(WorkspaceFixture<DocumentFixTest> fixture)
+    public DocumentFixProviderTest(WorkspaceFixture<DocumentFixProviderTest> fixture)
     {
-        _fixture = fixture;
         _printMock = new Mock<IPrint>();
-
+        _fixture = fixture;
         _fixture.ClearPrevious();
 
-        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(DocumentFixTest))
+        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(DocumentFixProviderTest))
            .BRContent(c =>
            {
                c.AddPath("")
@@ -50,14 +50,15 @@ public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
     public async Task ApplyAsync_WhenPassAllRules_ShouldApplyTheRulesInAllFilesAsync()
     {
         // Arrange
-        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
-        var directoryNode = analyzer.LoadThreeFiles().Last();
+        var directoryNode = analyzer.Run().Last();
         analyzerAndFixer.TryMatchRule(directoryNode);
-        var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
+        var MatchProvider = new MatchProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object, analyzer);
+        var documentFix = new DocumentFixProvider(_printMock.Object, MatchProvider);
 
         // Act
-        await documentFix.ApplyAsync(It.IsAny<CancellationToken>());
+        await documentFix.RunAsync(It.IsAny<CancellationToken>());
 
         // Assert
         var fileFixedPath = directoryNode.Files[0].FullName;
@@ -73,14 +74,15 @@ public class DocumentFixTest : IClassFixture<WorkspaceFixture<DocumentFixTest>>
     public async Task ApplyAsync_WhenPassOnlyOneRule_ShouldApplyTheRuleInAllFiles()
     {
         // Arrange
-        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
-        var directoryNode = analyzer.LoadThreeFiles().Last();
+        var directoryNode = analyzer.Run().Last();
         analyzerAndFixer.TryMatchRule(directoryNode);
-        var documentFix = new DocumentFix(analyzerAndFixer, _printMock.Object);
+        var MatchProvider = new MatchProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object, analyzer);
+        var documentFix = new DocumentFixProvider(_printMock.Object, MatchProvider);
 
         // Act
-        await documentFix.ApplyAsync("RuleTest", It.IsAny<CancellationToken>());
+        await documentFix.RunAsync("RuleTest", It.IsAny<CancellationToken>());
 
         // Assert
 

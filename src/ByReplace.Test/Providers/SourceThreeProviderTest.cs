@@ -1,25 +1,25 @@
-﻿using ByReplace.Analyzers;
-using ByReplace.Printers;
+﻿using ByReplace.Printers;
+using ByReplace.Providers;
 using ByReplace.Test.TestHelpers.ClassFixture;
 using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
 using Xunit;
 
-namespace ByReplace.Test.Analyzers;
+namespace ByReplace.Test.Providers;
 
-public class AnalyzerTest : IClassFixture<WorkspaceFixture<AnalyzerTest>>
+public class SourceThreeProviderTest : IClassFixture<WorkspaceFixture<SourceThreeProviderTest>>
 {
-    private readonly WorkspaceFixture<AnalyzerTest> _fixture;
+    private readonly WorkspaceFixture<SourceThreeProviderTest> _fixture;
     private readonly Mock<IPrint> _printMock;
 
-    public AnalyzerTest(WorkspaceFixture<AnalyzerTest> fixture)
+    public SourceThreeProviderTest(WorkspaceFixture<SourceThreeProviderTest> fixture)
     {
         _fixture = fixture;
         _printMock = new Mock<IPrint>();
 
         _fixture.ClearPrevious();
 
-        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(AnalyzerTest))
+        _fixture.WorkspaceSyntax = new WorkspaceSyntax(nameof(SourceThreeProviderTest))
             .Folder(folderStructure =>
             {
                 folderStructure
@@ -36,10 +36,10 @@ public class AnalyzerTest : IClassFixture<WorkspaceFixture<AnalyzerTest>>
     public void LoadThreeFiles_MapAllSourceThreeOfDirectory_ShouldReturnSourceFileThree()
     {
         // Arrange
-        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
-        var directoryNodes = analyzer.LoadThreeFiles();
+        var directoryNodes = analyzer.Run();
 
         // Assert
         Assert.Equal(3, directoryNodes.Count);
@@ -53,12 +53,13 @@ public class AnalyzerTest : IClassFixture<WorkspaceFixture<AnalyzerTest>>
     public void LoadThreeFiles_WhenPrintLogInformation_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
-        var directoryNodes = analyzer.LoadThreeFiles();
+        var directoryNodes = analyzer.Run();
 
         // Assert
         _printMock.Verify(x => x.Information("Identifying folder three files."), Times.Once);
     }
+
 }

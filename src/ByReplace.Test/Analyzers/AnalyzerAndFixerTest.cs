@@ -1,5 +1,6 @@
 ﻿using ByReplace.Analyzers;
 using ByReplace.Printers;
+using ByReplace.Providers;
 using ByReplace.Test.TestHelpers.ClassFixture;
 using Moq;
 using Xunit;
@@ -21,11 +22,11 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
     public void TryMatchRule_MapTheFilesThatMatchToRule_ShouldReturnFilesThatMatch()
     {
         // Arrange
-        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Act
-        var directoryNode = analyzer.LoadThreeFiles().Last();
+        var directoryNode = analyzer.Run().Last();
         analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
@@ -50,11 +51,11 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
     public void TryMatchRule_WhenMapTheFilesThatMatchToRule_ShouldValidateLogWasCalled()
     {
         // Arrange
-        var analyzer = new Analyzer(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Act
-        var directoryNode = analyzer.LoadThreeFiles().Last();
+        var directoryNode = analyzer.Run().Last();
         analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
