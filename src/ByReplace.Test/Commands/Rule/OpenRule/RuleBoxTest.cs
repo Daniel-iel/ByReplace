@@ -62,12 +62,14 @@ public class RuleBoxTest
         var ruleBoxSecond = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
 
         // Act
+        var isObjectEquals = ruleBoxFirst.Equals(ruleBoxFirst, ruleBoxSecond);
         var isEquals = ruleBoxFirst.Equals(ruleBoxSecond);
         var isEqualsLikeObject = ruleBoxFirst.Equals((object)ruleBoxSecond);
         var hasTheSameHashcode = ruleBoxFirst.GetHashCode() == ruleBoxSecond.GetHashCode();
 
         // Assert
         Assert.Equal(ruleBoxSecond, ruleBoxFirst);
+        Assert.True(isObjectEquals);
         Assert.True(isEquals);
         Assert.True(isEqualsLikeObject);
         Assert.True(hasTheSameHashcode);
@@ -81,14 +83,29 @@ public class RuleBoxTest
         var ruleBoxSecond = new RuleBox(_workspaceSyntax.BrConfiguration.Rules.Last());
 
         // Act
+        var isObjectEquals = ruleBoxFirst.Equals(ruleBoxFirst, ruleBoxSecond);
         var isEquals = ruleBoxFirst.Equals(ruleBoxSecond);
         var isEqualsLikeObject = ruleBoxFirst.Equals((object)ruleBoxSecond);
         var hasTheSameHashcode = ruleBoxFirst.GetHashCode() == ruleBoxSecond.GetHashCode();
 
         // Assert
         Assert.NotEqual(ruleBoxSecond, ruleBoxFirst);
+        Assert.False(isObjectEquals);
         Assert.False(isEquals);
         Assert.False(isEqualsLikeObject);
         Assert.False(hasTheSameHashcode);
+    }
+
+    [Fact]
+    public void GetValuesToPrint_WhenCalled_ReturnsFormattedRule()
+    {
+        // Arrange
+        var ruleBox = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
+
+        // Act
+        var valuesToPrint = ruleBox.GetValuesToPrint();
+
+        // Assert
+        Assert.Equal("Name: RuleOne\r\nDescription: \r\nSkip: [ **\\Controllers\\*, bin\\bin1.txt, obj\\obj2.txt ]\r\nExtensions: [ .cs, .txt ]\r\nReplacement: FROM [ NewText ] To [ OldText ]\r\n", valuesToPrint);
     }
 }

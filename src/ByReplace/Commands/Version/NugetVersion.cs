@@ -4,11 +4,7 @@ using NuGet.Configuration;
 using System.Reflection;
 namespace ByReplace.Commands.Version;
 
-internal interface INugetVersion
-{
-    Task<string> GetByReplaceNugetVersionAsync(CancellationToken cancellationToken);
-}
-
+[ExcludeFromCodeCoverage]
 internal sealed class NugetVersion : INugetVersion
 {
     private readonly SourceRepository _sourceRepository;

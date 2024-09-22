@@ -2,6 +2,7 @@
 
 namespace ByReplace.Commands.Version;
 
+[ExcludeFromCodeCoverage]
 internal sealed class VersionCommand : ICommand
 {
     private readonly INugetVersion _nugetVersion;

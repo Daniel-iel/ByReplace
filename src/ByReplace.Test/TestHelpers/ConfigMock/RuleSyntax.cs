@@ -55,6 +55,13 @@ public sealed class RuleSyntax
         return this;
     }
 
+    public RuleSyntax WithDescription(string description)
+    {
+        Description = description;
+
+        return this;
+    }
+
     public RuleSyntax WithReplacement(ReplacementSyntax replacementSyntax)
     {
         Replacement = replacementSyntax;

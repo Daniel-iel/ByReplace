@@ -24,8 +24,8 @@ public class WorkspaceFixture<TTestClass> : IDisposable
             .Folder(folderStructure =>
             {
                 folderStructure
-                    .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test()"))
-                    .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test()"));
+                    .AddFile(FileSyntax.FileDeclaration("RootFile1.cs", "ITest = new Test2()", folderStructure.Name))
+                    .AddFile(FileSyntax.FileDeclaration("RootFile2.cs", "ITest = new Test2()", folderStructure.Name));
             })
             .Create();
     }

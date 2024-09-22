@@ -7,30 +7,37 @@ namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class WorkspaceSyntax
 {
-    private readonly List<FolderSyntax> _folders;
+
     private ContentSyntax _contextSyntax;
 
     public string Identifier { get; }
 
     public BrConfiguration BrConfiguration { get; private set; }
 
+    public List<FolderSyntax> Folders { get; private set; }
+
+    public List<FileSyntax> Files =>
+      Folders
+      .SelectMany(folder => folder.Files)
+      .ToList();
+
     public WorkspaceSyntax()
     {
         Identifier = Guid.NewGuid().ToString();
-        _folders = new List<FolderSyntax>();
+        Folders = new List<FolderSyntax>();
         _contextSyntax = new ContentSyntax();
     }
 
     public WorkspaceSyntax(string testCase)
     {
         Identifier = $"{testCase}_{Guid.NewGuid()}";
-        _folders = new List<FolderSyntax>();
+        Folders = new List<FolderSyntax>();
         _contextSyntax = new ContentSyntax();
     }
 
     public WorkspaceSyntax FolderStructure(params FolderSyntax[] foldersSyntax)
     {
-        _folders.AddRange(foldersSyntax);
+        Folders.AddRange(foldersSyntax);
 
         return this;
     }
@@ -39,7 +46,7 @@ internal sealed class WorkspaceSyntax
     {
         var rootFolder = new FolderSyntax("RootFolder");
         action(rootFolder);
-        _folders.Add(rootFolder);
+        Folders.Add(rootFolder);
 
         return this;
     }
@@ -62,7 +69,7 @@ internal sealed class WorkspaceSyntax
 
     public WorkspaceSyntax Create()
     {
-        foreach (ref var folder in CollectionsMarshal.AsSpan(_folders))
+        foreach (ref var folder in CollectionsMarshal.AsSpan(Folders))
         {
             CreateThreeFolder(folder.Name, folder);
         }

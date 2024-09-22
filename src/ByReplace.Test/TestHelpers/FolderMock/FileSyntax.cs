@@ -13,8 +13,16 @@ internal sealed class FileSyntax
         Content = content;
     }
 
+    public FileSyntax(string name, string content, string parentFolder)
+    {
+        Name = name;
+        Content = content;
+        ParentFolder = parentFolder;
+    }
+
     public string Name { get; private set; }
     public string Content { get; private set; }
+    public string ParentFolder { get; private set; }
 
     public string Extension => Path.GetExtension(Name);
 
@@ -31,6 +39,11 @@ internal sealed class FileSyntax
     public static FileSyntax FileDeclaration(string name, string content)
     {
         return new FileSyntax(name, content);
+    }
+
+    public static FileSyntax FileDeclaration(string name, string content, string parentFolder)
+    {
+        return new FileSyntax(name, content, parentFolder);
     }
 
     public FileSyntax Create(string name, string content)

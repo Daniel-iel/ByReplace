@@ -2,7 +2,6 @@
 
 internal sealed class FolderSyntax
 {
-
     public FolderSyntax(string name)
     {
         Name = name;

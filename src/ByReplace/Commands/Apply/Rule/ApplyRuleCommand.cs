@@ -22,10 +22,9 @@ internal sealed class ApplyRuleCommand : ICommand
 
     public ValueTask ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        var documentFix = new DocumentFixProvider(
-            print,
-            new MatchProvider(configuration, print,
-            new SourceThreeProvider(configuration, print)));
+        var sourceThreeProvider = new SourceThreeProvider(configuration, print);
+        var matchProvider = new MatchProvider(configuration, print, sourceThreeProvider);
+        var documentFix = new DocumentFixProvider(print, matchProvider);
 
         return documentFix.RunAsync(applyRuleParameter.Rule, cancellationToken);
     }

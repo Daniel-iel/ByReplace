@@ -34,4 +34,34 @@ public class ApplyRuleCommandTest : IClassFixture<WorkspaceFixture<ApplyRuleComm
         // Assert
         Assert.Null(executionResult);
     }
+
+    [Fact]
+    public async Task ExecuteAsync_WhenInvoked_AppliesRuleAndModifiesFileAccordingToRule()
+    {
+        // Arrange
+        var applyRuleParameter = new ApplyRuleParameter
+        {
+            Rule = "RuleTest"
+        };
+
+        var command = new ApplyRuleCommand(_fixture.WorkspaceSyntax.BrConfiguration, applyRuleParameter, _printMock.Object);
+
+        // Act
+        await command.ExecuteAsync();
+
+        // Assert
+        Assert.Collection(_fixture.WorkspaceSyntax.Files,
+           entry =>
+           {
+               string filePath = string.Join(Path.DirectorySeparatorChar, _fixture.WorkspaceSyntax.Identifier, entry.ParentFolder, entry.Name);
+               string textModified = File.ReadAllText(filePath);
+               Assert.Equal("ITest = new Test()", textModified);
+           },
+           entry =>
+           {
+               string filePath = string.Join(Path.DirectorySeparatorChar, _fixture.WorkspaceSyntax.Identifier, entry.ParentFolder, entry.Name);
+               string textModified = File.ReadAllText(filePath);
+               Assert.Equal("ITest = new Test()", textModified);
+           });
+    }
 }

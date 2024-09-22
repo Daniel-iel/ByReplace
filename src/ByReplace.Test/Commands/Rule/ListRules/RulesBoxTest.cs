@@ -24,6 +24,7 @@ public class RulesBoxTest
                  .AddRules(
                     ruleOne => ruleOne
                                .WithName("RuleTest")
+                               .WithDescription("Rule for test")
                                .WithExtensions(".cs", ".txt")
                                .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")
                                .WithReplacement(BrContentFactory.Replacement("Test", "Test2")));
@@ -57,12 +58,14 @@ public class RulesBoxTest
         var rulesBoxSecond = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
 
         // Act
+        var isObjectEquals = rulesBoxFirst.Equals(rulesBoxFirst, rulesBoxSecond);
         var isEquals = rulesBoxFirst.Equals(rulesBoxSecond);
         var isEqualsLikeObject = rulesBoxFirst.Equals((object)rulesBoxSecond);
         var hasTheSameHashcode = rulesBoxFirst.GetHashCode() == rulesBoxSecond.GetHashCode();
 
         // Assert
         Assert.Equal(rulesBoxSecond, rulesBoxFirst);
+        Assert.True(isObjectEquals);
         Assert.True(isEquals);
         Assert.True(isEqualsLikeObject);
         Assert.True(hasTheSameHashcode);
@@ -76,14 +79,29 @@ public class RulesBoxTest
         var rulesBoxSecond = new RulesBox([]);
 
         // Act
+        var isObjectEquals = rulesBoxFirst.Equals(rulesBoxFirst, rulesBoxSecond);
         var isEquals = rulesBoxFirst.Equals(rulesBoxSecond);
         var isEqualsLikeObject = rulesBoxFirst.Equals((object)rulesBoxSecond);
         var hasTheSameHashcode = rulesBoxFirst.GetHashCode() == rulesBoxSecond.GetHashCode();
 
         // Assert
         Assert.NotEqual(rulesBoxSecond, rulesBoxFirst);
+        Assert.False(isObjectEquals);
         Assert.False(isEquals);
         Assert.False(isEqualsLikeObject);
         Assert.False(hasTheSameHashcode);
+    }
+
+    [Fact]
+    public void GetValuesToPrint_WhenCalled_ReturnsFormattedRuleNamesAndDescriptions()
+    {
+        // Arrange
+        var rulesBox = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
+
+        // Act
+        var valuesToPrint = rulesBox.GetValuesToPrint();
+
+        // Assert
+        Assert.Equal("RuleTest: Rule for test\r\n", valuesToPrint);
     }
 }
