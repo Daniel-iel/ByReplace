@@ -9,7 +9,8 @@ public class WorkspaceFixture<TTestClass> : IDisposable
 
     public WorkspaceFixture()
     {
-        WorkspaceSyntax = new WorkspaceSyntax(typeof(TTestClass).Name)
+        Console.WriteLine($"WorkspaceFixture: {typeof(TTestClass).Name}");
+        WorkspaceSyntax = new WorkspaceSyntax(Guid.NewGuid().ToString())
             .BRContent(c =>
             {
                 c.AddPath("")
@@ -37,6 +38,23 @@ public class WorkspaceFixture<TTestClass> : IDisposable
 
     public void Dispose()
     {
-        Directory.Delete($"./{WorkspaceSyntax.Identifier}", true);
+        if (!IsFileInUse())
+        {
+            Directory.Delete($"./{WorkspaceSyntax.Identifier}", true);
+        }
+    }
+
+    public bool IsFileInUse()
+    {
+        try
+        {
+            using FileStream stream = new FileStream($"./{WorkspaceSyntax.Identifier}", FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+
+            return false;
+        }
+        catch
+        {
+            return true;
+        }
     }
 }

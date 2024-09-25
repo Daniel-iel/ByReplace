@@ -1,5 +1,6 @@
 ﻿using ByReplace.Mappers;
 using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.Attributes;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
@@ -38,8 +39,8 @@ public class DirectoryThreeTest
            .Create();
     }
 
-    [Fact]
-    public void MapThreeSources_WhenStartTheSourceMap_ShouldReturnTheThreeFile()
+    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Windows)]
+    public void MapThreeSources_WhenStartTheSourceMapInWindows_ShouldReturnTheThreeFile()
     {
         // Arrange
         var dirThree = new DirectoryThree(_printMock.Object);
@@ -50,6 +51,55 @@ public class DirectoryThreeTest
         // Assert
         _printMock.Verify(c => c.Information($"Found [Cyan]1 files on folder [Cyan]{_workspaceSyntax.Identifier}."), Times.Once);
         _printMock.Verify(c => c.Information($"Found [Cyan]2 files on folder [Cyan]{_workspaceSyntax.Identifier}\\RootFolder."), Times.Once);
+
+        Assert.Equal(2, nodes.Count);
+        Assert.Collection(nodes,
+        entry =>
+        {
+            Assert.Single(entry.Files);
+            Assert.NotEmpty(entry.Parent);
+            Assert.NotEmpty(entry.Path);
+            Assert.Collection(entry.Files,
+            entry =>
+            {
+                Assert.Equal(".json", entry.Extension);
+                Assert.EndsWith("brconfig.json", entry.FullName);
+                Assert.Equal("brconfig.json", entry.Name);
+            });
+        },
+        entry =>
+        {
+            Assert.Equal(2, entry.Files.Count);
+            Assert.NotEmpty(entry.Parent);
+            Assert.NotEmpty(entry.Path);
+            Assert.Collection(entry.Files,
+            entry =>
+            {
+                Assert.Equal(".cs", entry.Extension);
+                Assert.EndsWith("RootFile1.cs", entry.FullName);
+                Assert.Equal("RootFile1.cs", entry.Name);
+            },
+            entry =>
+            {
+                Assert.Equal(".cs", entry.Extension);
+                Assert.EndsWith("RootFile2.cs", entry.FullName);
+                Assert.Equal("RootFile2.cs", entry.Name);
+            });
+        });
+    }
+
+    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Linux)]
+    public void MapThreeSources_WhenStartTheSourceMapInLinux_ShouldReturnTheThreeFile()
+    {
+        // Arrange
+        var dirThree = new DirectoryThree(_printMock.Object);
+
+        // Act
+        var nodes = dirThree.MapThreeSources(_workspaceSyntax.BrConfiguration.Path);
+
+        // Assert
+        _printMock.Verify(c => c.Information($"Found [Cyan]1 files on folder [Cyan]{_workspaceSyntax.Identifier}."), Times.Once);
+        _printMock.Verify(c => c.Information($"Found [Cyan]2 files on folder [Cyan]{_workspaceSyntax.Identifier}/RootFolder."), Times.Once);
 
         Assert.Equal(2, nodes.Count);
         Assert.Collection(nodes,

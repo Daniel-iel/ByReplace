@@ -1,7 +1,5 @@
 ﻿using ByReplace.Common;
 
-
-
 namespace ByReplace.Models;
 
 internal sealed class BrConfiguration

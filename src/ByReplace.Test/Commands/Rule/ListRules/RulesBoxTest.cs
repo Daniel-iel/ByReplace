@@ -1,5 +1,6 @@
 ﻿using ByReplace.Commands.Rule.ListRules;
 using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.Attributes;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
@@ -92,8 +93,8 @@ public class RulesBoxTest
         Assert.False(hasTheSameHashcode);
     }
 
-    [Fact]
-    public void GetValuesToPrint_WhenCalled_ReturnsFormattedRuleNamesAndDescriptions()
+    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Windows)]
+    public void GetValuesToPrint_WhenCalledInWindows_ReturnsFormattedRuleNamesAndDescriptions()
     {
         // Arrange
         var rulesBox = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
@@ -103,5 +104,18 @@ public class RulesBoxTest
 
         // Assert
         Assert.Equal("RuleTest: Rule for test\r\n", valuesToPrint);
+    }
+
+    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Linux)]
+    public void GetValuesToPrint_WhenCalledInLinux_ReturnsFormattedRuleNamesAndDescriptions()
+    {
+        // Arrange
+        var rulesBox = new RulesBox(_workspaceSyntax.BrConfiguration.Rules);
+
+        // Act
+        var valuesToPrint = rulesBox.GetValuesToPrint();
+
+        // Assert
+        Assert.Equal("RuleTest: Rule for test\n", valuesToPrint);
     }
 }

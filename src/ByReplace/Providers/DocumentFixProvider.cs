@@ -44,21 +44,58 @@ internal sealed class DocumentFixProvider
 
             int counter = 1;
 
+            string fileContents = await File.ReadAllTextAsync(file.FullName, cancellationToken);
+
             foreach (var rule in rules)
             {
                 print.Information($"Applying rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
-
-                string fileContents = await File.ReadAllTextAsync(file.FullName, cancellationToken);
 
                 foreach (string removeTerm in rule.Replacement.Old)
                 {
                     fileContents = fileContents.Replace(removeTerm, rule.Replacement.New);
                 }
 
-                await File.WriteAllTextAsync(file.FullName, fileContents, cancellationToken);
-
                 counter++;
             }
+
+            await File.WriteAllTextAsync(file.FullName, fileContents, cancellationToken);
         }
     }
+
+    //private async ValueTask FindAndReplaceAsync(AnalyzerAndFixer codeFixes, CancellationToken cancellationToken)
+    //{
+    //    foreach (KeyValuePair<FileMapper, List<Rule>> codeFixe in codeFixes)
+    //    {
+    //        FileMapper file = codeFixe.Key;
+    //        List<Rule> rules = codeFixe.Value;
+
+    //        print.Information($"Processing file [Cyan]{file.Name}");
+
+    //        int counter = 1;
+
+    //        await using (FileStream readStream = new FileStream(file.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+    //        using (StreamReader reader = new StreamReader(readStream))
+    //        {
+    //            string fileContents = string.Empty;
+
+    //            foreach (var rule in rules)
+    //            {
+    //                print.Information($"Applying rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
+
+    //                fileContents = await reader.ReadToEndAsync();
+
+    //                foreach (string removeTerm in rule.Replacement.Old)
+    //                {
+    //                    fileContents = fileContents.Replace(removeTerm, rule.Replacement.New);
+    //                }
+    //            }
+
+    //            await using FileStream writeStream = new FileStream(file.FullName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+    //            await using StreamWriter writer = new StreamWriter(writeStream);
+    //            await writer.WriteAsync(fileContents);
+
+    //            counter++;
+    //        }
+    //    }
+    //}
 }

@@ -5,7 +5,7 @@ build:
 	dotnet build -c Release
 
 test:
-	dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+	dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByFile="**/program.cs"
 
 test-nocoverage:
 	dotnet test --no-build --verbosity normal /p:CollectCoverage=false

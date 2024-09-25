@@ -5,8 +5,6 @@ using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Commands.TimerFinish;
 using Cocona.Builder;
 
-
-
 #if DEBUG
 CoconaAppBuilder builder = CoconaApp.CreateBuilder(
     new[]
@@ -128,3 +126,6 @@ app
 await app
     .RunAsync()
     .ConfigureAwait(false);
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

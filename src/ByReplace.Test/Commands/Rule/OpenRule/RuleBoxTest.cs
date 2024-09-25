@@ -1,5 +1,6 @@
 ﻿using ByReplace.Commands.Rule.OpenRule;
 using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.Attributes;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
 using Moq;
@@ -96,8 +97,8 @@ public class RuleBoxTest
         Assert.False(hasTheSameHashcode);
     }
 
-    [Fact]
-    public void GetValuesToPrint_WhenCalled_ReturnsFormattedRule()
+    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Windows)]
+    public void GetValuesToPrint_WhenCalledInWindows_ReturnsFormattedRule()
     {
         // Arrange
         var ruleBox = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
@@ -107,5 +108,18 @@ public class RuleBoxTest
 
         // Assert
         Assert.Equal("Name: RuleOne\r\nDescription: \r\nSkip: [ **\\Controllers\\*, bin\\bin1.txt, obj\\obj2.txt ]\r\nExtensions: [ .cs, .txt ]\r\nReplacement: FROM [ NewText ] To [ OldText ]\r\n", valuesToPrint);
+    }
+
+    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Linux)]
+    public void GetValuesToPrint_WhenCalledInWindowsInLinux_ReturnsFormattedRule()
+    {
+        // Arrange
+        var ruleBox = new RuleBox(_workspaceSyntax.BrConfiguration.Rules[0]);
+
+        // Act
+        var valuesToPrint = ruleBox.GetValuesToPrint();
+
+        // Assert
+        Assert.Equal("Name: RuleOne\nDescription: \nSkip: [ **\\Controllers\\*, bin\\bin1.txt, obj\\obj2.txt ]\nExtensions: [ .cs, .txt ]\nReplacement: FROM [ NewText ] To [ OldText ]\n", valuesToPrint);
     }
 }
