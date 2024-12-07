@@ -19,10 +19,10 @@ internal sealed class MatchProvider
 
         AnalyzerAndFixer analyzersAndFixers = new AnalyzerAndFixer(print, brConfiguration.Rules);
 
-        foreach (var sourceFile in sourceThreeProvider.GetSourceThree())
-        {
-            analyzersAndFixers.TryMatchRule(sourceFile);
-        }
+        Parallel.ForEach(
+            sourceThreeProvider.GetSourceThree(),
+            ParallelOptionsProvider.GetDefault(),
+            analyzersAndFixers.TryMatchRule);
 
         return analyzersAndFixers;
     }

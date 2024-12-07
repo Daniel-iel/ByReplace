@@ -1,4 +1,5 @@
-﻿namespace ByReplace.Providers;
+﻿using System.Runtime.InteropServices;
+namespace ByReplace.Providers;
 
 internal sealed class DocumentFixProvider
 {
@@ -33,69 +34,93 @@ internal sealed class DocumentFixProvider
         return FindAndReplaceAsync(codeFixersFiltered, cancellationToken);
     }
 
-    private async ValueTask FindAndReplaceAsync(AnalyzerAndFixer codeFixes, CancellationToken cancellationToken)
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    private async ValueTask FindAndReplaceAsync(AnalyzerAndFixer filesToFix, CancellationToken cancellationToken)
     {
-        foreach (KeyValuePair<DirectoryThreeV2.SourceThree, List<Rule>> codeFixe in codeFixes)
+        foreach (var fileToFix in filesToFix)
         {
-            FileInfo file = new FileInfo(codeFixe.Key.Path);
-            List<Rule> rules = codeFixe.Value;
+            FileInfo file = new FileInfo(fileToFix.Key.Path);
+            List<Rule> rules = fileToFix.Value;
 
             print.Information($"Processing file [Cyan]{file.Name}");
 
             int counter = 1;
 
-            string fileContents = await File.ReadAllTextAsync(file.FullName, cancellationToken);
+            string fileContent = await File.ReadAllTextAsync(file.FullName, cancellationToken);
 
-            foreach (var rule in rules)
+            foreach (ref var rule in CollectionsMarshal.AsSpan(rules))
             {
                 print.Information($"Applying rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
 
                 foreach (string removeTerm in rule.Replacement.Old)
                 {
-                    fileContents = fileContents.Replace(removeTerm, rule.Replacement.New);
+                    fileContent = fileContent.Replace(removeTerm, rule.Replacement.New);
                 }
 
                 counter++;
             }
 
-            await File.WriteAllTextAsync(file.FullName, fileContents, cancellationToken);
+            await File.WriteAllTextAsync(file.FullName, fileContent, cancellationToken);
         }
     }
 
-    //private async ValueTask FindAndReplaceAsync(AnalyzerAndFixer codeFixes, CancellationToken cancellationToken)
-    //{
-    //    foreach (KeyValuePair<FileMapper, List<Rule>> codeFixe in codeFixes)
-    //    {
-    //        FileMapper file = codeFixe.Key;
-    //        List<Rule> rules = codeFixe.Value;
 
-    //        print.Information($"Processing file [Cyan]{file.Name}");
 
-    //        int counter = 1;
+    private async ValueTask FindAndReplaceAsync2(AnalyzerAndFixer filesToFix, CancellationToken cancellationToken)
+    {
+        foreach (var fileToFix in filesToFix)
+        {
+            FileInfo file = new FileInfo(fileToFix.Key.Path);
+            List<Rule> rules = fileToFix.Value;
 
-    //        await using (FileStream readStream = new FileStream(file.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
-    //        using (StreamReader reader = new StreamReader(readStream))
-    //        {
-    //            string fileContents = string.Empty;
+            print.Information($"Processing file [Cyan]{file.Name}");
 
-    //            foreach (var rule in rules)
-    //            {
-    //                print.Information($"Applying rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
+            int counter = 1;
 
-    //                fileContents = await reader.ReadToEndAsync();
+            string fileContent = await File.ReadAllTextAsync(file.FullName, cancellationToken);
+            ReadOnlySpan<char> fileContentSpan = fileContent.AsSpan();
 
-    //                foreach (string removeTerm in rule.Replacement.Old)
-    //                {
-    //                    fileContents = fileContents.Replace(removeTerm, rule.Replacement.New);
-    //                }
-    //            }
+            foreach (ref var rule in CollectionsMarshal.AsSpan(rules))
+            {
+                print.Information($"Applying rule [Cyan]{rule.Name} {counter}/{rules.Count} on file [Cyan]{file.Name}.");
 
-    //            await using FileStream writeStream = new FileStream(file.FullName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-    //            await using StreamWriter writer = new StreamWriter(writeStream);
-    //            await writer.WriteAsync(fileContents);
+                foreach (string removeTerm in rule.Replacement.Old)
+                {
+                    ReadOnlySpan<char> removeTermSpan = removeTerm.AsSpan();
+                    ReadOnlySpan<char> newTermSpan = rule.Replacement.New.AsSpan();
 
-    //            counter++;
-    //        }
-    //    }
-    //}
+                    fileContentSpan = ReplaceAllOccurrences(fileContentSpan, removeTermSpan, newTermSpan);
+                }
+
+                counter++;
+            }
+
+            await File.WriteAllTextAsync(file.FullName, fileContentSpan.ToString(), cancellationToken);
+        }
+    }
+
+    private static string ReplaceAllOccurrences(ReadOnlySpan<char> content, ReadOnlySpan<char> oldTerm, ReadOnlySpan<char> newTerm)
+    {
+        // Use a StringBuilder to minimize allocations while replacing.
+        var result = new StringBuilder(content.Length);
+        int start = 0;
+
+        while (true)
+        {
+            int index = content[start..].IndexOf(oldTerm);
+            if (index == -1)
+            {
+                result.Append(content[start..]); // Append remaining content.
+                break;
+            }
+
+            // Append content before the match and the replacement term.
+            result.Append(content[start..(start + index)]);
+            result.Append(newTerm);
+
+            start += index + oldTerm.Length;
+        }
+
+        return result.ToString();
+    }
 }

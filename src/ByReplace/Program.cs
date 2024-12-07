@@ -127,11 +127,6 @@ app
 #endregion
 
 #region .: Delete :.
-app
-    .AddCommand("delete", async () =>
-    {
-
-    });
 
 #endregion
 

@@ -6,7 +6,7 @@ using static ByReplace.Mappers.DirectoryThreeV2;
 
 namespace ByReplace.Analyzers;
 
-internal sealed partial class AnalyzerAndFixer : Dictionary<SourceThree, List<Rule>>
+internal sealed partial class AnalyzerAndFixer : System.Collections.Concurrent.ConcurrentDictionary<SourceThree, List<Rule>>
 {
     private readonly IPrint _print;
     private readonly ImmutableList<Rule> _rules;
@@ -43,7 +43,7 @@ internal sealed partial class AnalyzerAndFixer : Dictionary<SourceThree, List<Ru
 
             if (!this.ContainsKey(sourceThree))
             {
-                this.Add(sourceThree, new List<Rule>());
+                this.TryAdd(sourceThree, new List<Rule>());
             }
 
             this[sourceThree].Add(rule);
