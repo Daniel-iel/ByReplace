@@ -1,6 +1,4 @@
-﻿using ByReplace.Mappers;
-
-namespace ByReplace.Test.TestHelpers.Builders
+﻿namespace ByReplace.Test.TestHelpers.Builders
 {
     public class FileMapperBuilderTest
     {

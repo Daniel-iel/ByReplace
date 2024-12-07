@@ -1,7 +1,4 @@
-﻿using ByReplace.Commands.Rule.ListRules;
-using ByReplace.Test.TestHelpers.Helpers;
-using Cocona;
-using Xunit;
+﻿using ByReplace.Test.TestHelpers.Helpers;
 
 namespace ByReplace.Test.Commands.Rule.ListRules;
 

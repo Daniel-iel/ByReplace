@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Providers;
+﻿using static ByReplace.Mappers.DirectoryThreeV2;
+
+namespace ByReplace.Providers;
 
 internal sealed class SourceThreeProvider
 {
@@ -11,16 +13,14 @@ internal sealed class SourceThreeProvider
         this.print = print;
     }
 
-    public ImmutableList<DirectoryNode> Run()
+    public ImmutableList<SourceThree> GetSourceThree()
     {
         print.Information("Identifying folder three files.");
 
-        DirectoryThree directoryThree = new DirectoryThree(print);
+        //DirectoryThree directoryThree = new DirectoryThree(print);
+        DirectoryThreeV2 directoryThree = new DirectoryThreeV2(print);
         directoryThree.MapThreeSources(brConfiguration.Path);
 
-        return directoryThree
-            .Nodes
-            .OrderBy(c => c.Directory)
-            .ToImmutableList();
+        return directoryThree.Nodes;
     }
 }

@@ -1,10 +1,5 @@
 ﻿// Ignore Spelling: Nuget
 
-using ByReplace.Commands.TimerFinish;
-using ByReplace.Printers;
-using Moq;
-using Xunit;
-
 namespace ByReplace.Test.Commands.Version
 {
     public class NugetVersionTest

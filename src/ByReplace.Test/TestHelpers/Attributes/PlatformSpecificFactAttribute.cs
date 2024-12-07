@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace ByReplace.Test.TestHelpers.Attributes;
+﻿namespace ByReplace.Test.TestHelpers.Attributes;
 public enum Platform
 {
     Windows,

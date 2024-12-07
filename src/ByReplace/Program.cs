@@ -50,8 +50,11 @@ app
             await compositeCommand.ExecuteAsync(token);
         });
 
-        apply.AddCommand("rules", async (ApplyParameter applyParameters, IPrint print, INugetVersion nugetVersion, CancellationToken token) =>
+        apply.AddCommand("rules", async (ApplyParameter applyParameters, IPrint print, INugetVersion nugetVersion) =>
         {
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+
             BrConfiguration configuration = BrConfigurationBuilder
                .Create()
                .SetPath(applyParameters.Path)
@@ -121,6 +124,15 @@ app
         });
     })
     .WithDescription("rule commands");
+#endregion
+
+#region .: Delete :.
+app
+    .AddCommand("delete", async () =>
+    {
+
+    });
+
 #endregion
 
 await app

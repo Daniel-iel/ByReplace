@@ -1,10 +1,12 @@
-﻿using ByReplace.Specification.Match;
+﻿using ByReplace.Common;
+using ByReplace.Specification.Match;
+using static ByReplace.Mappers.DirectoryThreeV2;
 
 [assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Analyzers;
 
-internal sealed class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
+internal sealed partial class AnalyzerAndFixer : Dictionary<SourceThree, List<Rule>>
 {
     private readonly IPrint _print;
     private readonly ImmutableList<Rule> _rules;
@@ -15,45 +17,44 @@ internal sealed class AnalyzerAndFixer : Dictionary<FileMapper, List<Rule>>
         _rules = rules;
     }
 
-    public AnalyzerAndFixer(IEnumerable<KeyValuePair<FileMapper, List<Rule>>> values, IPrint print) : base(values)
+    private AnalyzerAndFixer(IEnumerable<KeyValuePair<SourceThree, List<Rule>>> values, IPrint print) : base(values)
     {
         _print = print;
     }
 
-    internal bool TryMatchRule(DirectoryNode directoryNode)
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    internal void TryMatchRule(SourceThree sourceThree)
     {
-        var skipSpec = new SkipMatchSpecification(directoryNode.Directory);
-        var extensionSpec = new ExtensionSpecification();
+        PathFixer path = new PathFixer();
+        var pathParts = path.GetPathParts(sourceThree.Path);
 
-        foreach (FileMapper file in directoryNode.Files)
+        SkipDirectorySpec skipDirectorySpec = new(pathParts);
+        SkipFileAndFolderSpec skipFileAndFolderSpec = new(pathParts);
+        SkipExtensionSpec skipExtensionSpec = new(pathParts);
+
+        foreach (var rule in _rules)
         {
-            foreach (Rule rule in _rules)
+            if (skipDirectorySpec.IsSatisfiedBy(rule) ||
+                skipFileAndFolderSpec.IsSatisfiedBy(rule) ||
+                skipExtensionSpec.IsSatisfiedBy(rule))
             {
-                if (skipSpec.IsSatisfiedBy(file, rule) || !extensionSpec.IsSatisfiedBy(file, rule))
-                {
-                    continue;
-                }
-
-                if (!this.ContainsKey(file))
-                {
-                    this.Add(file, new List<Rule>());
-                }
-
-                this[file].Add(rule);
+                continue;
             }
+
+            if (!this.ContainsKey(sourceThree))
+            {
+                this.Add(sourceThree, new List<Rule>());
+            }
+
+            this[sourceThree].Add(rule);
         }
 
-        foreach (KeyValuePair<FileMapper, List<Rule>> item in this)
+        foreach (var item in this)
         {
-            _print.Information($"[Cyan]{item.Value.Count} rules in total match the file [Cyan]{item.Key.Name}.");
+            var fileInformartion = new FileInfo(item.Key.Path);
+
+            _print.Information($"[Cyan]{item.Value.Count} rules in total match the file [Cyan]{fileInformartion.Name}.");
         }
-
-        return false;
-    }
-
-    public AnalyzerAndFixer FindByKey(string rule)
-    {
-        return new AnalyzerAndFixer(this.Where(c => c.Key.Name == rule), this._print);
     }
 
     public AnalyzerAndFixer FindByRule(string rule)

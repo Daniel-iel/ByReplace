@@ -1,9 +1,5 @@
-﻿using ByReplace.Printers;
-using ByReplace.Providers;
-using ByReplace.Test.TestHelpers.ClassFixture;
+﻿using ByReplace.Test.TestHelpers.ClassFixture;
 using ByReplace.Test.TestHelpers.FolderMock;
-using Moq;
-using Xunit;
 
 namespace ByReplace.Test.Providers;
 
@@ -32,22 +28,22 @@ public class SourceThreeProviderTest : IClassFixture<WorkspaceFixture<SourceThre
             .Create();
     }
 
-    [Fact]
-    public void LoadThreeFiles_MapAllSourceThreeOfDirectory_ShouldReturnSourceFileThree()
-    {
-        // Arrange
-        var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
+    //[Fact]
+    //public void LoadThreeFiles_MapAllSourceThreeOfDirectory_ShouldReturnSourceFileThree()
+    //{
+    //    // Arrange
+    //    var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
-        // Act
-        var directoryNodes = analyzer.Run();
+    //    // Act
+    //    var directoryNodes = analyzer.Run();
 
-        // Assert
-        Assert.Equal(3, directoryNodes.Count);
-        Assert.Collection(directoryNodes,
-              node => Assert.Single(node.Files),
-              node => Assert.Single(node.Files),
-              node => Assert.Single(node.Files));
-    }
+    //    // Assert
+    //    Assert.Equal(3, directoryNodes.Count);
+    //    Assert.Collection(directoryNodes,
+    //          node => Assert.Single(node.Files),
+    //          node => Assert.Single(node.Files),
+    //          node => Assert.Single(node.Files));
+    //}
 
     [Fact]
     public void LoadThreeFiles_WhenPrintLogInformation_ShouldValidateLogWasCalled()

@@ -1,7 +1,5 @@
-﻿using ByReplace.Models;
-using ByReplace.Test.TestHelpers.ConfigMock;
+﻿using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
-using Xunit;
 
 namespace ByReplace.Test.Models;
 

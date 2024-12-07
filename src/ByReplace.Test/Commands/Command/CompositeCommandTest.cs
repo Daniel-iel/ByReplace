@@ -1,8 +1,4 @@
-﻿using ByReplace.Commands.Command;
-using Moq;
-using Xunit;
-
-namespace ByReplace.Test.Commands.Command;
+﻿namespace ByReplace.Test.Commands.Command;
 
 public class CompositeCommandTest
 {

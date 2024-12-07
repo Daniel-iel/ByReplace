@@ -1,7 +1,4 @@
-﻿using ByReplace.Common;
-using Xunit;
-
-namespace ByReplace.Test.Common
+﻿namespace ByReplace.Test.Common
 {
     public class PathFixerWindowsTest
     {

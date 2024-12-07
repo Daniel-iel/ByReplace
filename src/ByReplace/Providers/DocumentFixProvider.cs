@@ -35,9 +35,9 @@ internal sealed class DocumentFixProvider
 
     private async ValueTask FindAndReplaceAsync(AnalyzerAndFixer codeFixes, CancellationToken cancellationToken)
     {
-        foreach (KeyValuePair<FileMapper, List<Rule>> codeFixe in codeFixes)
+        foreach (KeyValuePair<DirectoryThreeV2.SourceThree, List<Rule>> codeFixe in codeFixes)
         {
-            FileMapper file = codeFixe.Key;
+            FileInfo file = new FileInfo(codeFixe.Key.Path);
             List<Rule> rules = codeFixe.Value;
 
             print.Information($"Processing file [Cyan]{file.Name}");

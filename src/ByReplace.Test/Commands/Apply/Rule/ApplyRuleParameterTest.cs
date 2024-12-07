@@ -1,8 +1,4 @@
-﻿using ByReplace.Commands.Apply.Parameters;
-using ByReplace.Commands.Apply.Rule;
-using ByReplace.Test.TestHelpers.Helpers;
-using Cocona;
-using Xunit;
+﻿using ByReplace.Test.TestHelpers.Helpers;
 
 namespace ByReplace.Test.Commands.Apply.Rule;
 

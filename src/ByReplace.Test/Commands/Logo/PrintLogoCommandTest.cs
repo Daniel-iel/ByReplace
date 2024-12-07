@@ -1,9 +1,4 @@
-﻿using ByReplace.Commands.Logo;
-using ByReplace.Printers;
-using Moq;
-using Xunit;
-
-namespace ByReplace.Test.Commands.Logo;
+﻿namespace ByReplace.Test.Commands.Logo;
 
 public class PrintLogoCommandTest
 {

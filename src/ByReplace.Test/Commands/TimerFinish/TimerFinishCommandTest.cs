@@ -1,9 +1,4 @@
-﻿using ByReplace.Commands.TimerFinish;
-using ByReplace.Printers;
-using Moq;
-using Xunit;
-
-namespace ByReplace.Test.Commands.TimerFinish;
+﻿namespace ByReplace.Test.Commands.TimerFinish;
 
 public class TimerFinishCommandTest
 {

@@ -9,14 +9,12 @@ public class WorkspaceFixture<TTestClass> : IDisposable
 
     public WorkspaceFixture()
     {
-        Console.WriteLine($"WorkspaceFixture: {typeof(TTestClass).Name}");
-        WorkspaceSyntax = new WorkspaceSyntax(Guid.NewGuid().ToString())
+        WorkspaceSyntax = new WorkspaceSyntax(typeof(TTestClass).Name)
             .BRContent(c =>
             {
                 c.AddPath("")
                 .AddSkip("obj", ".bin")
-                .AddRules(ruleOnde =>
-                    ruleOnde
+                .AddRules(ruleOnde => ruleOnde
                         .WithName("RuleTest")
                         .WithExtensions(".cs", ".txt")
                         .WithSkips("**\\Controllers\\*", "bin\\bin1.txt", "obj\\obj2.txt")

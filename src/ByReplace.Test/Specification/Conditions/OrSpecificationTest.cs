@@ -1,10 +1,4 @@
-﻿using ByReplace.Mappers;
-using ByReplace.Models;
-using ByReplace.Specification.Match;
-using Moq;
-using Xunit;
-
-namespace ByReplace.Test.Specification.Conditions;
+﻿namespace ByReplace.Test.Specification.Conditions;
 
 public class OrSpecificationTest
 {
