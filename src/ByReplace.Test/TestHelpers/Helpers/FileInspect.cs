@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Test.TestHelpers.Helpers
+﻿using System.Reflection;
+
+namespace ByReplace.Test.TestHelpers.Helpers
 {
     internal static class FileInspect<T>
     {

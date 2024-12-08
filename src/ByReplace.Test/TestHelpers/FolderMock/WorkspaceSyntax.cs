@@ -1,4 +1,8 @@
-﻿using ByReplace.Test.TestHelpers.ConfigMock;
+﻿using ByReplace.Builders;
+using ByReplace.Models;
+using ByReplace.Test.TestHelpers.ConfigMock;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class WorkspaceSyntax

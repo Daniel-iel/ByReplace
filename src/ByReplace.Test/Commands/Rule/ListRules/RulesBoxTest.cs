@@ -1,6 +1,10 @@
-﻿using ByReplace.Test.TestHelpers.Attributes;
+﻿using ByReplace.Commands.Rule.ListRules;
+using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.Attributes;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.ListRules;
 
@@ -89,7 +93,7 @@ public class RulesBoxTest
         Assert.False(hasTheSameHashcode);
     }
 
-    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Windows)]
+    [PlatformSpecificFact(Platform.Windows)]
     public void GetValuesToPrint_WhenCalledInWindows_ReturnsFormattedRuleNamesAndDescriptions()
     {
         // Arrange
@@ -102,7 +106,7 @@ public class RulesBoxTest
         Assert.Equal("RuleTest: Rule for test\r\n", valuesToPrint);
     }
 
-    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Linux)]
+    [PlatformSpecificFact(Platform.Linux)]
     public void GetValuesToPrint_WhenCalledInLinux_ReturnsFormattedRuleNamesAndDescriptions()
     {
         // Arrange

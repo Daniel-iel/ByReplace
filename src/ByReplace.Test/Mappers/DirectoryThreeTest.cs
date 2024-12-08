@@ -1,6 +1,10 @@
-﻿using ByReplace.Test.TestHelpers.Attributes;
+﻿using ByReplace.Mappers;
+using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.Attributes;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Mappers;
 
@@ -35,7 +39,7 @@ public class DirectoryThreeTest
            .Create();
     }
 
-    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Windows)]
+    [PlatformSpecificFact(Platform.Windows)]
     public void MapThreeSources_WhenStartTheSourceMapInWindows_ShouldReturnTheThreeFile()
     {
         // Arrange
@@ -84,7 +88,7 @@ public class DirectoryThreeTest
         });
     }
 
-    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Linux)]
+    [PlatformSpecificFact(Platform.Linux)]
     public void MapThreeSources_WhenStartTheSourceMapInLinux_ShouldReturnTheThreeFile()
     {
         // Arrange

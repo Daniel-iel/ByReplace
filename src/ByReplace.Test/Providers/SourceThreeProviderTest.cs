@@ -1,5 +1,9 @@
-﻿using ByReplace.Test.TestHelpers.ClassFixture;
+﻿using ByReplace.Printers;
+using ByReplace.Providers;
+using ByReplace.Test.TestHelpers.ClassFixture;
 using ByReplace.Test.TestHelpers.FolderMock;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Providers;
 
@@ -52,7 +56,7 @@ public class SourceThreeProviderTest : IClassFixture<WorkspaceFixture<SourceThre
         var analyzer = new SourceThreeProvider(_fixture.WorkspaceSyntax.BrConfiguration, _printMock.Object);
 
         // Act
-        var directoryNodes = analyzer.Run();
+        var directoryNodes = analyzer.GetSourceThree();
 
         // Assert
         _printMock.Verify(x => x.Information("Identifying folder three files."), Times.Once);

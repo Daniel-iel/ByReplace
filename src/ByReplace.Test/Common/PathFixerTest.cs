@@ -1,4 +1,8 @@
-﻿namespace ByReplace.Test.Common;
+﻿using ByReplace.Common;
+using System.Runtime.InteropServices;
+using Xunit;
+
+namespace ByReplace.Test.Common;
 
 public class PathFixerTests
 {

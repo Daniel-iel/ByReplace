@@ -1,4 +1,6 @@
-﻿namespace ByReplace.Specification.Match;
+﻿using ByReplace.Specification.Conditions;
+
+namespace ByReplace.Specification.Matches;
 
 internal sealed class SkipDirectorySpec : IMatchSpec
 {

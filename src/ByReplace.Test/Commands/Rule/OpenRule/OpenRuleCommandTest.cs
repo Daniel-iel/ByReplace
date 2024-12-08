@@ -1,6 +1,10 @@
-﻿using ByReplace.Test.TestHelpers.ClassFixture;
+﻿using ByReplace.Commands.Rule.OpenRule;
+using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.ClassFixture;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.OpenRule;
 

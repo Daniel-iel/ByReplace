@@ -1,12 +1,12 @@
 ﻿using ByReplace.Common;
-using ByReplace.Specification.Match;
+using ByReplace.Specification.Matches;
 using static ByReplace.Mappers.DirectoryThreeV2;
 
 [assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Analyzers;
 
-internal sealed partial class AnalyzerAndFixer : System.Collections.Concurrent.ConcurrentDictionary<SourceThree, List<Rule>>
+internal sealed class AnalyzerAndFixer : System.Collections.Concurrent.ConcurrentDictionary<SourceThree, List<Rule>>
 {
     private readonly IPrint _print;
     private readonly ImmutableList<Rule> _rules;

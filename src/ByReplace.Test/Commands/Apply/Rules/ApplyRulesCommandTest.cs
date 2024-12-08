@@ -1,4 +1,8 @@
-﻿using ByReplace.Test.TestHelpers.ClassFixture;
+﻿using ByReplace.Commands.Apply.Rules;
+using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.ClassFixture;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Commands.Apply.Rules;
 

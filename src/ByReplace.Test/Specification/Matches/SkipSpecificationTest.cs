@@ -1,5 +1,6 @@
-﻿using ByReplace.Models;
+﻿using ByReplace.Specification.Matches;
 using ByReplace.Test.TestHelpers.Builders;
+using Xunit;
 
 namespace ByReplace.Test.Specification.Matches;
 
@@ -35,10 +36,11 @@ public class SkipSpecificationTest
                 };
             })
             .Build();
-        var spec = new SkipMatchSpecification(dir);
+        var spec = new SkipFileAndFolderSpec([]);
 
         // Act
-        var result = spec.IsSatisfiedBy(fileMapper, rule);
+        var result = spec.IsSatisfiedBy(rule);
+
         // Assert
         Assert.True(result);
     }
@@ -80,10 +82,10 @@ public class SkipSpecificationTest
             })
             .Build();
 
-        var spec = new SkipMatchSpecification(dir);
+        var spec = new SkipFileAndFolderSpec([]);
 
         // Act
-        var result = spec.IsSatisfiedBy(fileMapper, rule);
+        var result = spec.IsSatisfiedBy(rule);
 
         // Assert
         Assert.False(result);

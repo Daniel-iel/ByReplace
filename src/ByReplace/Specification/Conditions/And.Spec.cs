@@ -1,4 +1,4 @@
-﻿namespace ByReplace.Specification.Match;
+﻿namespace ByReplace.Specification.Conditions;
 
 internal sealed class AndSpecification : IMatchSpec
 {

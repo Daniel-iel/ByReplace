@@ -1,5 +1,6 @@
-﻿using ByReplace.Models;
+﻿using ByReplace.Specification.Matches;
 using ByReplace.Test.TestHelpers.Builders;
+using Xunit;
 
 namespace ByReplace.Test.Specification.Matches
 {
@@ -9,7 +10,7 @@ namespace ByReplace.Test.Specification.Matches
         public void IsSatisfiedBy_IdentifyFileThatMatchByExtension_ShouldReturnTrue()
         {
             // Arrange
-            var extensionSpecification = new ExtensionSpecification();
+            var extensionSpecification = new SkipExtensionSpec([]);
             var fileMapper = FileMapperBuilderTest
                  .Create()
                  .WithName("test")
@@ -34,7 +35,7 @@ namespace ByReplace.Test.Specification.Matches
                  .Build();
 
             // Act
-            var hasMatch = extensionSpecification.IsSatisfiedBy(fileMapper, rule);
+            var hasMatch = extensionSpecification.IsSatisfiedBy(rule);
 
             // Assert
             Assert.True(hasMatch);

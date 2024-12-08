@@ -1,6 +1,11 @@
-﻿using ByReplace.Test.TestHelpers.ClassFixture;
+﻿using ByReplace.Analyzers;
+using ByReplace.Printers;
+using ByReplace.Providers;
+using ByReplace.Test.TestHelpers.ClassFixture;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Analyzers;
 
@@ -48,7 +53,7 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Act
-        var directoryNode = analyzer.Run().Last();
+        var directoryNode = analyzer.GetSourceThree().Last();
         analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
@@ -57,14 +62,16 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
         Assert.Collection(analyzerAndFixer,
         entry =>
         {
-            Assert.Equal("RootFile1.cs", entry.Key.Name);
-            Assert.Equal(".cs", entry.Key.Extension);
+            var file = new FileInfo(entry.Key.Path);
+            Assert.Equal("RootFile1.cs", file.Name);
+            Assert.Equal(".cs", file.Extension);
             Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
         },
         entry =>
         {
-            Assert.Equal("RootFile2.cs", entry.Key.Name);
-            Assert.Equal(".cs", entry.Key.Extension);
+            var file = new FileInfo(entry.Key.Path);
+            Assert.Equal("RootFile2.cs", file.Name);
+            Assert.Equal(".cs", file.Extension);
             Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
         });
     }
@@ -77,7 +84,7 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
         var analyzerAndFixer = new AnalyzerAndFixer(_printMock.Object, _fixture.WorkspaceSyntax.BrConfiguration.Rules);
 
         // Act
-        var directoryNode = analyzer.Run().Last();
+        var directoryNode = analyzer.GetSourceThree().Last();
         analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert

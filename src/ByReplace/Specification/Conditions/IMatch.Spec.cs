@@ -1,5 +1,4 @@
-﻿
-namespace ByReplace.Specification.Match;
+﻿namespace ByReplace.Specification.Conditions;
 
 internal interface IMatchSpec
 {

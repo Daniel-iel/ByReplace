@@ -1,6 +1,10 @@
-﻿using ByReplace.Test.TestHelpers.Attributes;
+﻿using ByReplace.Commands.Rule.OpenRule;
+using ByReplace.Printers;
+using ByReplace.Test.TestHelpers.Attributes;
 using ByReplace.Test.TestHelpers.ConfigMock;
 using ByReplace.Test.TestHelpers.FolderMock;
+using Moq;
+using Xunit;
 
 namespace ByReplace.Test.Commands.Rule.OpenRule;
 
@@ -93,7 +97,7 @@ public class RuleBoxTest
         Assert.False(hasTheSameHashcode);
     }
 
-    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Windows)]
+    [PlatformSpecificFact(Platform.Windows)]
     public void GetValuesToPrint_WhenCalledInWindows_ReturnsFormattedRule()
     {
         // Arrange
@@ -106,7 +110,7 @@ public class RuleBoxTest
         Assert.Equal("Name: RuleOne\r\nDescription: \r\nSkip: [ **\\Controllers\\*, bin\\bin1.txt, obj\\obj2.txt ]\r\nExtensions: [ .cs, .txt ]\r\nReplacement: FROM [ NewText ] To [ OldText ]\r\n", valuesToPrint);
     }
 
-    [PlatformSpecificFact(TestHelpers.Attributes.Platform.Linux)]
+    [PlatformSpecificFact(Platform.Linux)]
     public void GetValuesToPrint_WhenCalledInWindowsInLinux_ReturnsFormattedRule()
     {
         // Arrange

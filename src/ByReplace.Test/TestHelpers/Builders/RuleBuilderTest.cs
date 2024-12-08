@@ -1,4 +1,6 @@
-namespace ByReplace.Models
+using ByReplace.Models;
+
+namespace ByReplace.Test.TestHelpers.Builders
 {
     internal class RuleBuilderTest
     {
