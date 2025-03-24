@@ -4,21 +4,18 @@ namespace ByReplace.Common;
 
 internal class PathFixer
 {
+    IPathFixer linux = new PathFixerLinux();
+    IPathFixer windows = new PathFixerWindows();
+
     public string GetFixedPath(params string[] parts)
     {
-        IPathFixer linux = new PathFixerLinux();
-        IPathFixer windows = new PathFixerWindows();
-
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
             ? linux.PathFixed(parts)
             : windows.PathFixed(parts);
     }
 
-    public char GetPathSeparatior()
+    public char GetPathSeparator()
     {
-        IPathFixer linux = new PathFixerLinux();
-        IPathFixer windows = new PathFixerWindows();
-
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
            ? linux.Separator
            : windows.Separator;
@@ -27,6 +24,6 @@ internal class PathFixer
     public string[] GetPathParts(string path)
     {
         string pathFixed = GetFixedPath(path);
-        return pathFixed.Split(GetPathSeparatior());
+        return pathFixed.Split(GetPathSeparator());
     }
 }
