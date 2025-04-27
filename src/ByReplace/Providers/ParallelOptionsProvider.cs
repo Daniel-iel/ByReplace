@@ -1,5 +1,6 @@
 ﻿namespace ByReplace.Providers;
 
+[ExcludeFromCodeCoverage]
 internal static class ParallelOptionsProvider
 {
     public static ParallelOptions GetDefault()

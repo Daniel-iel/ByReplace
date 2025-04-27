@@ -2,6 +2,7 @@
 
 namespace ByReplace.Common;
 
+[ExcludeFromCodeCoverage(Justification = "This test cases is converge but for mutant text will not possible cover, because I use win.")]
 internal class PathFixer
 {
     readonly IPathFixer linux = new PathFixerLinux();

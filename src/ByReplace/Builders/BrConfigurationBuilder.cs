@@ -15,7 +15,7 @@ internal sealed class BrConfigurationBuilder
 
     internal BrConfigurationBuilder SetConfigPath(string configFile)
     {
-        ArgumentNullException.ThrowIfNull(configFile);
+        ArgumentNullException.ThrowIfNullOrEmpty(configFile);
 
         _configFile = Sanitizer(configFile);
 
@@ -24,7 +24,7 @@ internal sealed class BrConfigurationBuilder
 
     internal BrConfigurationBuilder SetPath(string path)
     {
-        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNullOrEmpty(path);
 
         _path = Sanitizer(path);
 
@@ -33,7 +33,7 @@ internal sealed class BrConfigurationBuilder
 
     internal BrConfigurationBuilder SetRule(string rule)
     {
-        ArgumentNullException.ThrowIfNull(rule);
+        ArgumentNullException.ThrowIfNullOrEmpty(rule);
 
         _rule = Sanitizer(rule);
 

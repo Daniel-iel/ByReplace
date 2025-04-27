@@ -1,12 +1,12 @@
 ﻿using ByReplace.Common;
-using System.Runtime.InteropServices;
+using ByReplace.Test.TestHelpers.Attributes;
 using Xunit;
 
 namespace ByReplace.Test.Common;
 
 public class PathFixerTests
 {
-    [Fact]
+    [PlatformSpecificFact(Platform.Windows)]
     public void GetFixedPath_ShouldReturnWindowsPath_WhenRunningOnWindows()
     {
         // Arrange
@@ -17,13 +17,10 @@ public class PathFixerTests
         var path = pathFixer.GetFixedPath(parts);
 
         // Assert
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            Assert.Equal(@"folder\subfolder\file.txt", path);
-        }
+        Assert.Equal(@"folder\subfolder\file.txt", path);
     }
 
-    [Fact]
+    [PlatformSpecificFact(Platform.Linux)]
     public void GetFixedPath_ShouldReturnLinuxPath_WhenRunningOnLinux()
     {
         // Arrange
@@ -34,9 +31,6 @@ public class PathFixerTests
         var path = pathFixer.GetFixedPath(parts);
 
         // Assert
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            Assert.Equal("folder/subfolder/file.txt", path);
-        }
+        Assert.Equal("folder/subfolder/file.txt", path);
     }
 }

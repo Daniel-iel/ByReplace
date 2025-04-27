@@ -30,7 +30,7 @@ public class BrConfigurationBuilderTest
     }
 
     [Fact]
-    public void Build_ReturnsCorrectConfiguration()
+    public void Build_WhenPassCorrectInformation_ShouldReturnTheBrConfiguration()
     {
         // Arrange
         var configFile = $"./{_workspaceSyntax.Identifier}";
@@ -62,5 +62,27 @@ public class BrConfigurationBuilderTest
             Assert.Single(entry.Replacement.Old);
             Assert.Collection(entry.Replacement.Old, entry => Assert.Equal("Test2", entry));
         });
+    }
+
+    [Theory]
+    [InlineData("", "./", "Rule")]
+    [InlineData("./", "", "Rule")]
+    [InlineData("./", "./", "")]
+    public void Build_WhenPassTheIncorrectInformations_ShouldThrowArgumentException(string pathConfig, string path, string rule)
+    {
+        Action action = () =>
+        {
+            // Arrange
+            var builder = BrConfigurationBuilder
+              .Create()
+              .SetConfigPath(pathConfig)
+              .SetPath(path)
+              .SetRule(rule);
+
+            // Act
+            builder.Build();
+        };
+
+        Assert.Throws<ArgumentException>(action);
     }
 }
