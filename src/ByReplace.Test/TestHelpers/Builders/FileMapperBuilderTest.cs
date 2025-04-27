@@ -4,7 +4,7 @@ namespace ByReplace.Test.TestHelpers.Builders;
 
 public class FileMapperBuilderTest
 {
-    private Guid _id;
+    private readonly Guid _id;
     private string _name;
     private string _fullName;
     private string _extension;

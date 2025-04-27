@@ -46,7 +46,7 @@ internal sealed class FileSyntax
         return new FileSyntax(name, content, parentFolder);
     }
 
-    public FileSyntax Create(string name, string content)
+    public static FileSyntax Create(string name, string content)
     {
         return new FileSyntax(name, content);
     }

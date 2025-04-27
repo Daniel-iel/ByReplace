@@ -4,8 +4,8 @@ namespace ByReplace.Common;
 
 internal class PathFixer
 {
-    IPathFixer linux = new PathFixerLinux();
-    IPathFixer windows = new PathFixerWindows();
+    readonly IPathFixer linux = new PathFixerLinux();
+    readonly IPathFixer windows = new PathFixerWindows();
 
     public string GetFixedPath(params string[] parts)
     {

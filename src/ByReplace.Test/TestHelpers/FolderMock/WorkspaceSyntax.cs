@@ -112,7 +112,7 @@ internal sealed class WorkspaceSyntax
             File.WriteAllText(string.Concat(dirPath, "/", file.Name), file.Content);
         }
 
-        foreach (var subFolder in CollectionsMarshal.AsSpan(folderSyntax.Folders))
+        foreach (ref var subFolder in CollectionsMarshal.AsSpan(folderSyntax.Folders))
         {
             CreateThreeFolder(string.Concat(parentFolder, "/", subFolder.Name), subFolder);
         }

@@ -22,6 +22,7 @@
     <ToolCommandName>br</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
