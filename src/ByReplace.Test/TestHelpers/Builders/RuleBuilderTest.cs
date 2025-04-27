@@ -12,7 +12,6 @@ namespace ByReplace.Test.TestHelpers.Builders
 
         public RuleBuilderTest()
         {
-
         }
 
         public static RuleBuilderTest Create()

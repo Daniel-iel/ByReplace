@@ -4,7 +4,6 @@ public sealed class RuleSyntax
 {
     public RuleSyntax()
     {
-
     }
 
     private RuleSyntax(

@@ -7,7 +7,6 @@ namespace ByReplace.Test.TestHelpers.FolderMock;
 
 internal sealed class WorkspaceSyntax
 {
-
     private ContentSyntax _contextSyntax;
 
     public string Identifier { get; }

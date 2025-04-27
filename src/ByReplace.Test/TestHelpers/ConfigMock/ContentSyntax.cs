@@ -49,7 +49,6 @@ public class ContentSyntax
 
     public ContentSyntax AddRules(params Action<RuleSyntax>[] actions)
     {
-
         foreach (var action in actions)
         {
             var ruleSyntax = new RuleSyntax();

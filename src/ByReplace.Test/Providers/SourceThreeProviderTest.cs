@@ -61,5 +61,4 @@ public class SourceThreeProviderTest : IClassFixture<WorkspaceFixture<SourceThre
         // Assert
         _printMock.Verify(x => x.Information("Identifying folder three files."), Times.Once);
     }
-
 }
