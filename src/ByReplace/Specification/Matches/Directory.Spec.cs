@@ -2,17 +2,18 @@
 
 namespace ByReplace.Specification.Matches;
 
-internal sealed class SkipDirectorySpec : IMatchSpec
+internal sealed class DirectorySpec : IMatchSpec
 {
-    private readonly string[] _pathParts;
+    private readonly string _pathParts;
 
-    public SkipDirectorySpec(string[] pathParts)
+    public DirectorySpec(string pathParts)
     {
         _pathParts = pathParts;
     }
 
     public bool IsSatisfiedBy(Rule rule)
     {
+        // **/Controller/*
         foreach (var skip in rule.Skip)
         {
             if (skip.StartsWith("**", StringComparison.Ordinal) &&
@@ -28,7 +29,7 @@ internal sealed class SkipDirectorySpec : IMatchSpec
 
     private bool ShouldSkip(string skip)
     {
-        return _pathParts.Any(c => c.Equals(skip, StringComparison.InvariantCultureIgnoreCase));
+        return _pathParts.IndexOf(skip, StringComparison.InvariantCultureIgnoreCase) > -1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]

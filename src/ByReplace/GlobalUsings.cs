@@ -11,7 +11,6 @@ global using ByReplace.Printers;
 global using Cocona;
 global using Konsole;
 global using Microsoft.Extensions.DependencyInjection;
-global using MoreLinq.Extensions;
 global using NuGet.Protocol;
 global using NuGet.Protocol.Core.Types;
 global using NuGet.Versioning;

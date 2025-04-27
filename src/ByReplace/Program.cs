@@ -15,11 +15,11 @@ CoconaAppBuilder builder = CoconaApp.CreateBuilder(
             @"-f C:\Projetos\Daniel-iel\ByReplace\src\ByReplace"
     });
 #else
-    CoconaAppBuilder builder = CoconaApp.CreateBuilder();
+CoconaAppBuilder builder = CoconaApp.CreateBuilder();
 #endif
 
-builder.Services.AddScoped<IPrint, PrintConsole>();
-builder.Services.AddScoped<IPrintBox, PrintBox>();
+builder.Services.AddSingleton<IPrint, PrintConsole>();
+builder.Services.AddSingleton<IPrintBox, PrintBox>();
 builder.Services.AddScoped<INugetVersion, NugetVersion>();
 
 CoconaApp app = builder.Build();

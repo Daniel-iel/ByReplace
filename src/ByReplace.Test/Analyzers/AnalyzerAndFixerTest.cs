@@ -57,22 +57,15 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
         analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
-        Assert.Equal(2, analyzerAndFixer.Count);
+        Assert.Single(analyzerAndFixer);
 
         Assert.Collection(analyzerAndFixer,
         entry =>
         {
             var file = new FileInfo(entry.Key.Path);
-            Assert.Equal("RootFile1.cs", file.Name);
-            Assert.Equal(".cs", file.Extension);
-            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
-        },
-        entry =>
-        {
-            var file = new FileInfo(entry.Key.Path);
             Assert.Equal("RootFile2.cs", file.Name);
             Assert.Equal(".cs", file.Extension);
-            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+            Assert.Collection(entry.Value, rule => Assert.Equal("RuleTwo", rule.Name));
         });
     }
 
@@ -88,9 +81,6 @@ public class AnalyzerAndFixerTest : IClassFixture<WorkspaceFixture<AnalyzerAndFi
         analyzerAndFixer.TryMatchRule(directoryNode);
 
         // Assert
-
-        //"[Cyan]{0} rules in total match the file [Cyan]{1}.", item.Value.Count, item.Key.Name
-        _printMock.Verify(x => x.Information("[Cyan]1 rules in total match the file [Cyan]RootFile1.cs."), Times.Once);
         _printMock.Verify(x => x.Information("[Cyan]1 rules in total match the file [Cyan]RootFile2.cs."), Times.Once);
     }
 

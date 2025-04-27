@@ -5,7 +5,6 @@ using static ByReplace.Mappers.DirectoryThreeV2;
 [assembly: InternalsVisibleTo("ByReplace.Test")]
 
 namespace ByReplace.Analyzers;
-
 internal sealed class AnalyzerAndFixer : System.Collections.Concurrent.ConcurrentDictionary<SourceThree, List<Rule>>
 {
     private readonly IPrint _print;
@@ -16,7 +15,6 @@ internal sealed class AnalyzerAndFixer : System.Collections.Concurrent.Concurren
         _print = print;
         _rules = rules;
     }
-
     private AnalyzerAndFixer(IEnumerable<KeyValuePair<SourceThree, List<Rule>>> values, IPrint print) : base(values)
     {
         _print = print;
@@ -28,15 +26,16 @@ internal sealed class AnalyzerAndFixer : System.Collections.Concurrent.Concurren
         PathFixer path = new PathFixer();
         var pathParts = path.GetPathParts(sourceThree.Path);
 
-        SkipDirectorySpec skipDirectorySpec = new(pathParts);
-        SkipFileAndFolderSpec skipFileAndFolderSpec = new(pathParts);
-        SkipExtensionSpec skipExtensionSpec = new(pathParts);
+        DirectorySpec skipDirectorySpec = new(sourceThree.Path);
+        FileWithFolderSpec skipFileAndFolderSpec = new(sourceThree.Path);
+        ExtensionSpec skipExtensionSpec = new(pathParts);
 
+        int count = 0;
         foreach (var rule in _rules)
         {
             if (skipDirectorySpec.IsSatisfiedBy(rule) ||
                 skipFileAndFolderSpec.IsSatisfiedBy(rule) ||
-                skipExtensionSpec.IsSatisfiedBy(rule))
+                !skipExtensionSpec.IsSatisfiedBy(rule))
             {
                 continue;
             }
@@ -47,14 +46,13 @@ internal sealed class AnalyzerAndFixer : System.Collections.Concurrent.Concurren
             }
 
             this[sourceThree].Add(rule);
+
+            count++;
         }
 
-        foreach (var item in this)
-        {
-            var fileInformartion = new FileInfo(item.Key.Path);
+        var fileInformartion = new FileInfo(sourceThree.Path);
 
-            _print.Information($"[Cyan]{item.Value.Count} rules in total match the file [Cyan]{fileInformartion.Name}.");
-        }
+        _print.Information($"[Cyan]{count} rules in total match the file [Cyan]{fileInformartion.Name}.");
     }
 
     public AnalyzerAndFixer FindByRule(string rule)

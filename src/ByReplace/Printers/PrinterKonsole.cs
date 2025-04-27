@@ -28,25 +28,25 @@ internal sealed class PrinterKonsole
 
         foreach (ref readonly string textPart in textParts)
         {
-            if (textPart.StartsWith("[Green]"))
+            if (textPart.StartsWith("[Green]", StringComparison.InvariantCultureIgnoreCase))
             {
                 console.Write(ConsoleColor.Green, $" {textPart.Replace("[Green]", "")}");
                 continue;
             }
 
-            if (textPart.StartsWith("[Yellow]"))
+            if (textPart.StartsWith("[Yellow]", StringComparison.InvariantCultureIgnoreCase))
             {
                 console.Write(ConsoleColor.Yellow, $" {textPart.Replace("[Yellow]", "")}");
                 continue;
             }
 
-            if (textPart.StartsWith("[Red]"))
+            if (textPart.StartsWith("[Red]", StringComparison.InvariantCultureIgnoreCase))
             {
                 console.Write(ConsoleColor.Red, $" {textPart.Replace("[Red]", "")}");
                 continue;
             }
 
-            if (textPart.StartsWith("[Cyan]"))
+            if (textPart.StartsWith("[Cyan]", StringComparison.InvariantCultureIgnoreCase))
             {
                 console.Write(ConsoleColor.Cyan, $" {textPart.Replace("[Cyan]", "")}");
                 continue;

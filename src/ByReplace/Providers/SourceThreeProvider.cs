@@ -17,7 +17,6 @@ internal sealed class SourceThreeProvider
     {
         print.Information("Identifying folder three files.");
 
-        //DirectoryThree directoryThree = new DirectoryThree(print);
         DirectoryThreeV2 directoryThree = new DirectoryThreeV2(print);
         directoryThree.MapThreeSources(brConfiguration.Path);
 

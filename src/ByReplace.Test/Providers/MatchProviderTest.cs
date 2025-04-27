@@ -73,21 +73,7 @@ namespace ByReplace.Test.Providers
 
             Assert.Equal(4, analyzersAndFixers.Count);
 
-            Assert.Collection(analyzersAndFixers,
-            entry =>
-            {
-                var file = new FileInfo(entry.Key.Path);
-                Assert.Equal("RootFile1.cs", file.Name);
-                Assert.Equal(".cs", file.Extension);
-                Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
-            },
-            entry =>
-            {
-                var file = new FileInfo(entry.Key.Path);
-                Assert.Equal("RootFile2.cs", file.Name);
-                Assert.Equal(".cs", file.Extension);
-                Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
-            },
+            Assert.Collection(analyzersAndFixers.OrderBy(c => c.Key.Path),
             entry =>
             {
                 var file = new FileInfo(entry.Key.Path);
@@ -100,6 +86,20 @@ namespace ByReplace.Test.Providers
                 var file = new FileInfo(entry.Key.Path);
                 Assert.Equal("obj1.txt", file.Name);
                 Assert.Equal(".txt", file.Extension);
+                Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+            },
+            entry =>
+            {
+                var file = new FileInfo(entry.Key.Path);
+                Assert.Equal("RootFile1.cs", file.Name);
+                Assert.Equal(".cs", file.Extension);
+                Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
+            },
+            entry =>
+            {
+                var file = new FileInfo(entry.Key.Path);
+                Assert.Equal("RootFile2.cs", file.Name);
+                Assert.Equal(".cs", file.Extension);
                 Assert.Collection(entry.Value, rule => Assert.Equal("RuleTest", rule.Name));
             });
         }
