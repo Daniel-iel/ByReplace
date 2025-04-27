@@ -4,9 +4,9 @@ on:
   push:
     tags:
       - v*
-    branches: [main, releases/*]
+    branches: [main, release/* ]
   pull_request:
-    branches: [main, feature/*, releases/*]
+    branches: [main, feature/*]
 
 jobs:
   build:
